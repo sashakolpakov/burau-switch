@@ -1,0 +1,32 @@
+{
+  "numerical_checks": {
+    "det_J_at_0": 2.9999999999999996,
+    "det_J_at_2pi": 2.9999999999999996,
+    "det_J_at_2pi_over_3": 4.4408920985006143e-16,
+    "det_J_at_4pi_over_3": -6.66133814775094e-16,
+    "identity_counterexample": 0.8535533905932737,
+    "max_braid_error": 1.1544451141201852e-15,
+    "max_closed_form_error": 1.2490009027033011e-15,
+    "max_commutator_determinant_error": 8.215875300854245e-15,
+    "max_commutator_trace_error": 7.994810355621066e-15,
+    "max_fixed_simulator_error": 0.0,
+    "max_form_error": 1.0738933143935093e-15,
+    "max_unitary_error": 9.734690610158998e-15,
+    "maximum_abelian_phase_contrast": 0.060327321274221246,
+    "maximum_order_witness": 0.49999997674645136,
+    "maximum_switch_contrast": 0.09101938917679675,
+    "minimum_abelian_phase_contrast": -0.06029333187514063,
+    "minimum_sampled_H_eigenvalue": 0.0006965482374163905,
+    "minimum_switch_contrast": -0.03561805638301452,
+    "order_witness_at_5pi_over_3": 0.5,
+    "order_witness_at_pi_over_3": 0.5
+  },
+  "symbolic_checks": {
+    "beta_i_star_J_beta_i": "J for i=1,2",
+    "braid_relation": "beta_1 beta_2 beta_1 = beta_2 beta_1 beta_2",
+    "det_J_s": "(s**2 - s + 1)*(s**2 + s + 1)/s**2",
+    "det_group_commutator": "1",
+    "order_difference": "Matrix([[s**2, -s**3 - s], [s**3 + s, -s**2]])",
+    "trace_group_commutator": "-s**2 + 1 - 1/s**2"
+  }
+}
