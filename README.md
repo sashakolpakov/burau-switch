@@ -2,20 +2,33 @@
 
 Reproducible calculations for [arXiv:2510.18186](https://arxiv.org/abs/2510.18186).
 
+The central Gedankenexperiment asks whether an ordinary coherent device can
+realize the operational content of non-Abelian braid statistics without
+assuming that microscopic anyons were present at the outset. It has two
+complementary physical readings:
+
+- an **effective-anyonic realization**, if the encoded state space and its
+  exchange-like operations form a genuine emergent excitation sector; or
+- an **anyonic simulacrum**, if the apparatus reproduces the same
+  matrix-valued braid statistics only at the input-output level.
+
+The present calculation certifies the representation-theoretic core shared by
+both readings. Distinguishing them physically requires additional fusion,
+locality, degeneracy, and robustness tests.
+
 The scripts verify:
 
-- the exact signature of Squier's form,
-  $\det J(\omega)=4\cos^2(\omega/2)-1$;
-- Euclidean unitarity on
-  $\Omega_+=(0,2\pi/3)\cup(4\pi/3,2\pi)$, using the
-  sign-normalized positive form $H(\omega)=\varepsilon(\omega)J(\omega)$;
-- the Yang--Baxter relation and noncommutativity of the two unitarized
-  $B_3$ generators;
+- the exact Squier form and its two definite intervals;
+- Euclidean unitarity of the sign-normalized Burau generators;
+- the Yang--Baxter relation and noncommutativity of both $B_3$ generators;
 - the closed-form Helstrom witness for distinguishing $U_1U_2$ from
   $U_2U_1$; and
-- the braid-dressed-versus-bare switch response as an interference
-  diagnostic, including a phase-only counterexample that shows why this
-  response is not a causal or non-Abelian witness.
+- the original braid-dressed-versus-bare $T$--$S$ response, together with a
+  phase-only control showing why this phenomenology must be paired with the
+  two-generator test.
+
+Thus the $T$--$S$ experiment remains the observable device-response layer; the
+ordered-generator experiment identifies the non-Abelian origin of that layer.
 
 Using Python 3.10 or newer, run everything from a clean environment with:
 

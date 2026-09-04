@@ -1,9 +1,11 @@
 """Numerical checks for the Burau--Squier controlled-order Gedankenexperiment.
 
-The script verifies the two definite Squier intervals, the exact braid-order
-Helstrom witness, and the secondary response of the braid-dressed switch.
-It intentionally makes no causal-nonseparability claim from a closed-unitary
-discrimination score.
+The script verifies the representation-level core shared by two physical
+readings: an effective synthetic-anyon realization and an input-output
+simulacrum of the same non-Abelian braid statistics.  It computes both the
+two-generator certification test and the phenomenological response of the
+braid-dressed switch, without treating a closed-unitary score as a causal
+witness.
 """
 
 from __future__ import annotations
