@@ -1,0 +1,85 @@
+{
+  "burau_bank_condition_number": 6.631549236473133,
+  "burau_blocks_per_mesh": 12,
+  "feature_ranks_by_setting": {
+    "Burau mesh": [
+      4,
+      7,
+      10,
+      13,
+      16,
+      16,
+      16,
+      16
+    ],
+    "Haar baseline": [
+      4,
+      7,
+      10,
+      13,
+      16,
+      16,
+      16,
+      16
+    ],
+    "phase only": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ]
+  },
+  "interpretation": "A passive unitary bank plus intensity detection and a linear readout spans Hermitian quadratic scores, not arbitrary deep neural functions.",
+  "maximum_burau_mesh_unitarity_error": 5.351486686348763e-15,
+  "maximum_hermitian_feature_dimension": 16,
+  "minimal_bank_robustness": {
+    "Burau mesh": {
+      "full_rank_fraction": 1.0,
+      "maximum_condition_number_among_full_rank_banks": 1317.4610528413184,
+      "median_condition_number_among_full_rank_banks": 46.66502890091833,
+      "minimum_rank": 16,
+      "trials": 32
+    },
+    "Haar baseline": {
+      "full_rank_fraction": 1.0,
+      "maximum_condition_number_among_full_rank_banks": 3873.44156473259,
+      "median_condition_number_among_full_rank_banks": 51.67750675580152,
+      "minimum_rank": 16,
+      "trials": 32
+    }
+  },
+  "minimum_settings_for_full_quadratic_span": 5,
+  "normalized_test_rmse": {
+    "Burau mesh": {
+      "quadratic": 2.233840368171572e-15,
+      "quartic": 0.6602536358549578
+    },
+    "Haar baseline": {
+      "quadratic": 3.5455807717084942e-15,
+      "quartic": 0.6602536358549577
+    },
+    "phase only": {
+      "quadratic": 0.8460861737164962,
+      "quartic": 0.974717466251601
+    }
+  },
+  "number_of_modes": 4,
+  "number_of_settings": 8,
+  "orthonormal_basis_rank_upper_bounds": [
+    4,
+    7,
+    10,
+    13,
+    16,
+    16,
+    16,
+    16
+  ],
+  "seed": 2718,
+  "test_samples": 1500,
+  "train_samples": 3000
+}

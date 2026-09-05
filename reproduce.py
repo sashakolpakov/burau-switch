@@ -5,6 +5,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import matplotlib
+
+
+matplotlib.use("Agg")
+
 from burau_switch import run_verification
 from symbolic_checks import run_symbolic_checks
 

@@ -1,0 +1,103 @@
+{
+  "burau_blocks_per_mesh": 12,
+  "coherent_transfer_drift_model": {
+    "effective_unitary_perturbation_scales": [
+      0.0,
+      0.0001,
+      0.001,
+      0.01,
+      0.05
+    ],
+    "normalized_score_rmse_by_setting_count": {
+      "5": [
+        8.08013486945917e-15,
+        0.0003434676502293255,
+        0.0033725424309226644,
+        0.033917970174073796,
+        0.16938510697037415
+      ],
+      "8": [
+        3.885714367681681e-15,
+        0.00019925225041519533,
+        0.0020772814896708896,
+        0.021378318454686022,
+        0.1032557821337753
+      ]
+    },
+    "task_compiled_one_mesh_normalized_score_rmse": [
+      1.4900148908311255e-15,
+      9.732833529135386e-05,
+      0.0009612844638420777,
+      0.00962612371160316,
+      0.044565673697288456
+    ],
+    "trials_per_scale": 24
+  },
+  "condition_number_by_setting_count": {
+    "5": 70.03005288351814,
+    "6": 13.259258610773262,
+    "7": 12.171258276472859,
+    "8": 12.314983297965773
+  },
+  "detector_noise_model": {
+    "fixed_total_photoelectrons_per_inference": [
+      10000.0,
+      100000.0,
+      1000000.0,
+      10000000.0
+    ],
+    "normalized_score_rmse_by_setting_count": {
+      "5": [
+        0.1611391655822523,
+        0.051277388023335334,
+        0.01602565557864758,
+        0.005005717832840512
+      ],
+      "8": [
+        0.13649280610282238,
+        0.03941127003527108,
+        0.012459140046660157,
+        0.004028905542420632
+      ]
+    },
+    "read_noise_electrons_rms_per_output": 5.0,
+    "task_compiled_one_mesh_normalized_score_rmse": [
+      0.020671386891786128,
+      0.006419248548322424,
+      0.0019700821649999457,
+      0.0006579242698630179
+    ]
+  },
+  "ideal_equal_fanout_loss_db": 9.030899869919436,
+  "ideal_normalized_score_rmse_by_setting_count": {
+    "5": 6.616925450920447e-15,
+    "6": 2.18441084402377e-15,
+    "7": 3.6071862037182754e-15,
+    "8": 3.1542530569189986e-15
+  },
+  "maximum_settings": 8,
+  "number_of_modes": 4,
+  "observable_reconstruction_error_by_setting_count": {
+    "5": 5.287728543867449e-15,
+    "6": 1.9672712632593783e-15,
+    "7": 3.1465263490254556e-15,
+    "8": 2.5712136667531277e-15
+  },
+  "parallel_output_photodiodes": 32,
+  "physical_regime": "bright classical coherent fields, passive unitary meshes, and ordinary square-law photodiodes",
+  "qiskit_available": true,
+  "qiskit_maximum_probability_error": 0.0,
+  "qiskit_role": "independent statevector check of normalized modal probabilities; not a requirement for the physical device",
+  "qiskit_version": "2.4.2",
+  "samples": 2000,
+  "seed": 314159,
+  "single_photon_components_required": false,
+  "task_compiled_spectral_design": {
+    "burau_compilation_status": "generic spectral unitary baseline; exact compilation into the restricted Burau-block family is not yet established",
+    "ideal_equal_fanout_loss_db": 0.0,
+    "ideal_normalized_score_rmse": 6.770912427597504e-16,
+    "observable_reconstruction_error": 5.532000254547462e-16,
+    "output_photodiodes": 4,
+    "settings": 1
+  }
+}

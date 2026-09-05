@@ -42,3 +42,11 @@ The single reproduction command writes:
 
 burau_switch.py contains the reusable numerical implementation, while
 symbolic_checks.py verifies the defining algebraic identities exactly.
+
+## Independent follow-on programs
+
+The [security and passive-inference studies](programs/README.md) are kept
+separate from this manuscript and from its reproduction command. Each track
+has its own assumptions, code, figures, and results. The associated classical
+device blueprint and digital twin are engineering artifacts, not additions to
+the paper.
