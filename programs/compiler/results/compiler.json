@@ -1,0 +1,3573 @@
+{
+  "additional_seeded_haar_basis_benchmark": {
+    "depth": 24,
+    "maximum_function_evaluations_per_restart": 500,
+    "restart_seed_base": 600000,
+    "restarts_per_target": 5,
+    "results": [
+      {
+        "normalized_phase_aligned_unitary_error": 8.714864878887318e-16,
+        "ordered_detector_basis_error": 9.391951042602735e-16,
+        "restart_results": [
+          {
+            "first_order_optimality": 6.803228727173525e-09,
+            "function_evaluations": 66,
+            "normalized_phase_aligned_unitary_error": 0.2152383828979437,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.21335383514166376,
+            "restart": 0
+          },
+          {
+            "first_order_optimality": 7.447792899093938e-12,
+            "function_evaluations": 68,
+            "normalized_phase_aligned_unitary_error": 0.0014184443740589093,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.0014184439590180723,
+            "restart": 1
+          },
+          {
+            "first_order_optimality": 3.288656204521748e-09,
+            "function_evaluations": 43,
+            "normalized_phase_aligned_unitary_error": 0.24851527139908589,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.24412387156135942,
+            "restart": 2
+          },
+          {
+            "first_order_optimality": 3.598023858719439e-16,
+            "function_evaluations": 27,
+            "normalized_phase_aligned_unitary_error": 8.837750628035333e-16,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 9.391951042602735e-16,
+            "restart": 3
+          },
+          {
+            "first_order_optimality": 5.393574163948177e-11,
+            "function_evaluations": 46,
+            "normalized_phase_aligned_unitary_error": 0.003802303693391531,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.0035728952329011033,
+            "restart": 4
+          }
+        ],
+        "successful_restarts": 1,
+        "target_index": 0
+      },
+      {
+        "normalized_phase_aligned_unitary_error": 7.839280454194762e-16,
+        "ordered_detector_basis_error": 8.022751261957711e-16,
+        "restart_results": [
+          {
+            "first_order_optimality": 1.416461757068529e-09,
+            "function_evaluations": 153,
+            "normalized_phase_aligned_unitary_error": 0.0684267502179734,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.06837925900791667,
+            "restart": 0
+          },
+          {
+            "first_order_optimality": 7.477263039145328e-08,
+            "function_evaluations": 69,
+            "normalized_phase_aligned_unitary_error": 0.45667376297732565,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.4425995316045888,
+            "restart": 1
+          },
+          {
+            "first_order_optimality": 7.393714596262294e-14,
+            "function_evaluations": 22,
+            "normalized_phase_aligned_unitary_error": 1.0361149274669425e-13,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 9.211379505508066e-14,
+            "restart": 2
+          },
+          {
+            "first_order_optimality": 3.240673328787064e-16,
+            "function_evaluations": 15,
+            "normalized_phase_aligned_unitary_error": 8.31962238577896e-16,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 8.022751261957711e-16,
+            "restart": 3
+          },
+          {
+            "first_order_optimality": 3.0976868162124725e-16,
+            "function_evaluations": 52,
+            "normalized_phase_aligned_unitary_error": 1.009233434450868e-15,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 1.093616905712223e-15,
+            "restart": 4
+          }
+        ],
+        "successful_restarts": 3,
+        "target_index": 1
+      },
+      {
+        "normalized_phase_aligned_unitary_error": 5.868444143994376e-16,
+        "ordered_detector_basis_error": 6.0114548099068105e-16,
+        "restart_results": [
+          {
+            "first_order_optimality": 5.128535440548558e-14,
+            "function_evaluations": 18,
+            "normalized_phase_aligned_unitary_error": 1.8516402089700977e-13,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 1.814237464373764e-13,
+            "restart": 0
+          },
+          {
+            "first_order_optimality": 7.568779781097817e-10,
+            "function_evaluations": 44,
+            "normalized_phase_aligned_unitary_error": 0.06569006089178421,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.0654229359866864,
+            "restart": 1
+          },
+          {
+            "first_order_optimality": 1.3627754969957974e-16,
+            "function_evaluations": 25,
+            "normalized_phase_aligned_unitary_error": 6.02351347578244e-16,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 6.0114548099068105e-16,
+            "restart": 2
+          },
+          {
+            "first_order_optimality": 3.752592284012136e-10,
+            "function_evaluations": 73,
+            "normalized_phase_aligned_unitary_error": 0.020427431674560462,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.020426306732406006,
+            "restart": 3
+          },
+          {
+            "first_order_optimality": 2.9498753608928775e-09,
+            "function_evaluations": 93,
+            "normalized_phase_aligned_unitary_error": 0.09701321533525951,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.09688913791040793,
+            "restart": 4
+          }
+        ],
+        "successful_restarts": 2,
+        "target_index": 2
+      }
+    ],
+    "success_fraction": 1.0,
+    "success_threshold": 1e-08,
+    "target_seed": 4567,
+    "targets": 3
+  },
+  "constructive_shared_omega_compiler": {
+    "beam_width": 1000,
+    "candidates_retained_per_givens_cell": 160,
+    "cells": [
+      {
+        "application_order_letter_codes": [
+          2,
+          1,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          1,
+          1,
+          2,
+          2,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          2,
+          1
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 6.520433964109663e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "braid_letters": 24,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              -0.6849281949043063,
+              0.48731322824670037
+            ],
+            [
+              0.4873132282467001,
+              0.6849281949043068
+            ]
+          ],
+          "real": [
+            [
+              0.1915094486939905,
+              0.5066787112774938
+            ],
+            [
+              -0.5066787112774944,
+              0.19150944869399075
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              -0.6866167443486569,
+              0.48420376176442
+            ],
+            [
+              0.48420376176442,
+              0.6866167443486569
+            ]
+          ],
+          "real": [
+            [
+              0.1820302496615015,
+              0.5108513988249492
+            ],
+            [
+              -0.5108513988249492,
+              0.1820302496615015
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.010944702677399252,
+        "pair": [
+          2,
+          3
+        ],
+        "serialized_word_replay_error": 4.933939044724272e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      },
+      {
+        "application_order_letter_codes": [
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          2,
+          1,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          1,
+          2,
+          2,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          1
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 6.1603350625382155e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "braid_letters": 24,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              0.6776774079638807,
+              -0.006118918553630753
+            ],
+            [
+              -0.006118918553630448,
+              -0.6776774079638803
+            ]
+          ],
+          "real": [
+            [
+              0.4585608990816291,
+              0.5748371868664454
+            ],
+            [
+              -0.5748371868664451,
+              0.45856089908163034
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              0.6733769246137461,
+              -2.1937397815827658e-17
+            ],
+            [
+              -2.1937397815827658e-17,
+              -0.6733769246137461
+            ]
+          ],
+          "real": [
+            [
+              0.4619106502001328,
+              0.5772365794277282
+            ],
+            [
+              -0.5772365794277282,
+              0.4619106502001328
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.008538924904799204,
+        "pair": [
+          1,
+          2
+        ],
+        "serialized_word_replay_error": 6.187688364358555e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      },
+      {
+        "application_order_letter_codes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          0,
+          0,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 5.838010156186106e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "braid_letters": 24,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              0.00015582202712557947,
+              -0.001850178079663263
+            ],
+            [
+              -0.0018501780796629091,
+              -0.00015582202712527415
+            ]
+          ],
+          "real": [
+            [
+              0.7749218987430324,
+              0.6320542725186288
+            ],
+            [
+              -0.6320542725186288,
+              0.7749218987430331
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              -0.0,
+              -0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "real": [
+            [
+              0.7744716166055862,
+              0.6326086587079961
+            ],
+            [
+              -0.6326086587079961,
+              0.7744716166055862
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.001989356046781957,
+        "pair": [
+          0,
+          1
+        ],
+        "serialized_word_replay_error": 5.17413083843053e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      },
+      {
+        "application_order_letter_codes": [
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          2,
+          2,
+          2,
+          1,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          2
+        ],
+        "application_order_local_generators": [
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 5.441508737196617e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "braid_letters": 22,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              -0.35206176284905594,
+              0.3025584614924918
+            ],
+            [
+              0.30255846149249166,
+              0.35206176284905644
+            ]
+          ],
+          "real": [
+            [
+              -0.18842500809252546,
+              0.8654518524125041
+            ],
+            [
+              -0.8654518524125039,
+              -0.18842500809252577
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              -0.35154845250792216,
+              0.3088383896664288
+            ],
+            [
+              0.3088383896664288,
+              0.35154845250792216
+            ]
+          ],
+          "real": [
+            [
+              -0.1777292748357217,
+              0.8657048223695539
+            ],
+            [
+              -0.8657048223695539,
+              -0.1777292748357217
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.0124162671151999,
+        "pair": [
+          2,
+          3
+        ],
+        "serialized_word_replay_error": 2.6766507790745728e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      },
+      {
+        "application_order_letter_codes": [
+          2,
+          1,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          2,
+          2,
+          1,
+          2
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 3.857842875908248e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "braid_letters": 16,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              -0.007872989473868927,
+              0.020667177188942676
+            ],
+            [
+              0.020667177188942593,
+              0.007872989473868608
+            ]
+          ],
+          "real": [
+            [
+              -0.7180936622751872,
+              0.6955949798726183
+            ],
+            [
+              -0.6955949798726182,
+              -0.7180936622751879
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              1.0747952758427356e-17,
+              -0.0
+            ],
+            [
+              0.0,
+              -1.0747952758427356e-17
+            ]
+          ],
+          "real": [
+            [
+              -0.7170754092283859,
+              0.6969955935871783
+            ],
+            [
+              -0.6969955935871783,
+              -0.7170754092283859
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.022183659172001675,
+        "pair": [
+          1,
+          2
+        ],
+        "serialized_word_replay_error": 2.794843565793852e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      },
+      {
+        "application_order_letter_codes": [
+          3,
+          0,
+          3,
+          0,
+          0,
+          3,
+          0,
+          3,
+          0,
+          3,
+          0,
+          3,
+          3,
+          0,
+          3,
+          3,
+          3,
+          0,
+          0,
+          3,
+          0,
+          0
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 7.501453045463815e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ]
+        ],
+        "braid_letters": 22,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              -0.004727476453199604,
+              -0.5232165987046571
+            ],
+            [
+              -0.523216598704657,
+              0.004727476453200027
+            ]
+          ],
+          "real": [
+            [
+              0.7573606245258121,
+              0.39067496237175237
+            ],
+            [
+              -0.3906749623717551,
+              0.7573606245258149
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              2.4532231287787176e-16,
+              -0.5079156850507838
+            ],
+            [
+              -0.5079156850507838,
+              -2.4532231287787176e-16
+            ]
+          ],
+          "real": [
+            [
+              0.7541753571587451,
+              0.41622252165623175
+            ],
+            [
+              -0.41622252165623175,
+              0.7541753571587451
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.030319807153946023,
+        "pair": [
+          2,
+          3
+        ],
+        "serialized_word_replay_error": 3.2166844150802895e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      }
+    ],
+    "conservative_sequential_pair_layers": 132,
+    "construction": "decompose the target detector basis into six determinant-one nearest-neighbor Givens cells; synthesize each cell by a deterministic meet-in-the-middle search; retain several cell approximants and choose their joint combination by beam search",
+    "determinant_constraint": "each cell word has zero total Artin exponent, cancelling the common generator determinant phase without per-cell phase knobs",
+    "fixed_word_common_omega_sensitivity": [
+      {
+        "common_omega_offset": -0.003,
+        "held_out_normalized_score_rmse": 0.04019423065373489,
+        "omega": 1.4112135623730953,
+        "ordered_detector_basis_error": 0.028863108298628717,
+        "relative_observable_frobenius_error": 0.037775500076610964
+      },
+      {
+        "common_omega_offset": -0.001,
+        "held_out_normalized_score_rmse": 0.014415725101169933,
+        "omega": 1.4132135623730953,
+        "ordered_detector_basis_error": 0.009603672398758539,
+        "relative_observable_frobenius_error": 0.013500230823241194
+      },
+      {
+        "common_omega_offset": 0.001,
+        "held_out_normalized_score_rmse": 0.014726513546843156,
+        "omega": 1.415213562373095,
+        "ordered_detector_basis_error": 0.010525864216419748,
+        "relative_observable_frobenius_error": 0.013845914844868419
+      },
+      {
+        "common_omega_offset": 0.003,
+        "held_out_normalized_score_rmse": 0.04074806809506999,
+        "omega": 1.417213562373095,
+        "ordered_detector_basis_error": 0.02983371692280214,
+        "relative_observable_frobenius_error": 0.03828508277628661
+      }
+    ],
+    "full_mesh_serialized_word_replay_error": 1.1849916888171548e-15,
+    "half_word_depth": 12,
+    "interpretation": "one fixed omega and one 2x2 B3 Burau-derived block library across every primitive letter; six target-specific exponent-neutral cell words are embedded on successive mode pairs. This is not a single four-mode Burau representation or one global B_n word",
+    "logical_givens_cells": 6,
+    "matrix_deduplication_decimal_places": 11,
+    "maximum_beta_word_algebraic_replay_error": 7.501453045463815e-15,
+    "maximum_cell_unitarity_error": 1.8964236338201766e-14,
+    "maximum_cell_word_length": 24,
+    "maximum_serialized_word_replay_error": 6.187688364358555e-16,
+    "omega": 1.4142135623730951,
+    "omega_branch": "0 < omega < 2*pi/3",
+    "omega_selection_provenance": "sqrt(2) was selected after exploratory comparisons on this target and then frozen; it counts as one target-informed design-time global choice, not as an a priori universal value",
+    "ordered_detector_basis_success_threshold": 0.01,
+    "physical_assumptions": [
+      "beta_1, beta_2, and their inverses are available at equal primitive-letter cost on every addressed mode pair",
+      "two-mode blocks are embedded and routed ideally on the declared adjacent pair supports",
+      "the Squier basis change is absorbed into the ideal block and its hardware cost is not counted",
+      "one common omega is calibrated and remains coherent across all six cell words",
+      "the discrete cell words are programmed specifically for this exported detector basis"
+    ],
+    "query_neighbors_per_prefix": 8,
+    "reduced_half_word_library_size": 1062881,
+    "relative_score_matrix_success_threshold": 0.01,
+    "score_metrics": {
+      "fitted_readout_weights": [
+        -0.5435692814106797,
+        -0.008827125619587933,
+        0.3769149972958783,
+        0.7499068229059103
+      ],
+      "held_out_normalized_score_rmse": 0.005821664084014588,
+      "maximum_unitarity_error": 5.864829334236662e-14,
+      "normalized_phase_aligned_unitary_error": 0.002541967888925806,
+      "ordered_detector_basis_error": 0.0025419655037616567,
+      "phase_aligned_process_infidelity": 6.461590337680789e-06,
+      "relative_observable_frobenius_error": 0.005418480647674914,
+      "relative_observable_operator_error": 0.0050587573057328805
+    },
+    "squier_form_condition_number": 4.842538946963762,
+    "total_braid_letters": 132,
+    "within_exponent_distinct_half_word_matrices": 45962
+  },
+  "generic_mzi_baseline": {
+    "basis_continuous_controls": 12,
+    "full_unitary_reconstruction_error": 6.284956554726699e-16,
+    "irrelevant_output_phases": 4,
+    "ordered_detector_basis_error": 2.974854834554382e-16,
+    "output_alignment_phases": [
+      -0.0,
+      -0.0,
+      -0.0,
+      -0.8842946618931369
+    ],
+    "pair_cells": 6,
+    "rectangular_parallel_layers": 4,
+    "rectangular_parallel_layers_scope": "known Clements rectangular realization with the same universal six-cell count; not the depth of the serialized triangular schedule",
+    "score_metrics": {
+      "fitted_readout_weights": [
+        -0.5435806634848521,
+        -0.008828259691163028,
+        0.37691741840147996,
+        0.7499169179460861
+      ],
+      "held_out_normalized_score_rmse": 5.503205685523741e-16,
+      "maximum_unitarity_error": 5.701094212865201e-16,
+      "normalized_phase_aligned_unitary_error": 2.4560428586785143e-16,
+      "ordered_detector_basis_error": 2.974854834554382e-16,
+      "phase_aligned_process_infidelity": 0.0,
+      "relative_observable_frobenius_error": 3.45192536872317e-16,
+      "relative_observable_operator_error": 4.180208044717746e-16
+    },
+    "serialized_cell_schedule": "triangular Givens elimination order"
+  },
+  "independent_omega_compiler": {
+    "depth_sweep": [
+      {
+        "braid_letters": 8,
+        "depth": 8,
+        "independent_omega_controls": 8,
+        "layers": [
+          {
+            "omega": 0.12000000000000001,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 3.007223838276168,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.5595094369899178,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 5.737405201881444,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12000000000000001,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 3.007223838276168,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.27087214835023,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 4.280700502484399,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.9508951656122886,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 17.448036022364715,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12000000000000001,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 3.007223838276168,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12000000000000001,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 3.007223838276168,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.974395102393195,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 20.59607669548249,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          }
+        ],
+        "normalized_phase_aligned_unitary_error": 0.5858151611325934,
+        "ordered_detector_basis_error": 0.559692212536758,
+        "pair_cells": 8,
+        "parallel_pair_layers": 5,
+        "restart_results": [
+          {
+            "first_order_optimality": 1.3658994116629634e-08,
+            "function_evaluations": 32,
+            "normalized_phase_aligned_unitary_error": 0.5952294558937685,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.5610722102848879,
+            "restart": 0
+          },
+          {
+            "first_order_optimality": 1.4529295942249867e-07,
+            "function_evaluations": 78,
+            "normalized_phase_aligned_unitary_error": 0.9054125556997017,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.7982437042328201,
+            "restart": 1
+          },
+          {
+            "first_order_optimality": 2.0954604057478393e-08,
+            "function_evaluations": 52,
+            "normalized_phase_aligned_unitary_error": 0.5952294558937714,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.5610722110384301,
+            "restart": 2
+          },
+          {
+            "first_order_optimality": 1.2917411507398487e-07,
+            "function_evaluations": 33,
+            "normalized_phase_aligned_unitary_error": 0.892935605456549,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.7901830881364481,
+            "restart": 3
+          },
+          {
+            "first_order_optimality": 7.870047656862042e-08,
+            "function_evaluations": 47,
+            "normalized_phase_aligned_unitary_error": 0.5858151611325954,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.559692212536758,
+            "restart": 4
+          }
+        ],
+        "successful_restarts": 0
+      },
+      {
+        "braid_letters": 12,
+        "depth": 12,
+        "independent_omega_controls": 12,
+        "layers": [
+          {
+            "omega": 1.50438841005249,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 5.3442099380784915,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.908494147645541,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 13.783928157450193,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.9016568604237976,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 13.344302552749872,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12000000000000001,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 3.007223838276168,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12000000000000001,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 3.007223838276168,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.974395102393195,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 20.59607669548249,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.0634032453039386,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 3.762846168994797,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.974395102393195,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 20.59607669548249,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.4093080673549003,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 3.0871103364428194,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.2159225624138865,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 4.117068722746304,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.6697248402608257,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 3.249943867035751,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.3865579548720592,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 4.715335710002905,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          }
+        ],
+        "normalized_phase_aligned_unitary_error": 0.3457032541775155,
+        "ordered_detector_basis_error": 0.33986960448991227,
+        "pair_cells": 12,
+        "parallel_pair_layers": 8,
+        "restart_results": [
+          {
+            "first_order_optimality": 8.538038016704281e-08,
+            "function_evaluations": 69,
+            "normalized_phase_aligned_unitary_error": 0.6277655771997531,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.5861758828940004,
+            "restart": 0
+          },
+          {
+            "first_order_optimality": 8.781614568396895e-09,
+            "function_evaluations": 37,
+            "normalized_phase_aligned_unitary_error": 0.35789908776512785,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.33986960448991227,
+            "restart": 1
+          },
+          {
+            "first_order_optimality": 3.364695486875465e-08,
+            "function_evaluations": 36,
+            "normalized_phase_aligned_unitary_error": 0.5867290630541548,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.560092378253192,
+            "restart": 2
+          },
+          {
+            "first_order_optimality": 8.507477249913577e-09,
+            "function_evaluations": 25,
+            "normalized_phase_aligned_unitary_error": 0.3636637838931359,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.3557463733768766,
+            "restart": 3
+          },
+          {
+            "first_order_optimality": 4.45919266446112e-08,
+            "function_evaluations": 79,
+            "normalized_phase_aligned_unitary_error": 0.682457370077542,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.631248638318172,
+            "restart": 4
+          }
+        ],
+        "successful_restarts": 0
+      },
+      {
+        "braid_letters": 16,
+        "depth": 16,
+        "independent_omega_controls": 16,
+        "layers": [
+          {
+            "omega": 1.974395102393195,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 20.59607669548249,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.2671820373453035,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 4.268970859065257,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.974395102393195,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 20.59607669548249,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.5652066142171517,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 3.172341666605778,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12000000000000001,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 3.007223838276168,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.9472049755304843,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 17.045124358798915,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.6785496531288064,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 6.952287214412764,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.8297114536397117,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 10.098774186240988,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12923465471693185,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 3.008382882436515,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.974395102393195,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 20.59607669548249,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.6986756753978799,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 3.274797540667919,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.7636534135661615,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 8.366907532976994,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.591194622826117,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 6.003546457096634,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.6004597830132322,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 3.1965058910094295,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12000000000000001,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 3.007223838276168,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12000000000000001,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 3.007223838276168,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          }
+        ],
+        "normalized_phase_aligned_unitary_error": 0.025991411994565842,
+        "ordered_detector_basis_error": 0.025988991794114007,
+        "pair_cells": 16,
+        "parallel_pair_layers": 11,
+        "restart_results": [
+          {
+            "first_order_optimality": 3.8593925218381305e-10,
+            "function_evaluations": 44,
+            "normalized_phase_aligned_unitary_error": 0.03841677006963875,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.038217955463032915,
+            "restart": 0
+          },
+          {
+            "first_order_optimality": 4.5369069995650135e-09,
+            "function_evaluations": 34,
+            "normalized_phase_aligned_unitary_error": 0.1587105393978944,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.15815252731251916,
+            "restart": 1
+          },
+          {
+            "first_order_optimality": 2.1571188174942336e-09,
+            "function_evaluations": 34,
+            "normalized_phase_aligned_unitary_error": 0.15871053939789379,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.15815252732285526,
+            "restart": 2
+          },
+          {
+            "first_order_optimality": 2.8156924403893894e-09,
+            "function_evaluations": 32,
+            "normalized_phase_aligned_unitary_error": 0.15871053939789376,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.15815252732132562,
+            "restart": 3
+          },
+          {
+            "first_order_optimality": 6.621597480559509e-10,
+            "function_evaluations": 29,
+            "normalized_phase_aligned_unitary_error": 0.02599141199456585,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.025988991794114007,
+            "restart": 4
+          }
+        ],
+        "successful_restarts": 0
+      },
+      {
+        "braid_letters": 20,
+        "depth": 20,
+        "independent_omega_controls": 20,
+        "layers": [
+          {
+            "omega": 0.7815811289033996,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 3.355112271838704,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.974395047172188,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 20.596067847771383,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.2789801737390325,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 4.306876432641641,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.4109880707555857,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 4.827146072099646,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12000000000347927,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 3.007223838276589,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.7947767538742224,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 3.369247925640049,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.7783486266360011,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 8.689147468064984,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.18908454011341622,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 3.0180241545339794,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.974379730339721,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 20.593614043657936,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.8317453293166359,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 3.4110089223876754,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.6282432963590776,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 6.361719623756829,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.6151314878562396,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 3.207148192596728,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.345026423596489,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 4.542851390366805,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.8316655064985912,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 3.410915203516753,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.3417802448023546,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 4.53021829210712,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.12037780691627438,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 3.0072695486063146,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 0.26144640511721556,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 3.0347209558375488,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.9738735550482795,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              1,
+              2
+            ],
+            "squier_form_condition_number": 20.512874407145368,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.97425055116473,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              0,
+              1
+            ],
+            "squier_form_condition_number": 20.57294405231136,
+            "word": [
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "omega": 1.3996503842860815,
+            "omega_branch": "0 < omega < 2*pi/3",
+            "pair": [
+              2,
+              3
+            ],
+            "squier_form_condition_number": 4.774228804600199,
+            "word": [
+              [
+                2,
+                1
+              ]
+            ]
+          }
+        ],
+        "normalized_phase_aligned_unitary_error": 8.567579929745197e-16,
+        "ordered_detector_basis_error": 8.454628878004189e-16,
+        "pair_cells": 20,
+        "parallel_pair_layers": 13,
+        "restart_results": [
+          {
+            "first_order_optimality": 1.6711161917054188e-08,
+            "function_evaluations": 107,
+            "normalized_phase_aligned_unitary_error": 0.35942950016455355,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.35293651973628304,
+            "restart": 0
+          },
+          {
+            "first_order_optimality": 5.785977292458176e-10,
+            "function_evaluations": 65,
+            "normalized_phase_aligned_unitary_error": 0.034179407065401346,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.034173734835011745,
+            "restart": 1
+          },
+          {
+            "first_order_optimality": 7.81147979241555e-09,
+            "function_evaluations": 90,
+            "normalized_phase_aligned_unitary_error": 0.12687316568013177,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.1265790489890985,
+            "restart": 2
+          },
+          {
+            "first_order_optimality": 7.58377074124447e-11,
+            "function_evaluations": 49,
+            "normalized_phase_aligned_unitary_error": 0.018918972825186148,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 0.018891227087988783,
+            "restart": 3
+          },
+          {
+            "first_order_optimality": 3.6617196909942286e-16,
+            "function_evaluations": 37,
+            "normalized_phase_aligned_unitary_error": 8.468034776701583e-16,
+            "optimizer_success": true,
+            "ordered_detector_basis_error": 8.454628878004189e-16,
+            "restart": 4
+          }
+        ],
+        "successful_restarts": 1
+      }
+    ],
+    "interpretation": "one independently tuned omega per primitive Burau letter; an optimistic engineering ansatz, not one fixed Burau-derived block library",
+    "maximum_function_evaluations_per_restart": 1000,
+    "objective": "ordered detector-basis fit with four nuisance output phases; the phases do not affect terminal intensity detection",
+    "restart_seed_base": 199200,
+    "restarts_per_depth": 5,
+    "selected_active_boundary_count": 2,
+    "selected_maximum_squier_form_condition_number": 20.596067847771383,
+    "selected_projector_jacobian": {
+      "detector_basis_manifold_dimension": 12,
+      "finite_difference_step": 1e-06,
+      "nonzero_condition_number": 7.6231579984226245,
+      "numerical_rank": 12,
+      "rank_threshold_relative_to_largest": 1e-08,
+      "singular_values": [
+        2.558214645254728,
+        2.423870561191636,
+        2.119920600653373,
+        1.969510562037861,
+        1.9242356094765838,
+        1.6351921893883412,
+        1.2842489724080537,
+        0.9097060518567044,
+        0.6752382141113955,
+        0.5276764326141359,
+        0.5136628765610816,
+        0.3355846285468661,
+        7.471750339084972e-10,
+        6.580650706779937e-10,
+        4.110974590148095e-10,
+        3.170334852623334e-10,
+        2.6677737554635416e-10,
+        2.454025858768026e-10,
+        1.9137110274809388e-10,
+        1.120793401460288e-10
+      ],
+      "smallest_nonzero_singular_value": 0.3355846285468661
+    },
+    "selected_score_metrics": {
+      "fitted_readout_weights": [
+        -0.5435806634848522,
+        -0.008828259691163035,
+        0.37691741840147974,
+        0.7499169179460864
+      ],
+      "held_out_normalized_score_rmse": 8.978941571669287e-16,
+      "maximum_unitarity_error": 2.7462069792222067e-15,
+      "normalized_phase_aligned_unitary_error": 8.567579929745197e-16,
+      "ordered_detector_basis_error": 8.454628878004189e-16,
+      "phase_aligned_process_infidelity": 0.0,
+      "relative_observable_frobenius_error": 7.881373962155923e-16,
+      "relative_observable_operator_error": 8.437060696201622e-16
+    },
+    "shallowest_successful_tested_depth": 20,
+    "success_threshold": 1e-08
+  },
+  "limitations": [
+    "Independent omega values do not define one fixed Burau-derived block library and may not map to one physical tuning knob.",
+    "Squier unitarization is treated as part of each ideal block; its basis-changing hardware and calibration cost are not modeled.",
+    "The generic and Burau matrices are ideal and lossless; cell counts do not determine measured insertion loss or energy.",
+    "Finite seeded target samples and numerical optimization do not prove exact universality or favorable scaling.",
+    "The fixed-omega construction is a finite target-specific approximation with a long word; it does not prove density, exact synthesis, efficient asymptotic compilation, or a loss advantage.",
+    "Holding the six discrete words fixed while shifting their common omega by only 0.001 materially increases the error, so calibration and coherence tolerance require a separate hardware study.",
+    "Output-phase equivalence is valid here because the mesh ends in direct square-law detection."
+  ],
+  "omega_domain": {
+    "boundary_margin": 0.12,
+    "branch": "0 < omega < 2*pi/3",
+    "maximum": 1.9743951023931952,
+    "minimum": 0.12
+  },
+  "primitive_letter_codebook": {
+    "0": {
+      "generator": 1,
+      "power": 1
+    },
+    "1": {
+      "generator": 1,
+      "power": -1
+    },
+    "2": {
+      "generator": 2,
+      "power": 1
+    },
+    "3": {
+      "generator": 2,
+      "power": -1
+    }
+  },
+  "resource_comparison": {
+    "constructive_shared_omega_burau": {
+      "braid_letters": 132,
+      "conservative_sequential_pair_layers": 132,
+      "letter_count_ratio_to_generic_pair_cells": 22.0,
+      "logical_givens_cells": 6,
+      "per_letter_continuous_omega_controls": 0,
+      "runtime_continuous_omega_controls_after_library_choice": 0,
+      "target_informed_design_time_global_omega_choices": 1
+    },
+    "generic_rectangular_mzi": {
+      "continuous_basis_controls": 12,
+      "pair_cells": 6,
+      "parallel_pair_layers": 4
+    },
+    "idealized_loss_comparison": "All modeled matrices are unitary, so the simulation contains no insertion loss. If every programmed pair-cell layer costs ell dB, the selected Burau schedule contributes 13*ell dB, the conservative fixed-omega cell-word schedule contributes 132*ell dB, and a four-mode rectangular generic mesh contributes 4*ell dB, before routing and coupling.",
+    "selected_independent_omega_burau": {
+      "braid_letters": 20,
+      "cell_count_ratio_to_generic": 3.3333333333333335,
+      "continuous_basis_controls": 20,
+      "pair_cells": 20,
+      "parallel_depth_ratio_to_generic_rectangular": 3.25,
+      "parallel_pair_layers": 13
+    }
+  },
+  "scope": "numerical four-mode compiler study for terminal direct detection; not a universality, scaling, loss, energy, or fabrication claim",
+  "serialized_circuit_order_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word",
+  "shared_omega_control": {
+    "failure_interpretation": "nonzero error means no fit was found under this declared direct random-template and omega-search budget; it is not a non-reachability result and does not contradict the constructive fit",
+    "fixed_mode_pair_cycle": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "fixed_template_omega_recovery_control": {
+      "absolute_omega_error": 2.5157653738006047e-13,
+      "application_order_letter_codes": [
+        0,
+        2,
+        1,
+        0,
+        2,
+        0,
+        3,
+        2,
+        3,
+        2,
+        3,
+        3
+      ],
+      "control_scope": "continuous omega recovery for a known in-family letter template; does not validate exhaustive discrete-template recovery",
+      "depth": 12,
+      "function_evaluations": 6,
+      "hidden_omega": 0.91,
+      "recovered_omega": 0.9100000000002516,
+      "relative_reconstruction_error": 4.990840202148004e-13,
+      "seed": 8801
+    },
+    "interpretation": "a direct end-to-end random-template search with one omega for the complete fixed-pair-cycle circuit; retained as a negative search-budget control beside the constructive fixed-block-library compiler",
+    "omega_grid_points": 129,
+    "results": [
+      {
+        "application_order_letter_codes": [
+          2,
+          0,
+          2,
+          1,
+          3,
+          2,
+          0,
+          2
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "best_relative_observable_frobenius_error": 0.43433690058291485,
+        "depth": 8,
+        "omega": 1.627558781592913,
+        "template_index": 268
+      },
+      {
+        "application_order_letter_codes": [
+          0,
+          2,
+          1,
+          0,
+          0,
+          3,
+          2,
+          1,
+          3,
+          2,
+          2,
+          3
+        ],
+        "application_order_local_generators": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            -1
+          ]
+        ],
+        "best_relative_observable_frobenius_error": 0.42055700671778357,
+        "depth": 12,
+        "omega": 0.7546813323666028,
+        "template_index": 16
+      },
+      {
+        "application_order_letter_codes": [
+          3,
+          2,
+          3,
+          3,
+          3,
+          0,
+          3,
+          0,
+          3,
+          2,
+          0,
+          0,
+          3,
+          0,
+          2,
+          3
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            -1
+          ]
+        ],
+        "best_relative_observable_frobenius_error": 0.3879415094231695,
+        "depth": 16,
+        "omega": 0.5091063914083106,
+        "template_index": 170
+      },
+      {
+        "application_order_letter_codes": [
+          0,
+          2,
+          0,
+          0,
+          1,
+          0,
+          1,
+          3,
+          3,
+          3,
+          3,
+          3,
+          1,
+          3,
+          1,
+          3,
+          3,
+          1,
+          0,
+          3,
+          2,
+          2,
+          0,
+          0
+        ],
+        "application_order_local_generators": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "best_relative_observable_frobenius_error": 0.45065897125440607,
+        "depth": 24,
+        "omega": 0.921454484752603,
+        "template_index": 451
+      },
+      {
+        "application_order_letter_codes": [
+          1,
+          3,
+          2,
+          3,
+          2,
+          2,
+          3,
+          1,
+          3,
+          3,
+          0,
+          3,
+          0,
+          1,
+          2,
+          2,
+          2,
+          0,
+          2,
+          2,
+          1,
+          0,
+          3,
+          3,
+          3,
+          2,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "application_order_local_generators": [
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "best_relative_observable_frobenius_error": 0.38196056791828303,
+        "depth": 32,
+        "omega": 1.6473626956032685,
+        "template_index": 369
+      }
+    ],
+    "search_method": "seeded random generator/inverse choices on the declared mode-pair cycle, followed by a bounded omega grid and scalar polish",
+    "template_seed": 70000,
+    "templates_per_depth": 512
+  },
+  "software": {
+    "numpy": "2.4.4",
+    "python": "3.14.6",
+    "scipy": "1.17.1"
+  },
+  "target_consistency_error": 5.693382533279528e-16,
+  "target_model": "programs/digital_twin/results/digital_twin_model.json",
+  "target_unitarity_error": 8.002109345630869e-16,
+  "validation_sample": {
+    "normalized_complex_states": 2000,
+    "seed": 424242
+  }
+}

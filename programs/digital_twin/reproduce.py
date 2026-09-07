@@ -307,8 +307,13 @@ def run_digital_twin(
                 task_compiled_reconstruction_error
             ),
             "burau_compilation_status": (
-                "generic spectral unitary baseline; exact compilation into "
-                "the restricted Burau-block family is not yet established"
+                "matched numerically by the separate compiler with 20 "
+                "independently tuned primitive Burau letters; also "
+                "approximated at 0.254% detector-basis error by 132 "
+                "exponent-neutral letters from one fixed 2x2 B3 block "
+                "library at a target-informed, design-time shared omega; this "
+                "is not a global B_n word, and exact, robust, efficient, and "
+                "scalable fixed-omega compilation are not established"
             ),
         },
         "condition_number_by_setting_count": conditions,

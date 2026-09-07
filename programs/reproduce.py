@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from programs.compiler.reproduce import run_compiler_study
 from programs.digital_twin.reproduce import run_digital_twin
 from programs.inference.reproduce import run_inference_probe
 from programs.security.reproduce import run_security_probe
@@ -17,14 +18,16 @@ def main() -> None:
     security = run_security_probe()
     inference = run_inference_probe()
     digital_twin = run_digital_twin()
+    compiler = run_compiler_study()
     summary = {
         "scope": (
-            "independent security, inference, and classical digital-twin "
-            "studies; not manuscript results"
+            "independent security, inference, classical digital-twin, and "
+            "compiler studies; not manuscript results"
         ),
         "security": security,
         "inference": inference,
         "digital_twin": digital_twin,
+        "compiler": compiler,
     }
     RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
     RESULTS_PATH.write_text(

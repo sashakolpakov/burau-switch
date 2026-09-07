@@ -32,11 +32,24 @@ amplitude/phase modulators encode the complex vector. A multi-output model
 needs one mesh per noncommuting score in the worst case, although scores that
 share an eigenbasis can share the same detected intensities.
 
-This spectral construction is a generic MZI baseline. The present work has
-not yet shown that an arbitrary trained $V^\dagger$ can be compiled exactly or
-efficiently into the restricted family of Burau blocks. That compiler is the
-decisive missing step if the device is to be specifically Burau-derived rather
-than an ordinary coherent quadratic processor.
+This spectral construction is a generic MZI baseline. The numerical
+[compiler study](compiler/README.md) now reaches the checked-in detector basis
+to numerical precision with 20 nearest-neighbor primitive Burau letters. It
+does so only in an optimistic model with one independently tuned $\omega$ per
+letter, however, and a small additional-target check uses 24 letters. A second,
+constructive route first decomposes the target into six determinant-one Givens
+cells and then approximates each cell by an exponent-neutral word in one fixed
+two-dimensional $B_3$ Burau-derived block library, embedded on successive mode
+pairs at the shared value $\omega=\sqrt{2}$. The checked-in result uses 132
+primitive letters and reaches 0.254% detector-basis error, 0.542% relative
+score-matrix error, and 0.582% normalized validation-score RMSE. The analytic
+generic baseline still needs only six pair cells and is exact. Thus this target
+is approximately reachable with one fixed block library, but exact, efficient,
+and scalable fixed-$\omega$ compilation are not established. This is not a
+single four-mode Burau representation or a global $B_n$ word. The value
+$\sqrt{2}$ was selected after exploratory comparisons on this target, so it is
+one target-informed design-time choice rather than an a priori universal
+parameter.
 
 The present twin assumes amplitude-normalized inputs. If input norm carries
 information, the hardware must measure total input power as an additional
@@ -83,9 +96,11 @@ first prototype.
 1. **Generic one-mesh baseline.** Program the spectral unitary for a selected
    quadratic task, characterize its full complex transfer matrix, and compare
    measured scores with the checked-in digital twin.
-2. **Burau compiler test.** Fit the same target unitary with allowed
-   Burau--Squier two-mode blocks, then measure approximation error, depth,
-   conditioning, and loss against a standard MZI decomposition.
+2. **Physical Burau compiler test.** Replay both the checked-in 20-letter
+   independent-control fit and the 132-letter shared-$\omega$ construction,
+   determine whether their Squier basis changes and controls are physically
+   meaningful, and measure approximation error, depth, conditioning, and loss
+   against the exact six-cell generic decomposition.
 3. **Fixed-bank test only if needed.** If electronic-only retraining matters,
    program five and eight matrices sequentially and measure the conditioning,
    drift, and detector-noise tradeoff before replicating them in parallel.
@@ -119,8 +134,16 @@ must not be silently transferred to this design or to a whole system.
   $d$ detector outputs per task-compiled score or at least $d(d+1)$ outputs
   for a universal fixed-bank construction.
 
-The current mathematics passes the first expressivity question. It does not
-yet show a Burau-specific speed, accuracy, conditioning, or energy advantage.
+The current mathematics passes the expressivity and optimistic numerical
+reachability questions. It does not show a Burau-specific speed, accuracy,
+conditioning, or energy advantage; the compiled circuit is deeper than the
+generic baseline. The constructive shared-$\omega$ result closes reachability
+for this one finite target only; exactness, competitive resources,
+universality, and scaling remain open. It also assumes equal-cost access to
+both Burau generators and their inverses on every pair, ideal routing, and a
+stable common phase: shifting the compiled words' shared $\omega$ by only
+$10^{-3}$ raises detector-basis error to roughly 1% in the checked-in
+sensitivity test.
 
 ## Security device: use physical disorder, not the public Burau map
 

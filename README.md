@@ -30,7 +30,7 @@ The scripts verify:
 Thus the $T$--$S$ experiment remains the observable device-response layer; the
 ordered-generator experiment identifies the non-Abelian origin of that layer.
 
-Using Python 3.10 or newer, run everything from a clean environment with:
+Using Python 3.11 or newer, run everything from a clean environment with:
 
     python -m pip install -r requirements.txt
     python reproduce.py
@@ -45,8 +45,8 @@ symbolic_checks.py verifies the defining algebraic identities exactly.
 
 ## Independent follow-on programs
 
-The [security and passive-inference studies](programs/README.md) are kept
+The [device research studies](programs/README.md) are kept
 separate from this manuscript and from its reproduction command. Each track
 has its own assumptions, code, figures, and results. The associated classical
-device blueprint and digital twin are engineering artifacts, not additions to
-the paper.
+device blueprint, digital twin, and compiler benchmark are engineering
+artifacts, not additions to the paper.

@@ -8,7 +8,7 @@ The [classical device blueprint](DEVICE_BLUEPRINT.md) turns the numerical
 results into explicit inference and security hardware proposals. It is an
 engineering note, not another manuscript.
 
-Run all three applied studies from the repository root with:
+Run all four applied studies from the repository root with:
 
     python -m programs.reproduce
 
@@ -22,6 +22,10 @@ This command is intentionally separate from the manuscript-level
 - [digital twin](digital_twin/README.md) models a bright classical coherent
   processor with detector noise and drift, with an optional Qiskit
   statevector cross-check.
+- [compiler](compiler/README.md) fits the exported four-mode scorer with
+  restricted Burau--Squier blocks, including a constructive approximation from
+  one shared-$\omega$ two-mode block library, and compares them with an exact
+  generic interferometer decomposition.
 
 Each directory owns its code, generated figures, and results. Any later
 manuscript will live in its own directory; none of these artifacts changes the

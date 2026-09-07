@@ -39,9 +39,18 @@ representative complex input, the target quadratic observable, and electronic
 readout weights. Those are concrete programming targets for a
 photonic-circuit compiler or measured bench model.
 
-The exported one-mesh spectral unitary is generic. It is the engineering
-baseline that a future Burau-block compiler must match; this prototype does
-not yet claim an exact Burau decomposition of that arbitrary trained unitary.
+The exported one-mesh spectral unitary is generic. The separate
+[compiler study](../compiler/README.md) matches its detector basis numerically
+with an optimistic 20-letter construction in which every primitive Burau
+letter has an independently tuned specialization phase $\omega$. That is not
+a word in one fixed Burau representation, and it uses more pair cells than the exact
+six-cell generic interferometer baseline. A constructive shared-$\omega$
+compiler also approximates the target with one fixed $\omega=\sqrt{2}$: its
+six exponent-neutral cell words use one fixed two-dimensional $B_3$ block
+library, total 132 primitive letters, and reach 0.254% detector-basis error.
+The global value was selected after exploratory comparisons on this target.
+This establishes finite-target approximate reachability, not a single global
+$B_n$ representation or an exact, robust, resource-competitive decomposition.
 
 The detector and drift parameters are explicit sensitivity-study assumptions,
 not claimed component specifications. The photoelectron sweep is the total

@@ -42,8 +42,10 @@ $$
 so one programmable unitary mesh and $d$ detectors suffice for that score.
 Several noncommuting output scores generally require several meshes, unless
 they share an eigenbasis. Compiling an arbitrary trained eigenbasis into the
-restricted Burau-block family is a separate reachability problem; the present
-rank experiment does not solve it.
+restricted Burau-block family is a separate reachability problem. The present
+rank experiment does not solve it; the follow-on
+[compiler study](../compiler/README.md) tests one explicit restricted
+architecture and a small held-out target set.
 
 The first numerical experiment asks a narrower, useful question: do
 four-mode meshes assembled only from two-mode unitarized Burau blocks span the

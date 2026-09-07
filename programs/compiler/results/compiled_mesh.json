@@ -1,0 +1,2363 @@
+{
+  "architecture": {
+    "braid_letters": 20,
+    "depth": 20,
+    "independent_omega_controls": 20,
+    "layers": [
+      {
+        "omega": 0.7815811289033996,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          0,
+          1
+        ],
+        "squier_form_condition_number": 3.355112271838704,
+        "word": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.974395047172188,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          2,
+          3
+        ],
+        "squier_form_condition_number": 20.596067847771383,
+        "word": [
+          [
+            2,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.2789801737390325,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          1,
+          2
+        ],
+        "squier_form_condition_number": 4.306876432641641,
+        "word": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.4109880707555857,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          0,
+          1
+        ],
+        "squier_form_condition_number": 4.827146072099646,
+        "word": [
+          [
+            2,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 0.12000000000347927,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          2,
+          3
+        ],
+        "squier_form_condition_number": 3.007223838276589,
+        "word": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 0.7947767538742224,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          1,
+          2
+        ],
+        "squier_form_condition_number": 3.369247925640049,
+        "word": [
+          [
+            2,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.7783486266360011,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          0,
+          1
+        ],
+        "squier_form_condition_number": 8.689147468064984,
+        "word": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 0.18908454011341622,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          2,
+          3
+        ],
+        "squier_form_condition_number": 3.0180241545339794,
+        "word": [
+          [
+            2,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.974379730339721,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          1,
+          2
+        ],
+        "squier_form_condition_number": 20.593614043657936,
+        "word": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 0.8317453293166359,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          0,
+          1
+        ],
+        "squier_form_condition_number": 3.4110089223876754,
+        "word": [
+          [
+            2,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.6282432963590776,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          2,
+          3
+        ],
+        "squier_form_condition_number": 6.361719623756829,
+        "word": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 0.6151314878562396,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          1,
+          2
+        ],
+        "squier_form_condition_number": 3.207148192596728,
+        "word": [
+          [
+            2,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.345026423596489,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          0,
+          1
+        ],
+        "squier_form_condition_number": 4.542851390366805,
+        "word": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 0.8316655064985912,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          2,
+          3
+        ],
+        "squier_form_condition_number": 3.410915203516753,
+        "word": [
+          [
+            2,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.3417802448023546,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          1,
+          2
+        ],
+        "squier_form_condition_number": 4.53021829210712,
+        "word": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 0.12037780691627438,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          0,
+          1
+        ],
+        "squier_form_condition_number": 3.0072695486063146,
+        "word": [
+          [
+            2,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 0.26144640511721556,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          2,
+          3
+        ],
+        "squier_form_condition_number": 3.0347209558375488,
+        "word": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.9738735550482795,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          1,
+          2
+        ],
+        "squier_form_condition_number": 20.512874407145368,
+        "word": [
+          [
+            2,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.97425055116473,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          0,
+          1
+        ],
+        "squier_form_condition_number": 20.57294405231136,
+        "word": [
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "omega": 1.3996503842860815,
+        "omega_branch": "0 < omega < 2*pi/3",
+        "pair": [
+          2,
+          3
+        ],
+        "squier_form_condition_number": 4.774228804600199,
+        "word": [
+          [
+            2,
+            1
+          ]
+        ]
+      }
+    ],
+    "normalized_phase_aligned_unitary_error": 8.567579929745197e-16,
+    "ordered_detector_basis_error": 8.454628878004189e-16,
+    "pair_cells": 20,
+    "parallel_pair_layers": 13,
+    "restart_results": [
+      {
+        "first_order_optimality": 1.6711161917054188e-08,
+        "function_evaluations": 107,
+        "normalized_phase_aligned_unitary_error": 0.35942950016455355,
+        "optimizer_success": true,
+        "ordered_detector_basis_error": 0.35293651973628304,
+        "restart": 0
+      },
+      {
+        "first_order_optimality": 5.785977292458176e-10,
+        "function_evaluations": 65,
+        "normalized_phase_aligned_unitary_error": 0.034179407065401346,
+        "optimizer_success": true,
+        "ordered_detector_basis_error": 0.034173734835011745,
+        "restart": 1
+      },
+      {
+        "first_order_optimality": 7.81147979241555e-09,
+        "function_evaluations": 90,
+        "normalized_phase_aligned_unitary_error": 0.12687316568013177,
+        "optimizer_success": true,
+        "ordered_detector_basis_error": 0.1265790489890985,
+        "restart": 2
+      },
+      {
+        "first_order_optimality": 7.58377074124447e-11,
+        "function_evaluations": 49,
+        "normalized_phase_aligned_unitary_error": 0.018918972825186148,
+        "optimizer_success": true,
+        "ordered_detector_basis_error": 0.018891227087988783,
+        "restart": 3
+      },
+      {
+        "first_order_optimality": 3.6617196909942286e-16,
+        "function_evaluations": 37,
+        "normalized_phase_aligned_unitary_error": 8.468034776701583e-16,
+        "optimizer_success": true,
+        "ordered_detector_basis_error": 8.454628878004189e-16,
+        "restart": 4
+      }
+    ],
+    "successful_restarts": 1
+  },
+  "compiled_readout_weights": [
+    -0.5435806634848522,
+    -0.008828259691163035,
+    0.37691741840147974,
+    0.7499169179460864
+  ],
+  "compiled_unitary": {
+    "imaginary": [
+      [
+        0.7355372727056355,
+        0.4108843879485482,
+        -0.015367769294234446,
+        0.23252336031429646
+      ],
+      [
+        -0.01635441780763644,
+        0.2390431732055782,
+        -0.529941069555569,
+        -0.16449797126933222
+      ],
+      [
+        0.1950072430954151,
+        0.5026977854992686,
+        0.5182801009026438,
+        -0.19066445160453666
+      ],
+      [
+        0.21887703091075222,
+        -0.23445417947221378,
+        0.16912640686973954,
+        -0.40059853106368937
+      ]
+    ],
+    "real": [
+      [
+        0.24246897819809005,
+        -0.3130852297664049,
+        0.2589341918224646,
+        -0.10952249355684202
+      ],
+      [
+        -0.4533332083168534,
+        0.17651477616402672,
+        0.5511780995282347,
+        0.3069658177092535
+      ],
+      [
+        -0.26935436226208437,
+        0.5196005054670101,
+        -0.2215144459610531,
+        0.11267123846183952
+      ],
+      [
+        0.18954814253391364,
+        -0.25921813725587656,
+        -0.04237248056408249,
+        0.7766100632537758
+      ]
+    ]
+  },
+  "constructive_shared_omega_architecture": {
+    "beam_width": 1000,
+    "candidates_retained_per_givens_cell": 160,
+    "cells": [
+      {
+        "application_order_letter_codes": [
+          2,
+          1,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          1,
+          1,
+          2,
+          2,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          2,
+          1
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 6.520433964109663e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "braid_letters": 24,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              -0.6849281949043063,
+              0.48731322824670037
+            ],
+            [
+              0.4873132282467001,
+              0.6849281949043068
+            ]
+          ],
+          "real": [
+            [
+              0.1915094486939905,
+              0.5066787112774938
+            ],
+            [
+              -0.5066787112774944,
+              0.19150944869399075
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              -0.6866167443486569,
+              0.48420376176442
+            ],
+            [
+              0.48420376176442,
+              0.6866167443486569
+            ]
+          ],
+          "real": [
+            [
+              0.1820302496615015,
+              0.5108513988249492
+            ],
+            [
+              -0.5108513988249492,
+              0.1820302496615015
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.010944702677399252,
+        "pair": [
+          2,
+          3
+        ],
+        "serialized_word_replay_error": 4.933939044724272e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      },
+      {
+        "application_order_letter_codes": [
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          2,
+          1,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          1,
+          2,
+          2,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          1
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 6.1603350625382155e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "braid_letters": 24,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              0.6776774079638807,
+              -0.006118918553630753
+            ],
+            [
+              -0.006118918553630448,
+              -0.6776774079638803
+            ]
+          ],
+          "real": [
+            [
+              0.4585608990816291,
+              0.5748371868664454
+            ],
+            [
+              -0.5748371868664451,
+              0.45856089908163034
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              0.6733769246137461,
+              -2.1937397815827658e-17
+            ],
+            [
+              -2.1937397815827658e-17,
+              -0.6733769246137461
+            ]
+          ],
+          "real": [
+            [
+              0.4619106502001328,
+              0.5772365794277282
+            ],
+            [
+              -0.5772365794277282,
+              0.4619106502001328
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.008538924904799204,
+        "pair": [
+          1,
+          2
+        ],
+        "serialized_word_replay_error": 6.187688364358555e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      },
+      {
+        "application_order_letter_codes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          0,
+          0,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 5.838010156186106e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "braid_letters": 24,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              0.00015582202712557947,
+              -0.001850178079663263
+            ],
+            [
+              -0.0018501780796629091,
+              -0.00015582202712527415
+            ]
+          ],
+          "real": [
+            [
+              0.7749218987430324,
+              0.6320542725186288
+            ],
+            [
+              -0.6320542725186288,
+              0.7749218987430331
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              -0.0,
+              -0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "real": [
+            [
+              0.7744716166055862,
+              0.6326086587079961
+            ],
+            [
+              -0.6326086587079961,
+              0.7744716166055862
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.001989356046781957,
+        "pair": [
+          0,
+          1
+        ],
+        "serialized_word_replay_error": 5.17413083843053e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      },
+      {
+        "application_order_letter_codes": [
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          2,
+          2,
+          2,
+          1,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          2
+        ],
+        "application_order_local_generators": [
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 5.441508737196617e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "braid_letters": 22,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              -0.35206176284905594,
+              0.3025584614924918
+            ],
+            [
+              0.30255846149249166,
+              0.35206176284905644
+            ]
+          ],
+          "real": [
+            [
+              -0.18842500809252546,
+              0.8654518524125041
+            ],
+            [
+              -0.8654518524125039,
+              -0.18842500809252577
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              -0.35154845250792216,
+              0.3088383896664288
+            ],
+            [
+              0.3088383896664288,
+              0.35154845250792216
+            ]
+          ],
+          "real": [
+            [
+              -0.1777292748357217,
+              0.8657048223695539
+            ],
+            [
+              -0.8657048223695539,
+              -0.1777292748357217
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.0124162671151999,
+        "pair": [
+          2,
+          3
+        ],
+        "serialized_word_replay_error": 2.6766507790745728e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      },
+      {
+        "application_order_letter_codes": [
+          2,
+          1,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          2,
+          2,
+          1,
+          2
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 3.857842875908248e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "braid_letters": 16,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              -0.007872989473868927,
+              0.020667177188942676
+            ],
+            [
+              0.020667177188942593,
+              0.007872989473868608
+            ]
+          ],
+          "real": [
+            [
+              -0.7180936622751872,
+              0.6955949798726183
+            ],
+            [
+              -0.6955949798726182,
+              -0.7180936622751879
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              1.0747952758427356e-17,
+              -0.0
+            ],
+            [
+              0.0,
+              -1.0747952758427356e-17
+            ]
+          ],
+          "real": [
+            [
+              -0.7170754092283859,
+              0.6969955935871783
+            ],
+            [
+              -0.6969955935871783,
+              -0.7170754092283859
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.022183659172001675,
+        "pair": [
+          1,
+          2
+        ],
+        "serialized_word_replay_error": 2.794843565793852e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      },
+      {
+        "application_order_letter_codes": [
+          3,
+          0,
+          3,
+          0,
+          0,
+          3,
+          0,
+          3,
+          0,
+          3,
+          0,
+          3,
+          3,
+          0,
+          3,
+          3,
+          3,
+          0,
+          0,
+          3,
+          0,
+          0
+        ],
+        "application_order_local_generators": [
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "artin_exponent_sum": 0,
+        "beta_word_algebraic_replay_error": 7.501453045463815e-15,
+        "beta_word_compatible_algebraic_word": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            -1
+          ]
+        ],
+        "braid_letters": 22,
+        "compiled_word_unitary": {
+          "imaginary": [
+            [
+              -0.004727476453199604,
+              -0.5232165987046571
+            ],
+            [
+              -0.523216598704657,
+              0.004727476453200027
+            ]
+          ],
+          "real": [
+            [
+              0.7573606245258121,
+              0.39067496237175237
+            ],
+            [
+              -0.3906749623717551,
+              0.7573606245258149
+            ]
+          ]
+        },
+        "ideal_givens_unitary": {
+          "imaginary": [
+            [
+              2.4532231287787176e-16,
+              -0.5079156850507838
+            ],
+            [
+              -0.5079156850507838,
+              -2.4532231287787176e-16
+            ]
+          ],
+          "real": [
+            [
+              0.7541753571587451,
+              0.41622252165623175
+            ],
+            [
+              -0.41622252165623175,
+              0.7541753571587451
+            ]
+          ]
+        },
+        "normalized_cell_frobenius_error": 0.030319807153946023,
+        "pair": [
+          2,
+          3
+        ],
+        "serialized_word_replay_error": 3.2166844150802895e-16,
+        "word_evaluation_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word"
+      }
+    ],
+    "compiled_unitary": {
+      "imaginary": [
+        [
+          0.00015582202712557947,
+          0.4274804817692491,
+          -0.24979038322654284,
+          0.17455071697148147
+        ],
+        [
+          0.006304757787539458,
+          -0.23608269391733014,
+          0.5423066863143843,
+          0.1707382295374741
+        ],
+        [
+          -0.010997163215815611,
+          -0.706668841008318,
+          -0.307897424168192,
+          0.09482477688565305
+        ],
+        [
+          -0.22545365015828128,
+          0.24701111822008454,
+          -0.16763774252148533,
+          0.36377959715798
+        ]
+      ],
+      "real": [
+        [
+          0.7749218987430324,
+          0.2910891993598252,
+          0.06620122615122175,
+          0.1864879395529763
+        ],
+        [
+          0.45385960087703536,
+          -0.1814781182280958,
+          -0.5382615637180291,
+          -0.3038564972730086
+        ],
+        [
+          0.3329497507088346,
+          -0.14995226788614846,
+          0.4731584729898896,
+          -0.19870956123173217
+        ],
+        [
+          -0.17793795779256819,
+          0.24693550562628125,
+          0.05116573088388046,
+          -0.7952742660872651
+        ]
+      ]
+    },
+    "conservative_sequential_pair_layers": 132,
+    "full_mesh_serialized_word_replay_error": 1.1849916888171548e-15,
+    "half_word_depth": 12,
+    "logical_givens_cells": 6,
+    "matrix_deduplication_decimal_places": 11,
+    "maximum_beta_word_algebraic_replay_error": 7.501453045463815e-15,
+    "maximum_cell_unitarity_error": 1.8964236338201766e-14,
+    "maximum_cell_word_length": 24,
+    "maximum_serialized_word_replay_error": 6.187688364358555e-16,
+    "omega": 1.4142135623730951,
+    "omega_branch": "0 < omega < 2*pi/3",
+    "omega_selection_provenance": "sqrt(2) was selected after exploratory comparisons on this target and then frozen; it counts as one target-informed design-time global choice, not as an a priori universal value",
+    "ordered_detector_basis_success_threshold": 0.01,
+    "physical_assumptions": [
+      "beta_1, beta_2, and their inverses are available at equal primitive-letter cost on every addressed mode pair",
+      "two-mode blocks are embedded and routed ideally on the declared adjacent pair supports",
+      "the Squier basis change is absorbed into the ideal block and its hardware cost is not counted",
+      "one common omega is calibrated and remains coherent across all six cell words",
+      "the discrete cell words are programmed specifically for this exported detector basis"
+    ],
+    "query_neighbors_per_prefix": 8,
+    "reduced_half_word_library_size": 1062881,
+    "relative_score_matrix_success_threshold": 0.01,
+    "score_metrics": {
+      "fitted_readout_weights": [
+        -0.5435692814106797,
+        -0.008827125619587933,
+        0.3769149972958783,
+        0.7499068229059103
+      ],
+      "held_out_normalized_score_rmse": 0.005821664084014588,
+      "maximum_unitarity_error": 5.864829334236662e-14,
+      "normalized_phase_aligned_unitary_error": 0.002541967888925806,
+      "ordered_detector_basis_error": 0.0025419655037616567,
+      "phase_aligned_process_infidelity": 6.461590337680789e-06,
+      "relative_observable_frobenius_error": 0.005418480647674914,
+      "relative_observable_operator_error": 0.0050587573057328805
+    },
+    "squier_form_condition_number": 4.842538946963762,
+    "total_braid_letters": 132,
+    "within_exponent_distinct_half_word_matrices": 45962
+  },
+  "generic_givens_baseline": {
+    "mesh": {
+      "imaginary": [
+        [
+          0.0,
+          0.42598407308481734,
+          -0.2507283061351767,
+          0.176814198038005
+        ],
+        [
+          -6.7992479783656365e-18,
+          -0.2325239755979059,
+          0.5494678904590945,
+          0.17545790938098227
+        ],
+        [
+          1.0816885060815715e-16,
+          -0.7118938680003333,
+          -0.2899064869696981,
+          0.0883653893034983
+        ],
+        [
+          -0.22395295076623956,
+          0.24141980954326064,
+          -0.1679109954993847,
+          0.37932140595950314
+        ]
+      ],
+      "real": [
+        [
+          0.7744716166055862,
+          0.29220867686604435,
+          0.06647105031830683,
+          0.18654497864841602
+        ],
+        [
+          0.4536281128244566,
+          -0.18501812244364815,
+          -0.5317140885435422,
+          -0.3008356990606196
+        ],
+        [
+          0.33253510691247146,
+          -0.126082788400976,
+          0.48336026064828214,
+          -0.20307461450271067
+        ],
+        [
+          -0.18352310165605173,
+          0.2527435073636734,
+          0.0469581324184406,
+          -0.7872214710094771
+        ]
+      ]
+    },
+    "output_alignment_phases": [
+      -0.0,
+      -0.0,
+      -0.0,
+      -0.8842946618931369
+    ],
+    "pair_cells": 6,
+    "rectangular_parallel_layers": 4,
+    "rectangular_parallel_layers_scope": "known Clements rectangular realization with the same universal six-cell count; not the depth of the serialized triangular schedule",
+    "serialized_cell_schedule": "triangular Givens elimination order",
+    "triangular_givens_cells": [
+      {
+        "pair": [
+          2,
+          3
+        ],
+        "unitary": {
+          "imaginary": [
+            [
+              -0.6866167443486569,
+              0.48420376176442
+            ],
+            [
+              0.48420376176442,
+              0.6866167443486569
+            ]
+          ],
+          "real": [
+            [
+              0.1820302496615015,
+              0.5108513988249492
+            ],
+            [
+              -0.5108513988249492,
+              0.1820302496615015
+            ]
+          ]
+        }
+      },
+      {
+        "pair": [
+          1,
+          2
+        ],
+        "unitary": {
+          "imaginary": [
+            [
+              0.6733769246137461,
+              -2.1937397815827658e-17
+            ],
+            [
+              -2.1937397815827658e-17,
+              -0.6733769246137461
+            ]
+          ],
+          "real": [
+            [
+              0.4619106502001328,
+              0.5772365794277282
+            ],
+            [
+              -0.5772365794277282,
+              0.4619106502001328
+            ]
+          ]
+        }
+      },
+      {
+        "pair": [
+          0,
+          1
+        ],
+        "unitary": {
+          "imaginary": [
+            [
+              -0.0,
+              -0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "real": [
+            [
+              0.7744716166055862,
+              0.6326086587079961
+            ],
+            [
+              -0.6326086587079961,
+              0.7744716166055862
+            ]
+          ]
+        }
+      },
+      {
+        "pair": [
+          2,
+          3
+        ],
+        "unitary": {
+          "imaginary": [
+            [
+              -0.35154845250792216,
+              0.3088383896664288
+            ],
+            [
+              0.3088383896664288,
+              0.35154845250792216
+            ]
+          ],
+          "real": [
+            [
+              -0.1777292748357217,
+              0.8657048223695539
+            ],
+            [
+              -0.8657048223695539,
+              -0.1777292748357217
+            ]
+          ]
+        }
+      },
+      {
+        "pair": [
+          1,
+          2
+        ],
+        "unitary": {
+          "imaginary": [
+            [
+              1.0747952758427356e-17,
+              -0.0
+            ],
+            [
+              0.0,
+              -1.0747952758427356e-17
+            ]
+          ],
+          "real": [
+            [
+              -0.7170754092283859,
+              0.6969955935871783
+            ],
+            [
+              -0.6969955935871783,
+              -0.7170754092283859
+            ]
+          ]
+        }
+      },
+      {
+        "pair": [
+          2,
+          3
+        ],
+        "unitary": {
+          "imaginary": [
+            [
+              2.4532231287787176e-16,
+              -0.5079156850507838
+            ],
+            [
+              -0.5079156850507838,
+              -2.4532231287787176e-16
+            ]
+          ],
+          "real": [
+            [
+              0.7541753571587451,
+              0.41622252165623175
+            ],
+            [
+              -0.41622252165623175,
+              0.7541753571587451
+            ]
+          ]
+        }
+      }
+    ]
+  },
+  "independent_omega_output_phase_alignment_radians": [
+    -1.2523655110758567,
+    3.1055323604116616,
+    -2.514953188746833,
+    2.284507843737222
+  ],
+  "omega_domain": {
+    "boundary_margin": 0.12,
+    "branch": "0 < omega < 2*pi/3",
+    "maximum": 1.9743951023931952,
+    "minimum": 0.12
+  },
+  "primitive_letter_codebook": {
+    "0": {
+      "generator": 1,
+      "power": 1
+    },
+    "1": {
+      "generator": 1,
+      "power": -1
+    },
+    "2": {
+      "generator": 2,
+      "power": 1
+    },
+    "3": {
+      "generator": 2,
+      "power": -1
+    }
+  },
+  "schema_version": 2,
+  "scope": "independently tuned short-depth and constructive fixed-omega Burau compilers for a terminal direct-detection quadratic scorer",
+  "score_metrics": {
+    "fitted_readout_weights": [
+      -0.5435806634848522,
+      -0.008828259691163035,
+      0.37691741840147974,
+      0.7499169179460864
+    ],
+    "held_out_normalized_score_rmse": 8.978941571669287e-16,
+    "maximum_unitarity_error": 2.7462069792222067e-15,
+    "normalized_phase_aligned_unitary_error": 8.567579929745197e-16,
+    "ordered_detector_basis_error": 8.454628878004189e-16,
+    "phase_aligned_process_infidelity": 0.0,
+    "relative_observable_frobenius_error": 7.881373962155923e-16,
+    "relative_observable_operator_error": 8.437060696201622e-16
+  },
+  "serialized_circuit_order_convention": "entries are listed first-to-last in temporal application order on a column vector, so the total matrix is B_last @ ... @ B_first; reverse a cell's application-order generator list before passing it to beta_word",
+  "target_model": "programs/digital_twin/results/digital_twin_model.json",
+  "transfer_convention": "output_amplitudes = unitary @ input_amplitudes"
+}
