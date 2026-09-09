@@ -2,9 +2,12 @@
 
 This is an engineering note, not part of the Burau--anyon Gedankenexperiment
 manuscript and not a claim of demonstrated performance. Both proposed devices
-operate with bright coherent light and ordinary photodiodes or cameras. No
-single-photon source, heralding, coincidence counter, entanglement, or quantum
-computer is required.
+use ordinary photonic hardware but operate in different regimes.  The
+inference scorer uses bright coherent light and photodiodes.  The security
+reader uses privately phase-randomized weak coherent pulses, a matched optical
+analyzer, a power tap, and photon counting; its token remains fixed and
+unpowered.  Neither proposal requires anyons, entanglement, cryogenics, or a
+deterministic single-photon source.
 
 ## Passive quadratic inference
 
@@ -131,8 +134,9 @@ must not be silently transferred to this design or to a whole system.
 - it matches or beats a generic Haar/MZI feature bank at equal optical depth,
   detector count, calibration effort, and precision; and
 - scaling beyond four modes has a task-level benefit that justifies either
-  $d$ detector outputs per task-compiled score or at least $d(d+1)$ outputs
-  for a universal fixed-bank construction.
+  $d$ detector outputs per task-compiled score or a $d+1$-setting universal
+  bank (a straightforward full-output implementation records $d(d+1)$ values,
+  while $d^2$ carefully selected outputs suffice at known norm).
 
 The current mathematics passes the expressivity and optimistic numerical
 reachability questions. It does not show a Burau-specific speed, accuracy,
@@ -145,55 +149,91 @@ stable common phase: shifting the compiled words' shared $\omega$ by only
 $10^{-3}$ raises detector-basis error to roughly 1% in the checked-in
 sensitivity test.
 
-## Security device: use physical disorder, not the public Burau map
+## Passive security device: high-dimensional T-key with quantum readout
 
-A realistic security prototype is a classical optical challenge-response
-token:
+The constructive prototype is an unpowered optical token used by a trusted,
+active reader:
 
-    diode laser
-      -> spatial or modal challenge encoder
-      -> Burau/order-dependent coherent preprocessor
-      -> sealed high-dimensional random scatterer
-      -> CMOS speckle camera or detector array
-      -> extractor and authenticated verifier
+    phase-randomized weak coherent laser
+      -> K-mode spatial or modal challenge shaper
+      -> exact fixed Burau 50:50 T-mixer
+      -> two sealed high-dimensional passive branch maps X and Y
+      -> sum and difference ports
+      -> computed phase-conjugate matched analyzer
+      -> per-round total-power tap and photon counter
 
-The inaccessible scatterer—not the known Burau representation—must carry the
-device-specific entropy. The Burau layer can enlarge or organize the challenge
-family and provide order/phase control channels, but it cannot supply
-unclonability by itself. The checked-in attack already reduces all 1,024
-length-five words to 36 sampled scalar-response classes and recovers the class
-with high probability from a small number of responses.
+At `omega = pi/4`, the three-letter word
+`sigma_2^-1 sigma_1 sigma_2^-1` is an exact balanced mixer.  With one fixed
+branch bias it returns `(X+Y)x/2` and `(X-Y)x/2`, up to port phases.  If a
+separate controlled-order reference realizes `X=BA` and `Y=AB`, the difference
+is `[B,A]x/2`; the deployable key does not require physically dubious duplicate
+copies of the same `A` and `B`.  Independently fabricated `X` and `Y` are
+measured and enrolled as one full transfer operator `H`.
 
-This is also an ordinary bright-light instrument. A recent experimental
-scattering PUF used a 100 mW, 635 nm fiber-coupled diode laser, a 128x128 subset
-of a digital micromirror device, a silica diffuser, and a cooled CMOS camera.
-That free-space layout is a sensible security test bed before attempting an
-integrated token.
+The Burau mixer does not create security dimension.  The reader must control
+`K` genuinely independent challenge modes; expanding four amplitudes into many
+waveguides or camera pixels still leaves `K<=4`.  Device-specific complexity
+comes from the sealed high-dimensional branches, and the anti-emulation gap
+comes from sending fewer photons than controlled modes.
 
-The immediate prototype should enroll a sealed diffuser or multimode element,
-issue uncorrelated high-dimensional challenges, derive repeatable response
-bits with documented helper data, and test authentication under temperature,
-alignment, aging, vibration, and source-power variation. It must then be
-attacked with chosen-challenge model extraction, transfer-matrix tomography,
-replay, emulation, and physical cloning attempts.
+Enrollment uses bright phase-sensitive basis probes to recover all columns of
+`H` and measure its scaled-isometry defect.  Authentication never selects from
+a finite public challenge table.  For every round the reader draws a new
+Haar-random `K`-mode vector `x`, computes `Hx`, programs the matched analyzer,
+uniformly randomizes the global optical phase, and attenuates to the declared
+mean photon number.  Phase randomization is required for the arbitrary-POVM
+bound used in the model.
 
-Linear integrated photonic PUFs deserve particular skepticism: a 2026
-security analysis learned a representative simulated linear construction from
-as few as 200 challenge-response pairs. The current Burau-only model is
-therefore a negative control, not a security core.
+The checked receiver point uses `K=1024`, mean photon number `50`, authentic
+focus `0.60`, return efficiency `0.25`, detector efficiency `0.70`, and `0.05`
+background clicks.  Under an explicit outcome-conditional returned-energy cap,
+the main attacker projection bound is
+`(nbar+1)/(nbar+K)=0.047486`; because this is an absolute projection bound,
+the modeled attacker mean is `0.4655` clicks.  Five-round
+Poisson-surrogate FAR/FRR are `1.58e-4` and `8.13e-5`.  A non-Poisson
+click/no-click construction gives a much looser but adaptive-safe worst-error
+bound `1.33e-4` after 20 rounds and `6.39e-9` after 50, conditional on the
+stated per-round state-estimation and accepted-response energy bound.  The
+energy gate and its allowance must be experimentally certified across every
+spatial/modal, spectral, polarization, and timing degree of freedom that can
+cause an accepted click; an average power monitor alone is not a proof.  All
+numbers are receiver-model predictions, not measurements.
+
+A bright laser, SLM/DMD, diffuser, and camera remain useful as the first
+alignment, tomography, drift, and classical-emulation test bed.  They are a
+baseline, not the positive remote-security protocol: unrestricted bright-light
+access exposes a fixed linear map to transfer-matrix or quadratic-response
+tomography.
+
+The public four-mode response audit remains an adversarial control.  It reduces
+1,024 length-five words to 36 sampled scalar-response classes and recovers the
+class from a small probe set.  That failure does not invalidate the passive
+T-mixer; it shows why neither the public word nor noncommutativity is the
+secret.
 
 ### Security go/no-go tests
 
-- stable intra-device response with separated inter-device distributions;
-- false-accept and false-reject rates at the intended environmental envelope;
-- independent entropy estimates after helper-data leakage is accounted for;
-- failure of strong model-extraction and tomography attacks at a declared CRP
-  budget; and
-- a complete protocol analysis including replay resistance, rate limiting,
-  enrollment trust, verifier compromise, and tamper response.
+- the reader certifies a genuinely `K`-dimensional controlled subspace on
+  which challenges are Haar-random (or proves a separate non-Haar ensemble
+  bound) and `H` has a small scaled-isometry defect; singular spectrum and
+  effective rank are diagnostics, not substitutes for theorem dimension;
+- intra-device response remains stable and inter-device responses remain
+  separated over temperature, alignment, aging, vibration, wavelength, and
+  polarization;
+- global-phase randomization, the conditional accepted-response energy gate,
+  detector linearity, and timing checks hold under adversarial illumination;
+- measured FAR/FRR agree with preregistered receiver models on held-out fresh
+  challenges and devices;
+- transfer-matrix tomography, replay, relay, substitution, physical cloning,
+  Trojan-light, blinding, and adaptive attacks are executed at declared
+  budgets; and
+- the Burau mixer beats an ordinary 50:50 coupler on at least one measured
+  engineering axis at equal key, loss, bandwidth, and reader trust.
 
-If the random medium is removed, or if its accessible linear transfer map can
-be learned within verifier tolerance, this security direction is a no-go.
+The proposal is possession authentication or anti-counterfeit readout, not
+encryption or unconditional unclonability.  Theft of the genuine token, a
+fast low-loss coherent emulator of `H`, relay to the token, or compromise of
+the verifier defeats the stated model.
 
 ## Sources anchoring the engineering claims
 
@@ -201,6 +241,12 @@ be learned within verifier tolerance, this security direction is a no-go.
   programmable gate array with an intelligent configuration framework for
   next-generation AI clusters,” *Light: Science & Applications* 15, 165
   (2026), [doi:10.1038/s41377-026-02209-5](https://doi.org/10.1038/s41377-026-02209-5).
+- S. A. Goorden et al., “Quantum-secure authentication of a physical
+  unclonable key,” *Optica* 1, 421--424 (2014),
+  [doi:10.1364/OPTICA.1.000421](https://doi.org/10.1364/OPTICA.1.000421).
+- B. Škorić, “Security analysis of Quantum-Readout PUFs in the case of
+  challenge-estimation attacks,” *Quantum Information and Computation* 16,
+  50--60 (2016), [ePrint 2013/479](https://eprint.iacr.org/2013/479).
 - R. Pappu et al., “Physical One-Way Functions,” *Science* 297, 2026--2030
   (2002), [doi:10.1126/science.1074376](https://doi.org/10.1126/science.1074376).
 - M. Akriotou et al., “Optimal performance of simple low-cost optical

@@ -31,6 +31,78 @@ trials after 16 selected challenges. At noise $0.0005$, the rate is about
 99.9%. This does not model every laboratory imperfection, but it rules out
 treating the present public low-dimensional map as a standalone secret.
 
+## Exact response symmetries
+
+Part of the collapse is forced analytically by the particular same-sided
+dressing used in this model. For $\omega$ in either open Squier-definite
+component, let
+
+\[
+U_i=H_\omega^{1/2}\beta_iH_\omega^{-1/2},\qquad
+M_w=U_{a_1}\cdots U_{a_L},\qquad
+D_S(M)=(M\otimes I)S(M\otimes I),
+\]
+
+where $S=\operatorname{diag}(A,B)$ is block diagonal. If $R(w)$ reverses the
+signed letters and $\tau$ exchanges generator indices $1\leftrightarrow2$
+without changing their exponents, then every response depending only on the
+projective spectrum of $D_S(M_w)$ obeys
+
+\[
+r_w=r_{R(w)}=r_{\tau(w^{-1})}.
+\]
+
+Here is the proof. The positive square root of the sign-normalized Squier form
+has the shape $C=\left(\begin{smallmatrix}p&q\\q&p\end{smallmatrix}\right)$.
+The relations $p^2+q^2=\epsilon(s+s^{-1})$, $2pq=-\epsilon$, and
+$1+s^2=(s+s^{-1})s$ show exactly that each signed, unitarized generator is
+symmetric. Thus $M_{R(w)}=M_w^T$. Also $U_2=P U_1P$ for the exchange matrix
+$P$, which gives $M_{\tau(w^{-1})}=PM_w^{-1}P$.
+
+For $M=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)$, direct block
+multiplication gives
+
+\[
+D_S(M)=
+\begin{pmatrix}
+a^2A+bcB & b(aA+dB)\\
+c(aA+dB) & bcA+d^2B
+\end{pmatrix}.
+\]
+
+Exchanging $b$ and $c$ produces a similar matrix, so $D_S(M)$ and
+$D_S(M^T)$ have the same spectrum. If an off-diagonal entry vanishes,
+unitarity forces both to vanish and the conclusion is immediate. Finally,
+with $Z=\operatorname{diag}(1,-1)$,
+
+\[
+PM^{-1}P=\det(M)^{-1}ZM^TZ.
+\]
+
+The $Z\otimes I$ factor commutes with block-diagonal $S$; the determinant
+factor contributes only a global phase. This proves the two response
+identities. The argument applies to the same-sided, projective-spectrum
+response above. It is not a claim about arbitrary optical readouts, the more
+usual conjugate dressing $(M\otimes I)S(M^\dagger\otimes I)$, or Burau-based
+devices in general.
+
+The two word involutions generate a Klein-four action. Burnside's lemma gives
+the following upper bound on distinguishable response orbits among all
+length-$L$ signed words:
+
+\[
+N_L\leq\frac{4^L+4^{\lceil L/2\rceil}
++\mathbf 1_{2\mid L}4^{L/2}}{4}.
+\]
+
+For $L=1,\ldots,6$, the bounds are respectively
+$2,6,20,72,272,1056$. The reproduction script verifies the symbolic matrix
+identities, enumerates these word orbits, and asserts both response
+symmetries on the full default grid and on the seeded off-grid validation
+phases. The observed 36 sampled classes at $L=5$ lie well below the bound
+$272$, so these two exact involutions explain only part of the empirical
+collapse.
+
 ## What could still become a device
 
 The credible direction is a physically keyed challenge-response transducer in

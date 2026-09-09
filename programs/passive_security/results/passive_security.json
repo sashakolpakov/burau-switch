@@ -1,0 +1,1200 @@
+{
+  "K_over_n_and_repetition_sweep": [
+    {
+      "K_over_n": 0.08,
+      "conditional_energy_absolute_projection_bound": 0.9444444444444444,
+      "decisions": [
+        {
+          "attacker_total_mean": 8.31388888888889,
+          "balanced_error_probability": 0.7202885942077178,
+          "false_accept_probability": 0.7234433934022613,
+          "false_reject_probability": 0.7171337950131744,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 7,
+          "worst_error_probability": 0.7234433934022613
+        },
+        {
+          "attacker_total_mean": 16.62777777777778,
+          "balanced_error_probability": 0.795225239535472,
+          "false_accept_probability": 0.7735383463355784,
+          "false_reject_probability": 0.8169121327353657,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 14,
+          "worst_error_probability": 0.8169121327353657
+        },
+        {
+          "attacker_total_mean": 41.56944444444445,
+          "balanced_error_probability": 0.903565262045383,
+          "false_accept_probability": 0.8977582488349246,
+          "false_reject_probability": 0.9093722752558414,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 34,
+          "worst_error_probability": 0.9093722752558414
+        },
+        {
+          "attacker_total_mean": 83.1388888888889,
+          "balanced_error_probability": 0.9669462708638463,
+          "false_accept_probability": 0.9694267964744977,
+          "false_reject_probability": 0.9644657452531948,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 67,
+          "worst_error_probability": 0.9694267964744977
+        },
+        {
+          "attacker_total_mean": 166.2777777777778,
+          "balanced_error_probability": 0.995344819100769,
+          "false_accept_probability": 0.9956002883815136,
+          "false_reject_probability": 0.9950893498200245,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 134,
+          "worst_error_probability": 0.9956002883815136
+        },
+        {
+          "attacker_total_mean": 415.6944444444445,
+          "balanced_error_probability": 0.999980462996993,
+          "false_accept_probability": 0.999980672435844,
+          "false_reject_probability": 0.9999802535581419,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 335,
+          "worst_error_probability": 0.999980672435844
+        }
+      ],
+      "inside_K_greater_than_n_regime": false,
+      "modes": 4,
+      "one_sided_projection_factor_bound": 0.9444444444444444
+    },
+    {
+      "K_over_n": 0.24,
+      "conditional_energy_absolute_projection_bound": 0.8225806451612904,
+      "decisions": [
+        {
+          "attacker_total_mean": 7.247580645161291,
+          "balanced_error_probability": 0.6518120367261617,
+          "false_accept_probability": 0.586490278439149,
+          "false_reject_probability": 0.7171337950131744,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 7,
+          "worst_error_probability": 0.7171337950131744
+        },
+        {
+          "attacker_total_mean": 14.495161290322581,
+          "balanced_error_probability": 0.7100226914273899,
+          "false_accept_probability": 0.6884775311058984,
+          "false_reject_probability": 0.7315678517488815,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 13,
+          "worst_error_probability": 0.7315678517488815
+        },
+        {
+          "attacker_total_mean": 36.237903225806456,
+          "balanced_error_probability": 0.8073393568400274,
+          "false_accept_probability": 0.8293408686802455,
+          "false_reject_probability": 0.7853378449998094,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 31,
+          "worst_error_probability": 0.8293408686802455
+        },
+        {
+          "attacker_total_mean": 72.47580645161291,
+          "balanced_error_probability": 0.8913398958574646,
+          "false_accept_probability": 0.8810500762683058,
+          "false_reject_probability": 0.9016297154466235,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 63,
+          "worst_error_probability": 0.9016297154466235
+        },
+        {
+          "attacker_total_mean": 144.95161290322582,
+          "balanced_error_probability": 0.9595181086180625,
+          "false_accept_probability": 0.9579151531564933,
+          "false_reject_probability": 0.9611210640796317,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 125,
+          "worst_error_probability": 0.9611210640796317
+        },
+        {
+          "attacker_total_mean": 362.3790322580645,
+          "balanced_error_probability": 0.9970819083636858,
+          "false_accept_probability": 0.9973280393228844,
+          "false_reject_probability": 0.9968357774044873,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 311,
+          "worst_error_probability": 0.9973280393228844
+        }
+      ],
+      "inside_K_greater_than_n_regime": false,
+      "modes": 12,
+      "one_sided_projection_factor_bound": 0.8225806451612904
+    },
+    {
+      "K_over_n": 0.5,
+      "conditional_energy_absolute_projection_bound": 0.68,
+      "decisions": [
+        {
+          "attacker_total_mean": 6.0,
+          "balanced_error_probability": 0.5588968754617301,
+          "false_accept_probability": 0.5543203586353888,
+          "false_reject_probability": 0.5634733922880715,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 6,
+          "worst_error_probability": 0.5634733922880715
+        },
+        {
+          "attacker_total_mean": 12.0,
+          "balanced_error_probability": 0.5826515021339386,
+          "false_accept_probability": 0.5384026669363815,
+          "false_reject_probability": 0.6269003373314956,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 12,
+          "worst_error_probability": 0.6269003373314956
+        },
+        {
+          "attacker_total_mean": 30.0,
+          "balanced_error_probability": 0.6290858124568304,
+          "false_accept_probability": 0.5969175403652716,
+          "false_reject_probability": 0.6612540845483892,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 29,
+          "worst_error_probability": 0.6612540845483892
+        },
+        {
+          "attacker_total_mean": 60.0,
+          "balanced_error_probability": 0.6794651689314901,
+          "false_accept_probability": 0.6680642977927297,
+          "false_reject_probability": 0.6908660400702504,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 57,
+          "worst_error_probability": 0.6908660400702504
+        },
+        {
+          "attacker_total_mean": 120.0,
+          "balanced_error_probability": 0.7449658663625671,
+          "false_accept_probability": 0.7506649171904304,
+          "false_reject_probability": 0.739266815534704,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 113,
+          "worst_error_probability": 0.7506649171904304
+        },
+        {
+          "attacker_total_mean": 300.0,
+          "balanced_error_probability": 0.8510958404056428,
+          "false_accept_probability": 0.8576091877726578,
+          "false_reject_probability": 0.8445824930386276,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 282,
+          "worst_error_probability": 0.8576091877726578
+        }
+      ],
+      "inside_K_greater_than_n_regime": false,
+      "modes": 25,
+      "one_sided_projection_factor_bound": 0.68
+    },
+    {
+      "K_over_n": 1.0,
+      "conditional_energy_absolute_projection_bound": 0.51,
+      "decisions": [
+        {
+          "attacker_total_mean": 4.5125,
+          "balanced_error_probability": 0.4298927896128289,
+          "false_accept_probability": 0.47026735983392876,
+          "false_reject_probability": 0.38951821939172904,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 5,
+          "worst_error_probability": 0.47026735983392876
+        },
+        {
+          "attacker_total_mean": 9.025,
+          "balanced_error_probability": 0.4006657580439254,
+          "false_accept_probability": 0.41588560859781537,
+          "false_reject_probability": 0.38544590749003543,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 10,
+          "worst_error_probability": 0.41588560859781537
+        },
+        {
+          "attacker_total_mean": 22.5625,
+          "balanced_error_probability": 0.3451219161534289,
+          "false_accept_probability": 0.3310466116775311,
+          "false_reject_probability": 0.3591972206293267,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 25,
+          "worst_error_probability": 0.3591972206293267
+        },
+        {
+          "attacker_total_mean": 45.125,
+          "balanced_error_probability": 0.2870831467373688,
+          "false_accept_probability": 0.3012136404695086,
+          "false_reject_probability": 0.2729526530052289,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 49,
+          "worst_error_probability": 0.3012136404695086
+        },
+        {
+          "attacker_total_mean": 90.25,
+          "balanced_error_probability": 0.21320655357946078,
+          "false_accept_probability": 0.22047040887753216,
+          "false_reject_probability": 0.20594269828138942,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 98,
+          "worst_error_probability": 0.22047040887753216
+        },
+        {
+          "attacker_total_mean": 225.625,
+          "balanced_error_probability": 0.10417409204600936,
+          "false_accept_probability": 0.10553940072701715,
+          "false_reject_probability": 0.10280878336500157,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 245,
+          "worst_error_probability": 0.10553940072701715
+        }
+      ],
+      "inside_K_greater_than_n_regime": false,
+      "modes": 50,
+      "one_sided_projection_factor_bound": 0.51
+    },
+    {
+      "K_over_n": 2.0,
+      "conditional_energy_absolute_projection_bound": 0.34,
+      "decisions": [
+        {
+          "attacker_total_mean": 3.025,
+          "balanced_error_probability": 0.29188926422834005,
+          "false_accept_probability": 0.3583689627407463,
+          "false_reject_probability": 0.22540956571593385,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 4,
+          "worst_error_probability": 0.3583689627407463
+        },
+        {
+          "attacker_total_mean": 6.05,
+          "balanced_error_probability": 0.21694128386464512,
+          "false_accept_probability": 0.26293229214422115,
+          "false_reject_probability": 0.1709502755850691,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 8,
+          "worst_error_probability": 0.26293229214422115
+        },
+        {
+          "attacker_total_mean": 15.125,
+          "balanced_error_probability": 0.10361861299254735,
+          "false_accept_probability": 0.08830636449203795,
+          "false_reject_probability": 0.11893086149305673,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 21,
+          "worst_error_probability": 0.11893086149305673
+        },
+        {
+          "attacker_total_mean": 30.25,
+          "balanced_error_probability": 0.03722921621117262,
+          "false_accept_probability": 0.035943094222438784,
+          "false_reject_probability": 0.03851533819990645,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 41,
+          "worst_error_probability": 0.03851533819990645
+        },
+        {
+          "attacker_total_mean": 60.5,
+          "balanced_error_probability": 0.005947594547722951,
+          "false_accept_probability": 0.006820015785479191,
+          "false_reject_probability": 0.005075173309966711,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 81,
+          "worst_error_probability": 0.006820015785479191
+        },
+        {
+          "attacker_total_mean": 151.25,
+          "balanced_error_probability": 3.381303265660875e-05,
+          "false_accept_probability": 3.550781448189253e-05,
+          "false_reject_probability": 3.2118250831324976e-05,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 203,
+          "worst_error_probability": 3.550781448189253e-05
+        }
+      ],
+      "inside_K_greater_than_n_regime": true,
+      "modes": 100,
+      "one_sided_projection_factor_bound": 0.34
+    },
+    {
+      "K_over_n": 4.0,
+      "conditional_energy_absolute_projection_bound": 0.204,
+      "decisions": [
+        {
+          "attacker_total_mean": 1.835,
+          "balanced_error_probability": 0.16990323886584993,
+          "false_accept_probability": 0.11439691201576603,
+          "false_reject_probability": 0.22540956571593385,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 4,
+          "worst_error_probability": 0.22540956571593385
+        },
+        {
+          "attacker_total_mean": 3.67,
+          "balanced_error_probability": 0.08790340241606673,
+          "false_accept_probability": 0.07919078751216635,
+          "false_reject_probability": 0.0966160173199671,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 7,
+          "worst_error_probability": 0.0966160173199671
+        },
+        {
+          "attacker_total_mean": 9.175,
+          "balanced_error_probability": 0.016565969042464265,
+          "false_accept_probability": 0.013152784450244174,
+          "false_reject_probability": 0.019979153634684353,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 17,
+          "worst_error_probability": 0.019979153634684353
+        },
+        {
+          "attacker_total_mean": 18.35,
+          "balanced_error_probability": 0.0013037197856483702,
+          "false_accept_probability": 0.00130239518078019,
+          "false_reject_probability": 0.0013050443905165505,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 33,
+          "worst_error_probability": 0.0013050443905165505
+        },
+        {
+          "attacker_total_mean": 36.7,
+          "balanced_error_probability": 1.0418635059212151e-05,
+          "false_accept_probability": 8.505509372445198e-06,
+          "false_reject_probability": 1.2331760745979106e-05,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 66,
+          "worst_error_probability": 1.2331760745979106e-05
+        },
+        {
+          "attacker_total_mean": 91.75,
+          "balanced_error_probability": 8.64707130292146e-12,
+          "false_accept_probability": 7.125597036038488e-12,
+          "false_reject_probability": 1.0168545569804432e-11,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 164,
+          "worst_error_probability": 1.0168545569804432e-11
+        }
+      ],
+      "inside_K_greater_than_n_regime": true,
+      "modes": 200,
+      "one_sided_projection_factor_bound": 0.204
+    },
+    {
+      "K_over_n": 8.0,
+      "conditional_energy_absolute_projection_bound": 0.11333333333333333,
+      "decisions": [
+        {
+          "attacker_total_mean": 1.0416666666666665,
+          "balanced_error_probability": 0.09483848011917559,
+          "false_accept_probability": 0.08812298220226283,
+          "false_reject_probability": 0.10155397803608836,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 3,
+          "worst_error_probability": 0.10155397803608836
+        },
+        {
+          "attacker_total_mean": 2.083333333333333,
+          "balanced_error_probability": 0.03364489382670782,
+          "false_accept_probability": 0.019762431451912185,
+          "false_reject_probability": 0.04752735620150345,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 6,
+          "worst_error_probability": 0.04752735620150345
+        },
+        {
+          "attacker_total_mean": 5.208333333333332,
+          "balanced_error_probability": 0.0021004709841458383,
+          "false_accept_probability": 0.0028465630142415163,
+          "false_reject_probability": 0.00135437895405016,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 13,
+          "worst_error_probability": 0.0028465630142415163
+        },
+        {
+          "attacker_total_mean": 10.416666666666664,
+          "balanced_error_probability": 2.1874992877344138e-05,
+          "false_accept_probability": 1.3034008802526214e-05,
+          "false_reject_probability": 3.071597695216206e-05,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 27,
+          "worst_error_probability": 3.071597695216206e-05
+        },
+        {
+          "attacker_total_mean": 20.83333333333333,
+          "balanced_error_probability": 3.612239567285107e-09,
+          "false_accept_probability": 2.65607919439027e-09,
+          "false_reject_probability": 4.568399940179944e-09,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 53,
+          "worst_error_probability": 4.568399940179944e-09
+        },
+        {
+          "attacker_total_mean": 52.08333333333333,
+          "balanced_error_probability": 3.095998313785464e-20,
+          "false_accept_probability": 3.602933244752166e-20,
+          "false_reject_probability": 2.5890633828187618e-20,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 131,
+          "worst_error_probability": 3.602933244752166e-20
+        }
+      ],
+      "inside_K_greater_than_n_regime": true,
+      "modes": 400,
+      "one_sided_projection_factor_bound": 0.11333333333333333
+    },
+    {
+      "K_over_n": 16.0,
+      "conditional_energy_absolute_projection_bound": 0.06,
+      "decisions": [
+        {
+          "attacker_total_mean": 0.5750000000000001,
+          "balanced_error_probability": 0.061135830520241644,
+          "false_accept_probability": 0.020717683004394926,
+          "false_reject_probability": 0.10155397803608836,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 3,
+          "worst_error_probability": 0.10155397803608836
+        },
+        {
+          "attacker_total_mean": 1.1500000000000001,
+          "balanced_error_probability": 0.013130196112532442,
+          "false_accept_probability": 0.006519070618918181,
+          "false_reject_probability": 0.019741321606146705,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 5,
+          "worst_error_probability": 0.019741321606146705
+        },
+        {
+          "attacker_total_mean": 2.8750000000000004,
+          "balanced_error_probability": 0.00021592864375122626,
+          "false_accept_probability": 0.00020473966147991154,
+          "false_reject_probability": 0.00022711762602254095,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 11,
+          "worst_error_probability": 0.00022711762602254095
+        },
+        {
+          "attacker_total_mean": 5.750000000000001,
+          "balanced_error_probability": 3.44671735575502e-07,
+          "false_accept_probability": 1.9398944701424337e-07,
+          "false_reject_probability": 4.953540241367606e-07,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 22,
+          "worst_error_probability": 4.953540241367606e-07
+        },
+        {
+          "attacker_total_mean": 11.500000000000002,
+          "balanced_error_probability": 1.083208035494635e-12,
+          "false_accept_probability": 9.2231140289155e-13,
+          "false_reject_probability": 1.2441046680977198e-12,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 43,
+          "worst_error_probability": 1.2441046680977198e-12
+        },
+        {
+          "attacker_total_mean": 28.750000000000004,
+          "balanced_error_probability": 6.473111452864232e-29,
+          "false_accept_probability": 4.3004822455840945e-29,
+          "false_reject_probability": 8.645740660144368e-29,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 107,
+          "worst_error_probability": 8.645740660144368e-29
+        }
+      ],
+      "inside_K_greater_than_n_regime": true,
+      "modes": 800,
+      "one_sided_projection_factor_bound": 0.06
+    },
+    {
+      "K_over_n": 20.48,
+      "conditional_energy_absolute_projection_bound": 0.04748603351955307,
+      "decisions": [
+        {
+          "attacker_total_mean": 0.46550279329608935,
+          "balanced_error_probability": 0.055688006126624195,
+          "false_accept_probability": 0.07992897063971402,
+          "false_reject_probability": 0.031447041613534364,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 2,
+          "worst_error_probability": 0.07992897063971402
+        },
+        {
+          "attacker_total_mean": 0.9310055865921787,
+          "balanced_error_probability": 0.010840432008980811,
+          "false_accept_probability": 0.015046162503964334,
+          "false_reject_probability": 0.00663470151399729,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 4,
+          "worst_error_probability": 0.015046162503964334
+        },
+        {
+          "attacker_total_mean": 2.3275139664804465,
+          "balanced_error_probability": 0.00011973403362378827,
+          "false_accept_probability": 0.000158195572614054,
+          "false_reject_probability": 8.127249463352254e-05,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 10,
+          "worst_error_probability": 0.000158195572614054
+        },
+        {
+          "attacker_total_mean": 4.655027932960893,
+          "balanced_error_probability": 9.21192044383013e-08,
+          "false_accept_probability": 1.142845548785919e-07,
+          "false_reject_probability": 6.99538539980107e-08,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 20,
+          "worst_error_probability": 1.142845548785919e-07
+        },
+        {
+          "attacker_total_mean": 9.310055865921786,
+          "balanced_error_probability": 7.544463585138053e-14,
+          "false_accept_probability": 8.206119100628817e-14,
+          "false_reject_probability": 6.882808069647287e-14,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 40,
+          "worst_error_probability": 8.206119100628817e-14
+        },
+        {
+          "attacker_total_mean": 23.275139664804467,
+          "balanced_error_probability": 8.195144140633643e-32,
+          "false_accept_probability": 5.300855353920702e-32,
+          "false_reject_probability": 1.1089432927346583e-31,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 100,
+          "worst_error_probability": 1.1089432927346583e-31
+        }
+      ],
+      "inside_K_greater_than_n_regime": true,
+      "modes": 1024,
+      "one_sided_projection_factor_bound": 0.04748603351955307
+    },
+    {
+      "K_over_n": 32.0,
+      "conditional_energy_absolute_projection_bound": 0.03090909090909091,
+      "decisions": [
+        {
+          "attacker_total_mean": 0.32045454545454544,
+          "balanced_error_probability": 0.03651799267288017,
+          "false_accept_probability": 0.04158894373222597,
+          "false_reject_probability": 0.031447041613534364,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 2,
+          "worst_error_probability": 0.04158894373222597
+        },
+        {
+          "attacker_total_mean": 0.6409090909090909,
+          "balanced_error_probability": 0.005434429321355844,
+          "false_accept_probability": 0.004234157128714397,
+          "false_reject_probability": 0.00663470151399729,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 4,
+          "worst_error_probability": 0.00663470151399729
+        },
+        {
+          "attacker_total_mean": 1.602272727272727,
+          "balanced_error_probability": 3.6051768349162544e-05,
+          "false_accept_probability": 4.586694070216813e-05,
+          "false_reject_probability": 2.6236595996156962e-05,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 9,
+          "worst_error_probability": 4.586694070216813e-05
+        },
+        {
+          "attacker_total_mean": 3.204545454545454,
+          "balanced_error_probability": 8.865066644543868e-09,
+          "false_accept_probability": 9.662788604749913e-09,
+          "false_reject_probability": 8.067344684337823e-09,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 18,
+          "worst_error_probability": 9.662788604749913e-09
+        },
+        {
+          "attacker_total_mean": 6.409090909090908,
+          "balanced_error_probability": 8.049547376293901e-16,
+          "false_accept_probability": 5.926836921288939e-16,
+          "false_reject_probability": 1.0172257831298862e-15,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 36,
+          "worst_error_probability": 1.0172257831298862e-15
+        },
+        {
+          "attacker_total_mean": 16.022727272727273,
+          "balanced_error_probability": 1.2533266778554874e-36,
+          "false_accept_probability": 1.3495548694515156e-36,
+          "false_reject_probability": 1.1570984862594592e-36,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 89,
+          "worst_error_probability": 1.3495548694515156e-36
+        }
+      ],
+      "inside_K_greater_than_n_regime": true,
+      "modes": 1600,
+      "one_sided_projection_factor_bound": 0.03090909090909091
+    },
+    {
+      "K_over_n": 64.0,
+      "conditional_energy_absolute_projection_bound": 0.015692307692307693,
+      "decisions": [
+        {
+          "attacker_total_mean": 0.18730769230769234,
+          "balanced_error_probability": 0.023472541677299043,
+          "false_accept_probability": 0.015498041741063725,
+          "false_reject_probability": 0.031447041613534364,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 2,
+          "worst_error_probability": 0.031447041613534364
+        },
+        {
+          "attacker_total_mean": 0.3746153846153847,
+          "balanced_error_probability": 0.004161225162360282,
+          "false_accept_probability": 0.006633643185119276,
+          "false_reject_probability": 0.001688807139601288,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 3,
+          "worst_error_probability": 0.006633643185119276
+        },
+        {
+          "attacker_total_mean": 0.9365384615384618,
+          "balanced_error_probability": 6.97944567853788e-06,
+          "false_accept_probability": 6.4137326339863286e-06,
+          "false_reject_probability": 7.545158723089432e-06,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 8,
+          "worst_error_probability": 7.545158723089432e-06
+        },
+        {
+          "attacker_total_mean": 1.8730769230769235,
+          "balanced_error_probability": 4.6558196924792475e-10,
+          "false_accept_probability": 1.8929605971024004e-10,
+          "false_reject_probability": 7.418678787856094e-10,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 16,
+          "worst_error_probability": 7.418678787856094e-10
+        },
+        {
+          "attacker_total_mean": 3.746153846153847,
+          "balanced_error_probability": 2.3672267466241002e-18,
+          "false_accept_probability": 1.963554716439718e-18,
+          "false_reject_probability": 2.770898776808483e-18,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 31,
+          "worst_error_probability": 2.770898776808483e-18
+        },
+        {
+          "attacker_total_mean": 9.365384615384617,
+          "balanced_error_probability": 6.598011794567893e-43,
+          "false_accept_probability": 4.3020102572483e-43,
+          "false_reject_probability": 8.894013331887487e-43,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 77,
+          "worst_error_probability": 8.894013331887487e-43
+        }
+      ],
+      "inside_K_greater_than_n_regime": true,
+      "modes": 3200,
+      "one_sided_projection_factor_bound": 0.015692307692307693
+    }
+  ],
+  "four_mode_t_chip_diagnostic": {
+    "bright_usable_count_case": {
+      "derived": {
+        "K_over_n": 0.08,
+        "factors_for_diagnostic_only": {
+          "goorden_simplified_factor": 0.9259259259259259,
+          "main_bound_to_honest_signal_ratio": 1.5740740740740742,
+          "phase_randomized_coherent_state_exact": 0.943458880000001,
+          "phase_randomized_coherent_state_jensen_bound": 0.9444444444444444,
+          "phase_randomized_coherent_sum_omitted_tail_mass": 0.0,
+          "quadrature_finite_focus_factor": 0.9567901234567902,
+          "sector_proportional_resend_click_weighted_exact": 0.9445232896000008,
+          "sector_proportional_resend_click_weighted_jensen_bound": 0.9454545454545454,
+          "sector_proportional_resend_sum_omitted_tail_mass": 0.0
+        },
+        "inside_n_less_than_K_theorem_setup": false,
+        "minimum_nbar_for_one_honest_signal_click_per_round": 9.523809523809524
+      },
+      "direct_public_transfer_emulator": {
+        "attacker_signal_factor": 1.0,
+        "equal_prior_bayes_error": 0.5,
+        "explanation": "A direct emulator of the public four-mode transfer map produces the honest Poisson distribution; every deterministic threshold has (FAR + FRR)/2 = 1/2.",
+        "total_variation_distance_from_honest": 0.0
+      },
+      "parameters": {
+        "background_clicks": 0.05,
+        "detector_efficiency": 0.7,
+        "key_return_efficiency": 0.25,
+        "mean_challenge_photons": 50.0,
+        "modes": 4,
+        "true_focused_fraction": 0.6
+      },
+      "state_estimation_only_extrapolation": [
+        {
+          "attacker_total_mean": 8.31388888888889,
+          "balanced_error_probability": 0.7202885942077178,
+          "false_accept_probability": 0.7234433934022613,
+          "false_reject_probability": 0.7171337950131744,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 7,
+          "worst_error_probability": 0.7234433934022613
+        },
+        {
+          "attacker_total_mean": 16.62777777777778,
+          "balanced_error_probability": 0.795225239535472,
+          "false_accept_probability": 0.7735383463355784,
+          "false_reject_probability": 0.8169121327353657,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 14,
+          "worst_error_probability": 0.8169121327353657
+        },
+        {
+          "attacker_total_mean": 41.56944444444445,
+          "balanced_error_probability": 0.903565262045383,
+          "false_accept_probability": 0.8977582488349246,
+          "false_reject_probability": 0.9093722752558414,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 34,
+          "worst_error_probability": 0.9093722752558414
+        },
+        {
+          "attacker_total_mean": 83.1388888888889,
+          "balanced_error_probability": 0.9669462708638463,
+          "false_accept_probability": 0.9694267964744977,
+          "false_reject_probability": 0.9644657452531948,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 67,
+          "worst_error_probability": 0.9694267964744977
+        },
+        {
+          "attacker_total_mean": 166.2777777777778,
+          "balanced_error_probability": 0.995344819100769,
+          "false_accept_probability": 0.9956002883815136,
+          "false_reject_probability": 0.9950893498200245,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 134,
+          "worst_error_probability": 0.9956002883815136
+        },
+        {
+          "attacker_total_mean": 415.6944444444445,
+          "balanced_error_probability": 0.999980462996993,
+          "false_accept_probability": 0.999980672435844,
+          "false_reject_probability": 0.9999802535581419,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 335,
+          "worst_error_probability": 0.999980672435844
+        }
+      ]
+    },
+    "n_less_than_K_case": {
+      "derived": {
+        "K_over_n": 1.3333333333333333,
+        "factors": {
+          "goorden_simplified_factor": 0.42857142857142855,
+          "main_bound_to_honest_signal_ratio": 0.9523809523809523,
+          "phase_randomized_coherent_state_exact": 0.544491762584919,
+          "phase_randomized_coherent_state_jensen_bound": 0.5714285714285714,
+          "phase_randomized_coherent_sum_omitted_tail_mass": 0.0,
+          "quadrature_finite_focus_factor": 0.6666666666666667,
+          "sector_proportional_resend_click_weighted_exact": 0.607344316553441,
+          "sector_proportional_resend_click_weighted_jensen_bound": 0.625,
+          "sector_proportional_resend_sum_omitted_tail_mass": 0.0
+        },
+        "focused_signal_clicks_per_round": 0.31499999999999995
+      },
+      "fatal_scope_failure": "Because the enrolled transform is public and only 4x4, the no-fast-lossless-emulator premise is not credible; a direct emulator has factor one regardless of nbar.",
+      "parameters": {
+        "background_clicks": 0.05,
+        "detector_efficiency": 0.7,
+        "key_return_efficiency": 0.25,
+        "mean_challenge_photons": 3.0,
+        "modes": 4,
+        "true_focused_fraction": 0.6
+      },
+      "state_estimation_only_decisions": [
+        {
+          "attacker_total_mean": 0.3499999999999999,
+          "balanced_error_probability": 0.4947542805796327,
+          "false_accept_probability": 0.29531191028128656,
+          "false_reject_probability": 0.6941966508779789,
+          "honest_total_mean": 0.36499999999999994,
+          "repetitions": 1,
+          "threshold_total_clicks": 1,
+          "worst_error_probability": 0.6941966508779789
+        },
+        {
+          "attacker_total_mean": 0.6999999999999998,
+          "balanced_error_probability": 0.4926618431493964,
+          "false_accept_probability": 0.5034146962085904,
+          "false_reject_probability": 0.4819089900902024,
+          "honest_total_mean": 0.7299999999999999,
+          "repetitions": 2,
+          "threshold_total_clicks": 1,
+          "worst_error_probability": 0.5034146962085904
+        },
+        {
+          "attacker_total_mean": 1.7499999999999996,
+          "balanced_error_probability": 0.4887807500889477,
+          "false_accept_probability": 0.5221216555112759,
+          "false_reject_probability": 0.4554398446666196,
+          "honest_total_mean": 1.8249999999999997,
+          "repetitions": 5,
+          "threshold_total_clicks": 2,
+          "worst_error_probability": 0.5221216555112759
+        },
+        {
+          "attacker_total_mean": 3.499999999999999,
+          "balanced_error_probability": 0.4840025660835916,
+          "false_accept_probability": 0.46336733209921466,
+          "false_reject_probability": 0.5046378000679685,
+          "honest_total_mean": 3.6499999999999995,
+          "repetitions": 10,
+          "threshold_total_clicks": 4,
+          "worst_error_probability": 0.5046378000679685
+        },
+        {
+          "attacker_total_mean": 6.999999999999998,
+          "balanced_error_probability": 0.4781606146552183,
+          "false_accept_probability": 0.5502889441513009,
+          "false_reject_probability": 0.40603228515913575,
+          "honest_total_mean": 7.299999999999999,
+          "repetitions": 20,
+          "threshold_total_clicks": 7,
+          "worst_error_probability": 0.5502889441513009
+        },
+        {
+          "attacker_total_mean": 17.499999999999996,
+          "balanced_error_probability": 0.4647130062470344,
+          "false_accept_probability": 0.4840033631321136,
+          "false_reject_probability": 0.4454226493619552,
+          "honest_total_mean": 18.249999999999996,
+          "repetitions": 50,
+          "threshold_total_clicks": 18,
+          "worst_error_probability": 0.4840033631321136
+        }
+      ]
+    }
+  },
+  "illustrative_hybrid_design": {
+    "adaptive_safe_binary_round_decisions": [
+      {
+        "attacker_click_probability_upper_bound": 0.46550279329608935,
+        "false_accept_probability_upper_bound": 0.46550279329608935,
+        "false_reject_probability": 0.0049915939069101745,
+        "honest_click_probability": 0.9950084060930898,
+        "repetitions": 1,
+        "threshold_rounds_with_one_or_more_accepted_clicks": 1,
+        "worst_error_probability_bound": 0.46550279329608935
+      },
+      {
+        "attacker_click_probability_upper_bound": 0.46550279329608935,
+        "false_accept_probability_upper_bound": 0.21669285056646168,
+        "false_reject_probability": 0.009958271804088845,
+        "honest_click_probability": 0.9950084060930898,
+        "repetitions": 2,
+        "threshold_rounds_with_one_or_more_accepted_clicks": 2,
+        "worst_error_probability_bound": 0.21669285056646168
+      },
+      {
+        "attacker_click_probability_upper_bound": 0.46550279329608935,
+        "false_accept_probability_upper_bound": 0.021858052098449827,
+        "false_reject_probability": 0.02471005004232056,
+        "honest_click_probability": 0.9950084060930898,
+        "repetitions": 5,
+        "threshold_rounds_with_one_or_more_accepted_clicks": 5,
+        "worst_error_probability_bound": 0.02471005004232056
+      },
+      {
+        "attacker_click_probability_upper_bound": 0.46550279329608935,
+        "false_accept_probability_upper_bound": 0.005963651392537704,
+        "false_reject_probability": 0.0010917594946782364,
+        "honest_click_probability": 0.9950084060930898,
+        "repetitions": 10,
+        "threshold_rounds_with_one_or_more_accepted_clicks": 9,
+        "worst_error_probability_bound": 0.005963651392537704
+      },
+      {
+        "attacker_click_probability_upper_bound": 0.46550279329608935,
+        "false_accept_probability_upper_bound": 6.265049926107033e-05,
+        "false_reject_probability": 0.0001330414069892856,
+        "honest_click_probability": 0.9950084060930898,
+        "repetitions": 20,
+        "threshold_rounds_with_one_or_more_accepted_clicks": 18,
+        "worst_error_probability_bound": 0.0001330414069892856
+      },
+      {
+        "attacker_click_probability_upper_bound": 0.46550279329608935,
+        "false_accept_probability_upper_bound": 1.0225775296910552e-09,
+        "false_reject_probability": 6.390730224927179e-09,
+        "honest_click_probability": 0.9950084060930898,
+        "repetitions": 50,
+        "threshold_rounds_with_one_or_more_accepted_clicks": 44,
+        "worst_error_probability_bound": 6.390730224927179e-09
+      }
+    ],
+    "architecture": "trusted phase-randomized K-mode weak-pulse shaper -> exact passive T-mixer -> sealed high-dimensional branch maps X,Y -> sum/difference ports -> computed matched analyzer -> power tap and photon counter",
+    "derived": {
+      "K_over_n": 20.48,
+      "attacker_click_mean_per_round_main_bound": 0.46550279329608935,
+      "conditional_energy_cap_multiplier_of_nominal_authentic_return": 1.0,
+      "conditional_return_photon_cap_at_analyzer_input": 12.5,
+      "detectable_return_click_budget_before_focus": 8.75,
+      "factors": {
+        "goorden_simplified_factor": 0.04655493482309125,
+        "main_bound_to_honest_signal_ratio": 0.07914338919925512,
+        "phase_randomized_coherent_state_exact": 0.047444777723304986,
+        "phase_randomized_coherent_state_jensen_bound": 0.04748603351955307,
+        "phase_randomized_coherent_sum_omitted_tail_mass": 0.0,
+        "quadrature_finite_focus_factor": 0.04810676598386096,
+        "sector_proportional_resend_click_weighted_exact": 0.04833095222671472,
+        "sector_proportional_resend_click_weighted_jensen_bound": 0.04837209302325581,
+        "sector_proportional_resend_sum_omitted_tail_mass": 0.0
+      },
+      "focused_signal_clicks_per_round": 5.25,
+      "honest_click_mean_per_round": 5.3
+    },
+    "optimized_total_count_decisions": [
+      {
+        "attacker_total_mean": 0.46550279329608935,
+        "balanced_error_probability": 0.055688006126624195,
+        "false_accept_probability": 0.07992897063971402,
+        "false_reject_probability": 0.031447041613534364,
+        "honest_total_mean": 5.3,
+        "repetitions": 1,
+        "threshold_total_clicks": 2,
+        "worst_error_probability": 0.07992897063971402
+      },
+      {
+        "attacker_total_mean": 0.9310055865921787,
+        "balanced_error_probability": 0.010840432008980811,
+        "false_accept_probability": 0.015046162503964334,
+        "false_reject_probability": 0.00663470151399729,
+        "honest_total_mean": 10.6,
+        "repetitions": 2,
+        "threshold_total_clicks": 4,
+        "worst_error_probability": 0.015046162503964334
+      },
+      {
+        "attacker_total_mean": 2.3275139664804465,
+        "balanced_error_probability": 0.00011973403362378827,
+        "false_accept_probability": 0.000158195572614054,
+        "false_reject_probability": 8.127249463352254e-05,
+        "honest_total_mean": 26.5,
+        "repetitions": 5,
+        "threshold_total_clicks": 10,
+        "worst_error_probability": 0.000158195572614054
+      },
+      {
+        "attacker_total_mean": 4.655027932960893,
+        "balanced_error_probability": 9.21192044383013e-08,
+        "false_accept_probability": 1.142845548785919e-07,
+        "false_reject_probability": 6.99538539980107e-08,
+        "honest_total_mean": 53.0,
+        "repetitions": 10,
+        "threshold_total_clicks": 20,
+        "worst_error_probability": 1.142845548785919e-07
+      },
+      {
+        "attacker_total_mean": 9.310055865921786,
+        "balanced_error_probability": 7.544463585138053e-14,
+        "false_accept_probability": 8.206119100628817e-14,
+        "false_reject_probability": 6.882808069647287e-14,
+        "honest_total_mean": 106.0,
+        "repetitions": 20,
+        "threshold_total_clicks": 40,
+        "worst_error_probability": 8.206119100628817e-14
+      },
+      {
+        "attacker_total_mean": 23.275139664804467,
+        "balanced_error_probability": 8.195144140633643e-32,
+        "false_accept_probability": 5.300855353920702e-32,
+        "false_reject_probability": 1.1089432927346583e-31,
+        "honest_total_mean": 265.0,
+        "repetitions": 50,
+        "threshold_total_clicks": 100,
+        "worst_error_probability": 1.1089432927346583e-31
+      }
+    ],
+    "parameters": {
+      "background_clicks": 0.05,
+      "detector_efficiency": 0.7,
+      "key_return_efficiency": 0.25,
+      "mean_challenge_photons": 50.0,
+      "modes": 1024,
+      "true_focused_fraction": 0.6
+    }
+  },
+  "interpretation": [
+    "The positive target is possession authentication or anti-counterfeit readout of a passive disorder-bearing token.",
+    "At the illustrative K=1024, nbar=50 point, the receiver model predicts strong count separation after a small number of fresh challenges.",
+    "This calculation is a design gate for an experiment, not evidence that a fabricated token is unclonable or that a protocol is secure.",
+    "The bare T-chip remains useful as a braid/control experiment, but it is not the physical key."
+  ],
+  "model": {
+    "adaptive_binary_tail_scope": "if every fresh round retains the conditional attacker mean bound, Markov bounds its click probability and a binomial upper tail remains valid for adaptive histories",
+    "assumptions": [
+      "trusted, calibrated challenge preparation and analyzer",
+      "tamper-resistant verifier/reader and authenticated decision path",
+      "fresh independent uniformly random K-mode challenge each round",
+      "weak coherent pulses with calibrated mean photon number and privately randomized global phase",
+      "full complex transfer operator enrolled; no finite reusable challenge list",
+      "stable passive key and independent stationary Poisson background",
+      "an accepted-response energy gate certifies, for every refined attacker outcome, a conditional mean return no larger than the calibrated authentic return budget over every spatial/modal, spectral, polarization, and timing degree of freedom capable of causing an accepted detector event",
+      "attacker performs challenge estimation and digital emulation",
+      "attacker cannot substitute a fast, sufficiently low-loss physical realization of H or an isometric dilation"
+    ],
+    "attacker_per_round_click_mean": "background + absolute_projection_factor * Lambda * detector_efficiency, with illustrative Lambda = return_efficiency * nbar",
+    "decision": "accept when the sum of focused-detector clicks over fresh rounds reaches an integer threshold chosen to minimize the larger of exact Poisson FAR and FRR",
+    "honest_per_round_click_mean": "background + nbar * focused_fraction * return_efficiency * detector_efficiency",
+    "main_attacker_factor": "(nbar + 1) / (nbar + K)",
+    "main_bound_scope": "Jensen bound for arbitrary-POVM estimation of private, uniformly phase-randomized, freshly sampled Haar K-dimensional coherent states. Every refined attacker outcome is assumed to obey the accepted-response conditional energy cap. The model excludes a fast, sufficiently low-loss physical realization of the enrolled K-input-mode transfer map H directly (or an isometric dilation thereof).",
+    "not_covered": [
+      "physical cloning or substitution of the scattering key",
+      "phishing, relay, replay, database poisoning, or verifier compromise",
+      "side channels, Trojan-horse light, detector blinding, or denial of service",
+      "full count-valued adaptive or correlated tails outside the Poisson surrogate; only the reported binary-round bound covers adaptive histories",
+      "imperfect global-phase randomization or a finite challenge set",
+      "evasion or miscalibration of the conditional accepted-response energy cap"
+    ],
+    "poisson_tail_scope": "exact for the stipulated independent Poisson click model; a mean fidelity bound alone does not prove Poisson attacker tails against correlated or adaptive strategies"
+  },
+  "status": "deterministic analytical study; no hardware demonstration",
+  "study": "passive high-dimensional optical-key receiver model",
+  "t_chip_role": {
+    "dimensionality_warning": "A fixed expansion of four controllable amplitudes into many pixels still has challenge dimension at most four. The K=1024 point requires 1024 independently controlled challenge modes; the T-chip does not manufacture those dimensions.",
+    "positive_role": "The exact mixer exposes sum and difference ports of two independently fabricated high-dimensional passive branch maps X and Y; X=BA and Y=AB is an optional commutator reference. No advantage over a generic balanced coupler has been demonstrated.",
+    "security_statement": "The public deterministic four-mode Burau/T-chip transform is not the secret and provides no unclonability by itself.",
+    "verified_fixed_passive_mixer": {
+      "application_order_braid_word": "sigma_2^-1 sigma_1 sigma_2^-1",
+      "application_order_letter_codes": [
+        3,
+        0,
+        3
+      ],
+      "baseline": "A conventional 50:50 directional coupler or MZI implements the same balanced recombination up to port phases and is the required cost, loss, and stability baseline.",
+      "branch_bias_radians": 4.539962982671842,
+      "commutator_port_identity": "For unitary A and B and normalized x, P_minus = ||[B,A]x||^2/4 = [1-Re x^dagger A^dagger B^dagger A B x]/2, and P_plus + P_minus = 1.",
+      "commutator_probability_identity_residual": 8.326672684688674e-17,
+      "controlled_order_specialization": "Setting X=BA and Y=AB makes the difference port [B,A]x/2.",
+      "deployable_branch_topology": "Independent high-dimensional branches X and Y can be fabricated and enrolled directly. Exact reuse of A and B in opposite orders is required only for the optional commutator specialization.",
+      "generic_branch_action": "With an equal path superposition and this fixed branch bias, the two output ports are, up to fixed port phases, (X+Y)x/2 and (X-Y)x/2 for arbitrary branch maps X,Y.",
+      "matrix": {
+        "imaginary": [
+          [
+            -0.674155349874503,
+            0.27059805007309856
+          ],
+          [
+            0.27059805007309856,
+            -0.32584465012549685
+          ]
+        ],
+        "real": [
+          [
+            0.21334142644030982,
+            -0.6532814824381882
+          ],
+          [
+            -0.6532814824381878,
+            -0.6275549888134048
+          ]
+        ]
+      },
+      "maximum_entry_magnitude_residual_from_one_over_sqrt_two": 3.3306690738754696e-16,
+      "omega": 0.7853981633974483,
+      "omega_exact": "pi/4",
+      "phase_equivalence_residual_to_standard_50_50_coupler": 6.730369402342474e-16,
+      "plus_minus_probability_normalization_residual": 3.3306690738754696e-16,
+      "primitive_codebook": {
+        "0": "sigma_1",
+        "1": "sigma_1^-1",
+        "2": "sigma_2",
+        "3": "sigma_2^-1"
+      },
+      "security_scope": "This exact passive identity supplies no secrecy or unclonability and does not improve the state-estimation bound by itself.",
+      "sum_difference_coefficient_residual": 4.887365971079175e-16,
+      "symmetry_residual": 4.710277376051325e-16,
+      "unitarity_residual": 1.0532500405730103e-15
+    },
+    "verified_stacked_map_and_defect_bound": {
+      "declared_isometry_defect": 0.03,
+      "defect_bound_trials": 512,
+      "dimension": 7,
+      "maximum_overlap_preservation_residual": 2.7755575615628914e-16,
+      "maximum_sampled_defect_bound_violation": 0.0,
+      "measured_isometry_defect": 0.030000000000000828,
+      "minimum_sampled_defect_bound_slack": 0.0009255155549528606,
+      "overlap_trials": 128,
+      "stacked_map_isometry_residual": 6.292196408929318e-16
+    }
+  }
+}

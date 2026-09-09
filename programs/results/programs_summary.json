@@ -3760,11 +3760,1626 @@
     "test_samples": 1500,
     "train_samples": 3000
   },
-  "scope": "independent security, inference, classical digital-twin, and compiler studies; not manuscript results",
+  "inference_scaling": {
+    "condition_number_convention": "sigma_max/sigma_min of the real Hilbert--Schmidt coordinate matrix whose rows are rank-one output projectors; the reported primary condition includes the identity direction and uses singular-value rank threshold 1e-10",
+    "condition_seed": 20260908,
+    "dimensions_tested": [
+      3,
+      4,
+      5,
+      7,
+      11,
+      13
+    ],
+    "interpretation": "Complete MUBs are tight on the traceless Hermitian subspace and remain well conditioned as d grows. Random banks at the rank-bound minimum are generically full rank in this sample but develop severe, heavy-tailed noise amplification. Under the declared fixed detected-light model, the spectral scorer follows approximately sqrt(d/N) normalized error and the complete MUB bank approximately d/sqrt(N).",
+    "limitations": [
+      "No Burau-derived compilation is performed or implied.",
+      "Complete mutually unbiased bases are guaranteed in prime-power dimensions, not in every dimension; only the listed constructions are implemented here.",
+      "The detector budget is fixed after optical losses and therefore is not an end-to-end source-energy comparison.",
+      "The model omits component loss, detector gain mismatch, quantization, laser noise, thermal crosstalk, and transfer-matrix drift.",
+      "The random-bank tails are finite deterministic Monte Carlo samples, not an asymptotic theorem."
+    ],
+    "mub_construction": {
+      "dimension_4": "two-qubit stabilizer bases from commuting Pauli classes {ZI,IZ}, {XI,IX}, {YI,IY}, {XY,YZ}, {XZ,ZY}",
+      "odd_prime_dimensions": [
+        3,
+        5,
+        7,
+        11,
+        13
+      ],
+      "odd_prime_formula": "computational basis plus rows d^(-1/2) exp[2 pi i (a n^2 + b n)/d], with a,b,n in Z_d"
+    },
+    "noise_model": {
+      "budget_scope": "post-fanout, post-coupling, post-mesh detected electrons; source power and component insertion loss are not modeled",
+      "detector_model": "Poisson counts plus additive Gaussian read noise; total detected budget divided equally over settings; each setting normalized to unit summed intensity after clipping",
+      "input_states": "normalized complex-Gaussian vectors (Haar-distributed pure states)",
+      "observables": "independent random traceless Hermitian matrices with unit Frobenius norm",
+      "read_noise_electrons_rms_per_output": 5.0,
+      "samples_per_trial": 1200,
+      "total_detected_photoelectrons_per_inference": 1000000.0
+    },
+    "noise_seed": 260908,
+    "resource_scaling": {
+      "parallel_generic_minimum_bank": "d+1 settings and d(d+1) detectors; d+1 independently instantiated universal meshes contain (d+1)d(d-1)/2 generic two-mode cells, while specializing the computational-basis branch as a direct detector path reduces this to d^2(d-1)/2",
+      "structured_mub_opportunity": "the odd-prime chirp bases factor into a Fourier transform and basis-dependent diagonal phases, so a specialized implementation need not pay the independent-generic-mesh cell count",
+      "task_specific_spectral": "one generic d-mode unitary, d detectors, d(d-1)/2 generic two-mode cells, and O(d) path depth",
+      "time_multiplexed_generic_minimum_bank": "one reusable O(d^2)-cell universal mesh and d detectors, at the cost of d+1 sequential settings and mesh reprogramming"
+    },
+    "results_by_dimension": {
+      "11": {
+        "condition_trials_per_random_architecture": 20,
+        "frame_condition_number": {
+          "complete_mub": 3.4641016151378548,
+          "complete_mub_centered_traceless_subspace": 1.0000000000000586,
+          "complete_mub_closed_form_including_identity": 3.4641016151377544,
+          "haar_minimum_d_plus_1": {
+            "maximum": 8949.055560105711,
+            "median": 677.7515133152381,
+            "p10": 296.3829936343177,
+            "p90": 3763.8551366735974
+          },
+          "haar_overcomplete_2d": {
+            "maximum": 12.913232417174683,
+            "median": 11.970396266861139,
+            "p10": 11.357786219129762,
+            "p90": 12.635116852431011
+          },
+          "sampled_haar_full_rank_fraction": {
+            "2d_settings": 1.0,
+            "d_plus_1_settings": 1.0
+          }
+        },
+        "mub_validation": {
+          "maximum_unbiasedness_error": 1.1449174941446927e-14,
+          "maximum_unitarity_error": 9.124336313680766e-14
+        },
+        "noise_trials_per_architecture": 10,
+        "normalized_score_rmse": {
+          "complete_mub_d_plus_1_settings": {
+            "maximum": 0.011746708599189679,
+            "median": 0.01138719376679432,
+            "p10": 0.011213508835944502,
+            "p90": 0.011725402782357381
+          },
+          "haar_minimum_d_plus_1_settings": {
+            "maximum": 2.172607638639403,
+            "median": 0.1729323645727226,
+            "p10": 0.08074062969373075,
+            "p90": 0.7162704866261507
+          },
+          "haar_overcomplete_2d_settings": {
+            "maximum": 0.0205234801440079,
+            "median": 0.01607517964213051,
+            "p10": 0.014911288450390671,
+            "p90": 0.019324491588299898
+          },
+          "spectral_one_setting": {
+            "maximum": 0.0033895579630326728,
+            "median": 0.003269957399853192,
+            "p10": 0.0031939668613983753,
+            "p90": 0.0033891096270388795
+          }
+        }
+      },
+      "13": {
+        "condition_trials_per_random_architecture": 12,
+        "frame_condition_number": {
+          "complete_mub": 3.7416573867741008,
+          "complete_mub_centered_traceless_subspace": 1.0000000000000846,
+          "complete_mub_closed_form_including_identity": 3.7416573867739413,
+          "haar_minimum_d_plus_1": {
+            "maximum": 16069.147024669594,
+            "median": 2465.9677937487786,
+            "p10": 1181.406340372455,
+            "p90": 10179.593501070574
+          },
+          "haar_overcomplete_2d": {
+            "maximum": 14.263240979270668,
+            "median": 13.18431432557545,
+            "p10": 12.78519123869874,
+            "p90": 14.068089635081298
+          },
+          "sampled_haar_full_rank_fraction": {
+            "2d_settings": 1.0,
+            "d_plus_1_settings": 1.0
+          }
+        },
+        "mub_validation": {
+          "maximum_unbiasedness_error": 1.49741330446318e-14,
+          "maximum_unitarity_error": 1.5605684557657854e-13
+        },
+        "noise_trials_per_architecture": 8,
+        "normalized_score_rmse": {
+          "complete_mub_d_plus_1_settings": {
+            "maximum": 0.013858285317590724,
+            "median": 0.01329705554185212,
+            "p10": 0.012904787571556695,
+            "p90": 0.013766161438508239
+          },
+          "haar_minimum_d_plus_1_settings": {
+            "maximum": 0.4018848182913783,
+            "median": 0.25120763755623177,
+            "p10": 0.12754909053786903,
+            "p90": 0.3844929358763942
+          },
+          "haar_overcomplete_2d_settings": {
+            "maximum": 0.02194309914962556,
+            "median": 0.020485994677125946,
+            "p10": 0.018169554206419157,
+            "p90": 0.021549471567140367
+          },
+          "spectral_one_setting": {
+            "maximum": 0.0037084733298940013,
+            "median": 0.003621896397363984,
+            "p10": 0.003591021731937391,
+            "p90": 0.0036941025949102256
+          }
+        }
+      },
+      "3": {
+        "condition_trials_per_random_architecture": 80,
+        "frame_condition_number": {
+          "complete_mub": 2.0000000000000004,
+          "complete_mub_centered_traceless_subspace": 1.0000000000000009,
+          "complete_mub_closed_form_including_identity": 2.0,
+          "haar_minimum_d_plus_1": {
+            "maximum": 2541.3164861147307,
+            "median": 19.17548063712756,
+            "p10": 8.927089211432225,
+            "p90": 123.00300612425033
+          },
+          "haar_overcomplete_2d": {
+            "maximum": 11.770320667321867,
+            "median": 5.722022913808228,
+            "p10": 4.390960147331416,
+            "p90": 8.25102438456647
+          },
+          "sampled_haar_full_rank_fraction": {
+            "2d_settings": 1.0,
+            "d_plus_1_settings": 1.0
+          }
+        },
+        "mub_validation": {
+          "maximum_unbiasedness_error": 1.4988010832439613e-15,
+          "maximum_unitarity_error": 1.5464501043030916e-15
+        },
+        "noise_trials_per_architecture": 20,
+        "normalized_score_rmse": {
+          "complete_mub_d_plus_1_settings": {
+            "maximum": 0.0036278689999874607,
+            "median": 0.003476776825118297,
+            "p10": 0.0033418547548997707,
+            "p90": 0.0035831449402949065
+          },
+          "haar_minimum_d_plus_1_settings": {
+            "maximum": 0.19490981365260412,
+            "median": 0.013418152222490466,
+            "p10": 0.005284524540402493,
+            "p90": 0.15894858067753417
+          },
+          "haar_overcomplete_2d_settings": {
+            "maximum": 0.011392101713660773,
+            "median": 0.004727600129703245,
+            "p10": 0.0037706507031739687,
+            "p90": 0.007300393633899673
+          },
+          "spectral_one_setting": {
+            "maximum": 0.0018843744157476152,
+            "median": 0.0017340182225992215,
+            "p10": 0.0016475513082914266,
+            "p90": 0.0018418699447176827
+          }
+        }
+      },
+      "4": {
+        "condition_trials_per_random_architecture": 80,
+        "frame_condition_number": {
+          "complete_mub": 2.2360679774997907,
+          "complete_mub_centered_traceless_subspace": 1.0000000000000009,
+          "complete_mub_closed_form_including_identity": 2.23606797749979,
+          "haar_minimum_d_plus_1": {
+            "maximum": 9780.958630950276,
+            "median": 46.93853428688601,
+            "p10": 20.937466966638688,
+            "p90": 440.86575951550464
+          },
+          "haar_overcomplete_2d": {
+            "maximum": 15.417104234547981,
+            "median": 7.222338090751796,
+            "p10": 5.804880298718355,
+            "p90": 9.128557710466193
+          },
+          "sampled_haar_full_rank_fraction": {
+            "2d_settings": 1.0,
+            "d_plus_1_settings": 1.0
+          }
+        },
+        "mub_validation": {
+          "maximum_unbiasedness_error": 6.661338147750939e-16,
+          "maximum_unitarity_error": 1.4503118246647925e-15
+        },
+        "noise_trials_per_architecture": 20,
+        "normalized_score_rmse": {
+          "complete_mub_d_plus_1_settings": {
+            "maximum": 0.00463846752740267,
+            "median": 0.004507420178666067,
+            "p10": 0.004324972245160822,
+            "p90": 0.004592363918735516
+          },
+          "haar_minimum_d_plus_1_settings": {
+            "maximum": 0.2720880315008056,
+            "median": 0.0237809851637336,
+            "p10": 0.013936576908374135,
+            "p90": 0.10022213699106675
+          },
+          "haar_overcomplete_2d_settings": {
+            "maximum": 0.009768648679685495,
+            "median": 0.006516475026884692,
+            "p10": 0.004973679651486153,
+            "p90": 0.008104214207935482
+          },
+          "spectral_one_setting": {
+            "maximum": 0.0021643473807887036,
+            "median": 0.002013075762701353,
+            "p10": 0.0019228349936668838,
+            "p90": 0.002092902243882404
+          }
+        }
+      },
+      "5": {
+        "condition_trials_per_random_architecture": 60,
+        "frame_condition_number": {
+          "complete_mub": 2.4494897427831805,
+          "complete_mub_centered_traceless_subspace": 1.0000000000000024,
+          "complete_mub_closed_form_including_identity": 2.449489742783178,
+          "haar_minimum_d_plus_1": {
+            "maximum": 21197.08888571822,
+            "median": 94.05819176290447,
+            "p10": 31.869068498314373,
+            "p90": 354.5986774029773
+          },
+          "haar_overcomplete_2d": {
+            "maximum": 14.702042403609068,
+            "median": 8.503392519562489,
+            "p10": 7.1389550033235665,
+            "p90": 10.232298522577308
+          },
+          "sampled_haar_full_rank_fraction": {
+            "2d_settings": 1.0,
+            "d_plus_1_settings": 1.0
+          }
+        },
+        "mub_validation": {
+          "maximum_unbiasedness_error": 3.747002708109903e-15,
+          "maximum_unitarity_error": 9.992847571157804e-15
+        },
+        "noise_trials_per_architecture": 20,
+        "normalized_score_rmse": {
+          "complete_mub_d_plus_1_settings": {
+            "maximum": 0.00573896938340909,
+            "median": 0.0054965279096746995,
+            "p10": 0.0053604332730393,
+            "p90": 0.005676383289567971
+          },
+          "haar_minimum_d_plus_1_settings": {
+            "maximum": 2.8248980741678507,
+            "median": 0.03432323476810277,
+            "p10": 0.01738561495171415,
+            "p90": 0.7345163139329342
+          },
+          "haar_overcomplete_2d_settings": {
+            "maximum": 0.011626000187260009,
+            "median": 0.007407701445758878,
+            "p10": 0.006338277115632137,
+            "p90": 0.009586262697588438
+          },
+          "spectral_one_setting": {
+            "maximum": 0.00235181628460259,
+            "median": 0.0022310612969136034,
+            "p10": 0.0021291353433569716,
+            "p90": 0.002288317434789238
+          }
+        }
+      },
+      "7": {
+        "condition_trials_per_random_architecture": 40,
+        "frame_condition_number": {
+          "complete_mub": 2.8284271247461965,
+          "complete_mub_centered_traceless_subspace": 1.0000000000000056,
+          "complete_mub_closed_form_including_identity": 2.8284271247461903,
+          "haar_minimum_d_plus_1": {
+            "maximum": 3685.545492402788,
+            "median": 218.9688641678585,
+            "p10": 80.74952852857044,
+            "p90": 878.4757403518942
+          },
+          "haar_overcomplete_2d": {
+            "maximum": 12.332719100430008,
+            "median": 9.921953981864844,
+            "p10": 8.967743480688096,
+            "p90": 11.155877528202371
+          },
+          "sampled_haar_full_rank_fraction": {
+            "2d_settings": 1.0,
+            "d_plus_1_settings": 1.0
+          }
+        },
+        "mub_validation": {
+          "maximum_unbiasedness_error": 6.827871601444713e-15,
+          "maximum_unitarity_error": 2.5015973812584158e-14
+        },
+        "noise_trials_per_architecture": 16,
+        "normalized_score_rmse": {
+          "complete_mub_d_plus_1_settings": {
+            "maximum": 0.007836239239080363,
+            "median": 0.007555033114072825,
+            "p10": 0.007385958223035196,
+            "p90": 0.007812976969138378
+          },
+          "haar_minimum_d_plus_1_settings": {
+            "maximum": 0.29367188351654555,
+            "median": 0.04304919058287736,
+            "p10": 0.02968611222010157,
+            "p90": 0.2219457798706797
+          },
+          "haar_overcomplete_2d_settings": {
+            "maximum": 0.013910242458891647,
+            "median": 0.011380194614746323,
+            "p10": 0.010362354416236078,
+            "p90": 0.01256788418120482
+          },
+          "spectral_one_setting": {
+            "maximum": 0.0028076407450898875,
+            "median": 0.0026774212542562507,
+            "p10": 0.0025257217516593874,
+            "p90": 0.0027630118866872775
+          }
+        }
+      }
+    },
+    "schema_version": 1,
+    "scope": "generic-unitary scaling audit only; the complete MUB bases are not compiled into, or claimed reachable by, the fixed Burau-derived two-mode block library"
+  },
+  "passive_security": {
+    "K_over_n_and_repetition_sweep": [
+      {
+        "K_over_n": 0.08,
+        "conditional_energy_absolute_projection_bound": 0.9444444444444444,
+        "decisions": [
+          {
+            "attacker_total_mean": 8.31388888888889,
+            "balanced_error_probability": 0.7202885942077178,
+            "false_accept_probability": 0.7234433934022613,
+            "false_reject_probability": 0.7171337950131744,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 7,
+            "worst_error_probability": 0.7234433934022613
+          },
+          {
+            "attacker_total_mean": 16.62777777777778,
+            "balanced_error_probability": 0.795225239535472,
+            "false_accept_probability": 0.7735383463355784,
+            "false_reject_probability": 0.8169121327353657,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 14,
+            "worst_error_probability": 0.8169121327353657
+          },
+          {
+            "attacker_total_mean": 41.56944444444445,
+            "balanced_error_probability": 0.903565262045383,
+            "false_accept_probability": 0.8977582488349246,
+            "false_reject_probability": 0.9093722752558414,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 34,
+            "worst_error_probability": 0.9093722752558414
+          },
+          {
+            "attacker_total_mean": 83.1388888888889,
+            "balanced_error_probability": 0.9669462708638463,
+            "false_accept_probability": 0.9694267964744977,
+            "false_reject_probability": 0.9644657452531948,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 67,
+            "worst_error_probability": 0.9694267964744977
+          },
+          {
+            "attacker_total_mean": 166.2777777777778,
+            "balanced_error_probability": 0.995344819100769,
+            "false_accept_probability": 0.9956002883815136,
+            "false_reject_probability": 0.9950893498200245,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 134,
+            "worst_error_probability": 0.9956002883815136
+          },
+          {
+            "attacker_total_mean": 415.6944444444445,
+            "balanced_error_probability": 0.999980462996993,
+            "false_accept_probability": 0.999980672435844,
+            "false_reject_probability": 0.9999802535581419,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 335,
+            "worst_error_probability": 0.999980672435844
+          }
+        ],
+        "inside_K_greater_than_n_regime": false,
+        "modes": 4,
+        "one_sided_projection_factor_bound": 0.9444444444444444
+      },
+      {
+        "K_over_n": 0.24,
+        "conditional_energy_absolute_projection_bound": 0.8225806451612904,
+        "decisions": [
+          {
+            "attacker_total_mean": 7.247580645161291,
+            "balanced_error_probability": 0.6518120367261617,
+            "false_accept_probability": 0.586490278439149,
+            "false_reject_probability": 0.7171337950131744,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 7,
+            "worst_error_probability": 0.7171337950131744
+          },
+          {
+            "attacker_total_mean": 14.495161290322581,
+            "balanced_error_probability": 0.7100226914273899,
+            "false_accept_probability": 0.6884775311058984,
+            "false_reject_probability": 0.7315678517488815,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 13,
+            "worst_error_probability": 0.7315678517488815
+          },
+          {
+            "attacker_total_mean": 36.237903225806456,
+            "balanced_error_probability": 0.8073393568400274,
+            "false_accept_probability": 0.8293408686802455,
+            "false_reject_probability": 0.7853378449998094,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 31,
+            "worst_error_probability": 0.8293408686802455
+          },
+          {
+            "attacker_total_mean": 72.47580645161291,
+            "balanced_error_probability": 0.8913398958574646,
+            "false_accept_probability": 0.8810500762683058,
+            "false_reject_probability": 0.9016297154466235,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 63,
+            "worst_error_probability": 0.9016297154466235
+          },
+          {
+            "attacker_total_mean": 144.95161290322582,
+            "balanced_error_probability": 0.9595181086180625,
+            "false_accept_probability": 0.9579151531564933,
+            "false_reject_probability": 0.9611210640796317,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 125,
+            "worst_error_probability": 0.9611210640796317
+          },
+          {
+            "attacker_total_mean": 362.3790322580645,
+            "balanced_error_probability": 0.9970819083636858,
+            "false_accept_probability": 0.9973280393228844,
+            "false_reject_probability": 0.9968357774044873,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 311,
+            "worst_error_probability": 0.9973280393228844
+          }
+        ],
+        "inside_K_greater_than_n_regime": false,
+        "modes": 12,
+        "one_sided_projection_factor_bound": 0.8225806451612904
+      },
+      {
+        "K_over_n": 0.5,
+        "conditional_energy_absolute_projection_bound": 0.68,
+        "decisions": [
+          {
+            "attacker_total_mean": 6.0,
+            "balanced_error_probability": 0.5588968754617301,
+            "false_accept_probability": 0.5543203586353888,
+            "false_reject_probability": 0.5634733922880715,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 6,
+            "worst_error_probability": 0.5634733922880715
+          },
+          {
+            "attacker_total_mean": 12.0,
+            "balanced_error_probability": 0.5826515021339386,
+            "false_accept_probability": 0.5384026669363815,
+            "false_reject_probability": 0.6269003373314956,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 12,
+            "worst_error_probability": 0.6269003373314956
+          },
+          {
+            "attacker_total_mean": 30.0,
+            "balanced_error_probability": 0.6290858124568304,
+            "false_accept_probability": 0.5969175403652716,
+            "false_reject_probability": 0.6612540845483892,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 29,
+            "worst_error_probability": 0.6612540845483892
+          },
+          {
+            "attacker_total_mean": 60.0,
+            "balanced_error_probability": 0.6794651689314901,
+            "false_accept_probability": 0.6680642977927297,
+            "false_reject_probability": 0.6908660400702504,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 57,
+            "worst_error_probability": 0.6908660400702504
+          },
+          {
+            "attacker_total_mean": 120.0,
+            "balanced_error_probability": 0.7449658663625671,
+            "false_accept_probability": 0.7506649171904304,
+            "false_reject_probability": 0.739266815534704,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 113,
+            "worst_error_probability": 0.7506649171904304
+          },
+          {
+            "attacker_total_mean": 300.0,
+            "balanced_error_probability": 0.8510958404056428,
+            "false_accept_probability": 0.8576091877726578,
+            "false_reject_probability": 0.8445824930386276,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 282,
+            "worst_error_probability": 0.8576091877726578
+          }
+        ],
+        "inside_K_greater_than_n_regime": false,
+        "modes": 25,
+        "one_sided_projection_factor_bound": 0.68
+      },
+      {
+        "K_over_n": 1.0,
+        "conditional_energy_absolute_projection_bound": 0.51,
+        "decisions": [
+          {
+            "attacker_total_mean": 4.5125,
+            "balanced_error_probability": 0.4298927896128289,
+            "false_accept_probability": 0.47026735983392876,
+            "false_reject_probability": 0.38951821939172904,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 5,
+            "worst_error_probability": 0.47026735983392876
+          },
+          {
+            "attacker_total_mean": 9.025,
+            "balanced_error_probability": 0.4006657580439254,
+            "false_accept_probability": 0.41588560859781537,
+            "false_reject_probability": 0.38544590749003543,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 10,
+            "worst_error_probability": 0.41588560859781537
+          },
+          {
+            "attacker_total_mean": 22.5625,
+            "balanced_error_probability": 0.3451219161534289,
+            "false_accept_probability": 0.3310466116775311,
+            "false_reject_probability": 0.3591972206293267,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 25,
+            "worst_error_probability": 0.3591972206293267
+          },
+          {
+            "attacker_total_mean": 45.125,
+            "balanced_error_probability": 0.2870831467373688,
+            "false_accept_probability": 0.3012136404695086,
+            "false_reject_probability": 0.2729526530052289,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 49,
+            "worst_error_probability": 0.3012136404695086
+          },
+          {
+            "attacker_total_mean": 90.25,
+            "balanced_error_probability": 0.21320655357946078,
+            "false_accept_probability": 0.22047040887753216,
+            "false_reject_probability": 0.20594269828138942,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 98,
+            "worst_error_probability": 0.22047040887753216
+          },
+          {
+            "attacker_total_mean": 225.625,
+            "balanced_error_probability": 0.10417409204600936,
+            "false_accept_probability": 0.10553940072701715,
+            "false_reject_probability": 0.10280878336500157,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 245,
+            "worst_error_probability": 0.10553940072701715
+          }
+        ],
+        "inside_K_greater_than_n_regime": false,
+        "modes": 50,
+        "one_sided_projection_factor_bound": 0.51
+      },
+      {
+        "K_over_n": 2.0,
+        "conditional_energy_absolute_projection_bound": 0.34,
+        "decisions": [
+          {
+            "attacker_total_mean": 3.025,
+            "balanced_error_probability": 0.29188926422834005,
+            "false_accept_probability": 0.3583689627407463,
+            "false_reject_probability": 0.22540956571593385,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 4,
+            "worst_error_probability": 0.3583689627407463
+          },
+          {
+            "attacker_total_mean": 6.05,
+            "balanced_error_probability": 0.21694128386464512,
+            "false_accept_probability": 0.26293229214422115,
+            "false_reject_probability": 0.1709502755850691,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 8,
+            "worst_error_probability": 0.26293229214422115
+          },
+          {
+            "attacker_total_mean": 15.125,
+            "balanced_error_probability": 0.10361861299254735,
+            "false_accept_probability": 0.08830636449203795,
+            "false_reject_probability": 0.11893086149305673,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 21,
+            "worst_error_probability": 0.11893086149305673
+          },
+          {
+            "attacker_total_mean": 30.25,
+            "balanced_error_probability": 0.03722921621117262,
+            "false_accept_probability": 0.035943094222438784,
+            "false_reject_probability": 0.03851533819990645,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 41,
+            "worst_error_probability": 0.03851533819990645
+          },
+          {
+            "attacker_total_mean": 60.5,
+            "balanced_error_probability": 0.005947594547722951,
+            "false_accept_probability": 0.006820015785479191,
+            "false_reject_probability": 0.005075173309966711,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 81,
+            "worst_error_probability": 0.006820015785479191
+          },
+          {
+            "attacker_total_mean": 151.25,
+            "balanced_error_probability": 3.381303265660875e-05,
+            "false_accept_probability": 3.550781448189253e-05,
+            "false_reject_probability": 3.2118250831324976e-05,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 203,
+            "worst_error_probability": 3.550781448189253e-05
+          }
+        ],
+        "inside_K_greater_than_n_regime": true,
+        "modes": 100,
+        "one_sided_projection_factor_bound": 0.34
+      },
+      {
+        "K_over_n": 4.0,
+        "conditional_energy_absolute_projection_bound": 0.204,
+        "decisions": [
+          {
+            "attacker_total_mean": 1.835,
+            "balanced_error_probability": 0.16990323886584993,
+            "false_accept_probability": 0.11439691201576603,
+            "false_reject_probability": 0.22540956571593385,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 4,
+            "worst_error_probability": 0.22540956571593385
+          },
+          {
+            "attacker_total_mean": 3.67,
+            "balanced_error_probability": 0.08790340241606673,
+            "false_accept_probability": 0.07919078751216635,
+            "false_reject_probability": 0.0966160173199671,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 7,
+            "worst_error_probability": 0.0966160173199671
+          },
+          {
+            "attacker_total_mean": 9.175,
+            "balanced_error_probability": 0.016565969042464265,
+            "false_accept_probability": 0.013152784450244174,
+            "false_reject_probability": 0.019979153634684353,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 17,
+            "worst_error_probability": 0.019979153634684353
+          },
+          {
+            "attacker_total_mean": 18.35,
+            "balanced_error_probability": 0.0013037197856483702,
+            "false_accept_probability": 0.00130239518078019,
+            "false_reject_probability": 0.0013050443905165505,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 33,
+            "worst_error_probability": 0.0013050443905165505
+          },
+          {
+            "attacker_total_mean": 36.7,
+            "balanced_error_probability": 1.0418635059212151e-05,
+            "false_accept_probability": 8.505509372445198e-06,
+            "false_reject_probability": 1.2331760745979106e-05,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 66,
+            "worst_error_probability": 1.2331760745979106e-05
+          },
+          {
+            "attacker_total_mean": 91.75,
+            "balanced_error_probability": 8.64707130292146e-12,
+            "false_accept_probability": 7.125597036038488e-12,
+            "false_reject_probability": 1.0168545569804432e-11,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 164,
+            "worst_error_probability": 1.0168545569804432e-11
+          }
+        ],
+        "inside_K_greater_than_n_regime": true,
+        "modes": 200,
+        "one_sided_projection_factor_bound": 0.204
+      },
+      {
+        "K_over_n": 8.0,
+        "conditional_energy_absolute_projection_bound": 0.11333333333333333,
+        "decisions": [
+          {
+            "attacker_total_mean": 1.0416666666666665,
+            "balanced_error_probability": 0.09483848011917559,
+            "false_accept_probability": 0.08812298220226283,
+            "false_reject_probability": 0.10155397803608836,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 3,
+            "worst_error_probability": 0.10155397803608836
+          },
+          {
+            "attacker_total_mean": 2.083333333333333,
+            "balanced_error_probability": 0.03364489382670782,
+            "false_accept_probability": 0.019762431451912185,
+            "false_reject_probability": 0.04752735620150345,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 6,
+            "worst_error_probability": 0.04752735620150345
+          },
+          {
+            "attacker_total_mean": 5.208333333333332,
+            "balanced_error_probability": 0.0021004709841458383,
+            "false_accept_probability": 0.0028465630142415163,
+            "false_reject_probability": 0.00135437895405016,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 13,
+            "worst_error_probability": 0.0028465630142415163
+          },
+          {
+            "attacker_total_mean": 10.416666666666664,
+            "balanced_error_probability": 2.1874992877344138e-05,
+            "false_accept_probability": 1.3034008802526214e-05,
+            "false_reject_probability": 3.071597695216206e-05,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 27,
+            "worst_error_probability": 3.071597695216206e-05
+          },
+          {
+            "attacker_total_mean": 20.83333333333333,
+            "balanced_error_probability": 3.612239567285107e-09,
+            "false_accept_probability": 2.65607919439027e-09,
+            "false_reject_probability": 4.568399940179944e-09,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 53,
+            "worst_error_probability": 4.568399940179944e-09
+          },
+          {
+            "attacker_total_mean": 52.08333333333333,
+            "balanced_error_probability": 3.095998313785464e-20,
+            "false_accept_probability": 3.602933244752166e-20,
+            "false_reject_probability": 2.5890633828187618e-20,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 131,
+            "worst_error_probability": 3.602933244752166e-20
+          }
+        ],
+        "inside_K_greater_than_n_regime": true,
+        "modes": 400,
+        "one_sided_projection_factor_bound": 0.11333333333333333
+      },
+      {
+        "K_over_n": 16.0,
+        "conditional_energy_absolute_projection_bound": 0.06,
+        "decisions": [
+          {
+            "attacker_total_mean": 0.5750000000000001,
+            "balanced_error_probability": 0.061135830520241644,
+            "false_accept_probability": 0.020717683004394926,
+            "false_reject_probability": 0.10155397803608836,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 3,
+            "worst_error_probability": 0.10155397803608836
+          },
+          {
+            "attacker_total_mean": 1.1500000000000001,
+            "balanced_error_probability": 0.013130196112532442,
+            "false_accept_probability": 0.006519070618918181,
+            "false_reject_probability": 0.019741321606146705,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 5,
+            "worst_error_probability": 0.019741321606146705
+          },
+          {
+            "attacker_total_mean": 2.8750000000000004,
+            "balanced_error_probability": 0.00021592864375122626,
+            "false_accept_probability": 0.00020473966147991154,
+            "false_reject_probability": 0.00022711762602254095,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 11,
+            "worst_error_probability": 0.00022711762602254095
+          },
+          {
+            "attacker_total_mean": 5.750000000000001,
+            "balanced_error_probability": 3.44671735575502e-07,
+            "false_accept_probability": 1.9398944701424337e-07,
+            "false_reject_probability": 4.953540241367606e-07,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 22,
+            "worst_error_probability": 4.953540241367606e-07
+          },
+          {
+            "attacker_total_mean": 11.500000000000002,
+            "balanced_error_probability": 1.083208035494635e-12,
+            "false_accept_probability": 9.2231140289155e-13,
+            "false_reject_probability": 1.2441046680977198e-12,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 43,
+            "worst_error_probability": 1.2441046680977198e-12
+          },
+          {
+            "attacker_total_mean": 28.750000000000004,
+            "balanced_error_probability": 6.473111452864232e-29,
+            "false_accept_probability": 4.3004822455840945e-29,
+            "false_reject_probability": 8.645740660144368e-29,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 107,
+            "worst_error_probability": 8.645740660144368e-29
+          }
+        ],
+        "inside_K_greater_than_n_regime": true,
+        "modes": 800,
+        "one_sided_projection_factor_bound": 0.06
+      },
+      {
+        "K_over_n": 20.48,
+        "conditional_energy_absolute_projection_bound": 0.04748603351955307,
+        "decisions": [
+          {
+            "attacker_total_mean": 0.46550279329608935,
+            "balanced_error_probability": 0.055688006126624195,
+            "false_accept_probability": 0.07992897063971402,
+            "false_reject_probability": 0.031447041613534364,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 2,
+            "worst_error_probability": 0.07992897063971402
+          },
+          {
+            "attacker_total_mean": 0.9310055865921787,
+            "balanced_error_probability": 0.010840432008980811,
+            "false_accept_probability": 0.015046162503964334,
+            "false_reject_probability": 0.00663470151399729,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 4,
+            "worst_error_probability": 0.015046162503964334
+          },
+          {
+            "attacker_total_mean": 2.3275139664804465,
+            "balanced_error_probability": 0.00011973403362378827,
+            "false_accept_probability": 0.000158195572614054,
+            "false_reject_probability": 8.127249463352254e-05,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 10,
+            "worst_error_probability": 0.000158195572614054
+          },
+          {
+            "attacker_total_mean": 4.655027932960893,
+            "balanced_error_probability": 9.21192044383013e-08,
+            "false_accept_probability": 1.142845548785919e-07,
+            "false_reject_probability": 6.99538539980107e-08,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 20,
+            "worst_error_probability": 1.142845548785919e-07
+          },
+          {
+            "attacker_total_mean": 9.310055865921786,
+            "balanced_error_probability": 7.544463585138053e-14,
+            "false_accept_probability": 8.206119100628817e-14,
+            "false_reject_probability": 6.882808069647287e-14,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 40,
+            "worst_error_probability": 8.206119100628817e-14
+          },
+          {
+            "attacker_total_mean": 23.275139664804467,
+            "balanced_error_probability": 8.195144140633643e-32,
+            "false_accept_probability": 5.300855353920702e-32,
+            "false_reject_probability": 1.1089432927346583e-31,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 100,
+            "worst_error_probability": 1.1089432927346583e-31
+          }
+        ],
+        "inside_K_greater_than_n_regime": true,
+        "modes": 1024,
+        "one_sided_projection_factor_bound": 0.04748603351955307
+      },
+      {
+        "K_over_n": 32.0,
+        "conditional_energy_absolute_projection_bound": 0.03090909090909091,
+        "decisions": [
+          {
+            "attacker_total_mean": 0.32045454545454544,
+            "balanced_error_probability": 0.03651799267288017,
+            "false_accept_probability": 0.04158894373222597,
+            "false_reject_probability": 0.031447041613534364,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 2,
+            "worst_error_probability": 0.04158894373222597
+          },
+          {
+            "attacker_total_mean": 0.6409090909090909,
+            "balanced_error_probability": 0.005434429321355844,
+            "false_accept_probability": 0.004234157128714397,
+            "false_reject_probability": 0.00663470151399729,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 4,
+            "worst_error_probability": 0.00663470151399729
+          },
+          {
+            "attacker_total_mean": 1.602272727272727,
+            "balanced_error_probability": 3.6051768349162544e-05,
+            "false_accept_probability": 4.586694070216813e-05,
+            "false_reject_probability": 2.6236595996156962e-05,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 9,
+            "worst_error_probability": 4.586694070216813e-05
+          },
+          {
+            "attacker_total_mean": 3.204545454545454,
+            "balanced_error_probability": 8.865066644543868e-09,
+            "false_accept_probability": 9.662788604749913e-09,
+            "false_reject_probability": 8.067344684337823e-09,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 18,
+            "worst_error_probability": 9.662788604749913e-09
+          },
+          {
+            "attacker_total_mean": 6.409090909090908,
+            "balanced_error_probability": 8.049547376293901e-16,
+            "false_accept_probability": 5.926836921288939e-16,
+            "false_reject_probability": 1.0172257831298862e-15,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 36,
+            "worst_error_probability": 1.0172257831298862e-15
+          },
+          {
+            "attacker_total_mean": 16.022727272727273,
+            "balanced_error_probability": 1.2533266778554874e-36,
+            "false_accept_probability": 1.3495548694515156e-36,
+            "false_reject_probability": 1.1570984862594592e-36,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 89,
+            "worst_error_probability": 1.3495548694515156e-36
+          }
+        ],
+        "inside_K_greater_than_n_regime": true,
+        "modes": 1600,
+        "one_sided_projection_factor_bound": 0.03090909090909091
+      },
+      {
+        "K_over_n": 64.0,
+        "conditional_energy_absolute_projection_bound": 0.015692307692307693,
+        "decisions": [
+          {
+            "attacker_total_mean": 0.18730769230769234,
+            "balanced_error_probability": 0.023472541677299043,
+            "false_accept_probability": 0.015498041741063725,
+            "false_reject_probability": 0.031447041613534364,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 2,
+            "worst_error_probability": 0.031447041613534364
+          },
+          {
+            "attacker_total_mean": 0.3746153846153847,
+            "balanced_error_probability": 0.004161225162360282,
+            "false_accept_probability": 0.006633643185119276,
+            "false_reject_probability": 0.001688807139601288,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 3,
+            "worst_error_probability": 0.006633643185119276
+          },
+          {
+            "attacker_total_mean": 0.9365384615384618,
+            "balanced_error_probability": 6.97944567853788e-06,
+            "false_accept_probability": 6.4137326339863286e-06,
+            "false_reject_probability": 7.545158723089432e-06,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 8,
+            "worst_error_probability": 7.545158723089432e-06
+          },
+          {
+            "attacker_total_mean": 1.8730769230769235,
+            "balanced_error_probability": 4.6558196924792475e-10,
+            "false_accept_probability": 1.8929605971024004e-10,
+            "false_reject_probability": 7.418678787856094e-10,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 16,
+            "worst_error_probability": 7.418678787856094e-10
+          },
+          {
+            "attacker_total_mean": 3.746153846153847,
+            "balanced_error_probability": 2.3672267466241002e-18,
+            "false_accept_probability": 1.963554716439718e-18,
+            "false_reject_probability": 2.770898776808483e-18,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 31,
+            "worst_error_probability": 2.770898776808483e-18
+          },
+          {
+            "attacker_total_mean": 9.365384615384617,
+            "balanced_error_probability": 6.598011794567893e-43,
+            "false_accept_probability": 4.3020102572483e-43,
+            "false_reject_probability": 8.894013331887487e-43,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 77,
+            "worst_error_probability": 8.894013331887487e-43
+          }
+        ],
+        "inside_K_greater_than_n_regime": true,
+        "modes": 3200,
+        "one_sided_projection_factor_bound": 0.015692307692307693
+      }
+    ],
+    "four_mode_t_chip_diagnostic": {
+      "bright_usable_count_case": {
+        "derived": {
+          "K_over_n": 0.08,
+          "factors_for_diagnostic_only": {
+            "goorden_simplified_factor": 0.9259259259259259,
+            "main_bound_to_honest_signal_ratio": 1.5740740740740742,
+            "phase_randomized_coherent_state_exact": 0.943458880000001,
+            "phase_randomized_coherent_state_jensen_bound": 0.9444444444444444,
+            "phase_randomized_coherent_sum_omitted_tail_mass": 0.0,
+            "quadrature_finite_focus_factor": 0.9567901234567902,
+            "sector_proportional_resend_click_weighted_exact": 0.9445232896000008,
+            "sector_proportional_resend_click_weighted_jensen_bound": 0.9454545454545454,
+            "sector_proportional_resend_sum_omitted_tail_mass": 0.0
+          },
+          "inside_n_less_than_K_theorem_setup": false,
+          "minimum_nbar_for_one_honest_signal_click_per_round": 9.523809523809524
+        },
+        "direct_public_transfer_emulator": {
+          "attacker_signal_factor": 1.0,
+          "equal_prior_bayes_error": 0.5,
+          "explanation": "A direct emulator of the public four-mode transfer map produces the honest Poisson distribution; every deterministic threshold has (FAR + FRR)/2 = 1/2.",
+          "total_variation_distance_from_honest": 0.0
+        },
+        "parameters": {
+          "background_clicks": 0.05,
+          "detector_efficiency": 0.7,
+          "key_return_efficiency": 0.25,
+          "mean_challenge_photons": 50.0,
+          "modes": 4,
+          "true_focused_fraction": 0.6
+        },
+        "state_estimation_only_extrapolation": [
+          {
+            "attacker_total_mean": 8.31388888888889,
+            "balanced_error_probability": 0.7202885942077178,
+            "false_accept_probability": 0.7234433934022613,
+            "false_reject_probability": 0.7171337950131744,
+            "honest_total_mean": 5.3,
+            "repetitions": 1,
+            "threshold_total_clicks": 7,
+            "worst_error_probability": 0.7234433934022613
+          },
+          {
+            "attacker_total_mean": 16.62777777777778,
+            "balanced_error_probability": 0.795225239535472,
+            "false_accept_probability": 0.7735383463355784,
+            "false_reject_probability": 0.8169121327353657,
+            "honest_total_mean": 10.6,
+            "repetitions": 2,
+            "threshold_total_clicks": 14,
+            "worst_error_probability": 0.8169121327353657
+          },
+          {
+            "attacker_total_mean": 41.56944444444445,
+            "balanced_error_probability": 0.903565262045383,
+            "false_accept_probability": 0.8977582488349246,
+            "false_reject_probability": 0.9093722752558414,
+            "honest_total_mean": 26.5,
+            "repetitions": 5,
+            "threshold_total_clicks": 34,
+            "worst_error_probability": 0.9093722752558414
+          },
+          {
+            "attacker_total_mean": 83.1388888888889,
+            "balanced_error_probability": 0.9669462708638463,
+            "false_accept_probability": 0.9694267964744977,
+            "false_reject_probability": 0.9644657452531948,
+            "honest_total_mean": 53.0,
+            "repetitions": 10,
+            "threshold_total_clicks": 67,
+            "worst_error_probability": 0.9694267964744977
+          },
+          {
+            "attacker_total_mean": 166.2777777777778,
+            "balanced_error_probability": 0.995344819100769,
+            "false_accept_probability": 0.9956002883815136,
+            "false_reject_probability": 0.9950893498200245,
+            "honest_total_mean": 106.0,
+            "repetitions": 20,
+            "threshold_total_clicks": 134,
+            "worst_error_probability": 0.9956002883815136
+          },
+          {
+            "attacker_total_mean": 415.6944444444445,
+            "balanced_error_probability": 0.999980462996993,
+            "false_accept_probability": 0.999980672435844,
+            "false_reject_probability": 0.9999802535581419,
+            "honest_total_mean": 265.0,
+            "repetitions": 50,
+            "threshold_total_clicks": 335,
+            "worst_error_probability": 0.999980672435844
+          }
+        ]
+      },
+      "n_less_than_K_case": {
+        "derived": {
+          "K_over_n": 1.3333333333333333,
+          "factors": {
+            "goorden_simplified_factor": 0.42857142857142855,
+            "main_bound_to_honest_signal_ratio": 0.9523809523809523,
+            "phase_randomized_coherent_state_exact": 0.544491762584919,
+            "phase_randomized_coherent_state_jensen_bound": 0.5714285714285714,
+            "phase_randomized_coherent_sum_omitted_tail_mass": 0.0,
+            "quadrature_finite_focus_factor": 0.6666666666666667,
+            "sector_proportional_resend_click_weighted_exact": 0.607344316553441,
+            "sector_proportional_resend_click_weighted_jensen_bound": 0.625,
+            "sector_proportional_resend_sum_omitted_tail_mass": 0.0
+          },
+          "focused_signal_clicks_per_round": 0.31499999999999995
+        },
+        "fatal_scope_failure": "Because the enrolled transform is public and only 4x4, the no-fast-lossless-emulator premise is not credible; a direct emulator has factor one regardless of nbar.",
+        "parameters": {
+          "background_clicks": 0.05,
+          "detector_efficiency": 0.7,
+          "key_return_efficiency": 0.25,
+          "mean_challenge_photons": 3.0,
+          "modes": 4,
+          "true_focused_fraction": 0.6
+        },
+        "state_estimation_only_decisions": [
+          {
+            "attacker_total_mean": 0.3499999999999999,
+            "balanced_error_probability": 0.4947542805796327,
+            "false_accept_probability": 0.29531191028128656,
+            "false_reject_probability": 0.6941966508779789,
+            "honest_total_mean": 0.36499999999999994,
+            "repetitions": 1,
+            "threshold_total_clicks": 1,
+            "worst_error_probability": 0.6941966508779789
+          },
+          {
+            "attacker_total_mean": 0.6999999999999998,
+            "balanced_error_probability": 0.4926618431493964,
+            "false_accept_probability": 0.5034146962085904,
+            "false_reject_probability": 0.4819089900902024,
+            "honest_total_mean": 0.7299999999999999,
+            "repetitions": 2,
+            "threshold_total_clicks": 1,
+            "worst_error_probability": 0.5034146962085904
+          },
+          {
+            "attacker_total_mean": 1.7499999999999996,
+            "balanced_error_probability": 0.4887807500889477,
+            "false_accept_probability": 0.5221216555112759,
+            "false_reject_probability": 0.4554398446666196,
+            "honest_total_mean": 1.8249999999999997,
+            "repetitions": 5,
+            "threshold_total_clicks": 2,
+            "worst_error_probability": 0.5221216555112759
+          },
+          {
+            "attacker_total_mean": 3.499999999999999,
+            "balanced_error_probability": 0.4840025660835916,
+            "false_accept_probability": 0.46336733209921466,
+            "false_reject_probability": 0.5046378000679685,
+            "honest_total_mean": 3.6499999999999995,
+            "repetitions": 10,
+            "threshold_total_clicks": 4,
+            "worst_error_probability": 0.5046378000679685
+          },
+          {
+            "attacker_total_mean": 6.999999999999998,
+            "balanced_error_probability": 0.4781606146552183,
+            "false_accept_probability": 0.5502889441513009,
+            "false_reject_probability": 0.40603228515913575,
+            "honest_total_mean": 7.299999999999999,
+            "repetitions": 20,
+            "threshold_total_clicks": 7,
+            "worst_error_probability": 0.5502889441513009
+          },
+          {
+            "attacker_total_mean": 17.499999999999996,
+            "balanced_error_probability": 0.4647130062470344,
+            "false_accept_probability": 0.4840033631321136,
+            "false_reject_probability": 0.4454226493619552,
+            "honest_total_mean": 18.249999999999996,
+            "repetitions": 50,
+            "threshold_total_clicks": 18,
+            "worst_error_probability": 0.4840033631321136
+          }
+        ]
+      }
+    },
+    "illustrative_hybrid_design": {
+      "adaptive_safe_binary_round_decisions": [
+        {
+          "attacker_click_probability_upper_bound": 0.46550279329608935,
+          "false_accept_probability_upper_bound": 0.46550279329608935,
+          "false_reject_probability": 0.0049915939069101745,
+          "honest_click_probability": 0.9950084060930898,
+          "repetitions": 1,
+          "threshold_rounds_with_one_or_more_accepted_clicks": 1,
+          "worst_error_probability_bound": 0.46550279329608935
+        },
+        {
+          "attacker_click_probability_upper_bound": 0.46550279329608935,
+          "false_accept_probability_upper_bound": 0.21669285056646168,
+          "false_reject_probability": 0.009958271804088845,
+          "honest_click_probability": 0.9950084060930898,
+          "repetitions": 2,
+          "threshold_rounds_with_one_or_more_accepted_clicks": 2,
+          "worst_error_probability_bound": 0.21669285056646168
+        },
+        {
+          "attacker_click_probability_upper_bound": 0.46550279329608935,
+          "false_accept_probability_upper_bound": 0.021858052098449827,
+          "false_reject_probability": 0.02471005004232056,
+          "honest_click_probability": 0.9950084060930898,
+          "repetitions": 5,
+          "threshold_rounds_with_one_or_more_accepted_clicks": 5,
+          "worst_error_probability_bound": 0.02471005004232056
+        },
+        {
+          "attacker_click_probability_upper_bound": 0.46550279329608935,
+          "false_accept_probability_upper_bound": 0.005963651392537704,
+          "false_reject_probability": 0.0010917594946782364,
+          "honest_click_probability": 0.9950084060930898,
+          "repetitions": 10,
+          "threshold_rounds_with_one_or_more_accepted_clicks": 9,
+          "worst_error_probability_bound": 0.005963651392537704
+        },
+        {
+          "attacker_click_probability_upper_bound": 0.46550279329608935,
+          "false_accept_probability_upper_bound": 6.265049926107033e-05,
+          "false_reject_probability": 0.0001330414069892856,
+          "honest_click_probability": 0.9950084060930898,
+          "repetitions": 20,
+          "threshold_rounds_with_one_or_more_accepted_clicks": 18,
+          "worst_error_probability_bound": 0.0001330414069892856
+        },
+        {
+          "attacker_click_probability_upper_bound": 0.46550279329608935,
+          "false_accept_probability_upper_bound": 1.0225775296910552e-09,
+          "false_reject_probability": 6.390730224927179e-09,
+          "honest_click_probability": 0.9950084060930898,
+          "repetitions": 50,
+          "threshold_rounds_with_one_or_more_accepted_clicks": 44,
+          "worst_error_probability_bound": 6.390730224927179e-09
+        }
+      ],
+      "architecture": "trusted phase-randomized K-mode weak-pulse shaper -> exact passive T-mixer -> sealed high-dimensional branch maps X,Y -> sum/difference ports -> computed matched analyzer -> power tap and photon counter",
+      "derived": {
+        "K_over_n": 20.48,
+        "attacker_click_mean_per_round_main_bound": 0.46550279329608935,
+        "conditional_energy_cap_multiplier_of_nominal_authentic_return": 1.0,
+        "conditional_return_photon_cap_at_analyzer_input": 12.5,
+        "detectable_return_click_budget_before_focus": 8.75,
+        "factors": {
+          "goorden_simplified_factor": 0.04655493482309125,
+          "main_bound_to_honest_signal_ratio": 0.07914338919925512,
+          "phase_randomized_coherent_state_exact": 0.047444777723304986,
+          "phase_randomized_coherent_state_jensen_bound": 0.04748603351955307,
+          "phase_randomized_coherent_sum_omitted_tail_mass": 0.0,
+          "quadrature_finite_focus_factor": 0.04810676598386096,
+          "sector_proportional_resend_click_weighted_exact": 0.04833095222671472,
+          "sector_proportional_resend_click_weighted_jensen_bound": 0.04837209302325581,
+          "sector_proportional_resend_sum_omitted_tail_mass": 0.0
+        },
+        "focused_signal_clicks_per_round": 5.25,
+        "honest_click_mean_per_round": 5.3
+      },
+      "optimized_total_count_decisions": [
+        {
+          "attacker_total_mean": 0.46550279329608935,
+          "balanced_error_probability": 0.055688006126624195,
+          "false_accept_probability": 0.07992897063971402,
+          "false_reject_probability": 0.031447041613534364,
+          "honest_total_mean": 5.3,
+          "repetitions": 1,
+          "threshold_total_clicks": 2,
+          "worst_error_probability": 0.07992897063971402
+        },
+        {
+          "attacker_total_mean": 0.9310055865921787,
+          "balanced_error_probability": 0.010840432008980811,
+          "false_accept_probability": 0.015046162503964334,
+          "false_reject_probability": 0.00663470151399729,
+          "honest_total_mean": 10.6,
+          "repetitions": 2,
+          "threshold_total_clicks": 4,
+          "worst_error_probability": 0.015046162503964334
+        },
+        {
+          "attacker_total_mean": 2.3275139664804465,
+          "balanced_error_probability": 0.00011973403362378827,
+          "false_accept_probability": 0.000158195572614054,
+          "false_reject_probability": 8.127249463352254e-05,
+          "honest_total_mean": 26.5,
+          "repetitions": 5,
+          "threshold_total_clicks": 10,
+          "worst_error_probability": 0.000158195572614054
+        },
+        {
+          "attacker_total_mean": 4.655027932960893,
+          "balanced_error_probability": 9.21192044383013e-08,
+          "false_accept_probability": 1.142845548785919e-07,
+          "false_reject_probability": 6.99538539980107e-08,
+          "honest_total_mean": 53.0,
+          "repetitions": 10,
+          "threshold_total_clicks": 20,
+          "worst_error_probability": 1.142845548785919e-07
+        },
+        {
+          "attacker_total_mean": 9.310055865921786,
+          "balanced_error_probability": 7.544463585138053e-14,
+          "false_accept_probability": 8.206119100628817e-14,
+          "false_reject_probability": 6.882808069647287e-14,
+          "honest_total_mean": 106.0,
+          "repetitions": 20,
+          "threshold_total_clicks": 40,
+          "worst_error_probability": 8.206119100628817e-14
+        },
+        {
+          "attacker_total_mean": 23.275139664804467,
+          "balanced_error_probability": 8.195144140633643e-32,
+          "false_accept_probability": 5.300855353920702e-32,
+          "false_reject_probability": 1.1089432927346583e-31,
+          "honest_total_mean": 265.0,
+          "repetitions": 50,
+          "threshold_total_clicks": 100,
+          "worst_error_probability": 1.1089432927346583e-31
+        }
+      ],
+      "parameters": {
+        "background_clicks": 0.05,
+        "detector_efficiency": 0.7,
+        "key_return_efficiency": 0.25,
+        "mean_challenge_photons": 50.0,
+        "modes": 1024,
+        "true_focused_fraction": 0.6
+      }
+    },
+    "interpretation": [
+      "The positive target is possession authentication or anti-counterfeit readout of a passive disorder-bearing token.",
+      "At the illustrative K=1024, nbar=50 point, the receiver model predicts strong count separation after a small number of fresh challenges.",
+      "This calculation is a design gate for an experiment, not evidence that a fabricated token is unclonable or that a protocol is secure.",
+      "The bare T-chip remains useful as a braid/control experiment, but it is not the physical key."
+    ],
+    "model": {
+      "adaptive_binary_tail_scope": "if every fresh round retains the conditional attacker mean bound, Markov bounds its click probability and a binomial upper tail remains valid for adaptive histories",
+      "assumptions": [
+        "trusted, calibrated challenge preparation and analyzer",
+        "tamper-resistant verifier/reader and authenticated decision path",
+        "fresh independent uniformly random K-mode challenge each round",
+        "weak coherent pulses with calibrated mean photon number and privately randomized global phase",
+        "full complex transfer operator enrolled; no finite reusable challenge list",
+        "stable passive key and independent stationary Poisson background",
+        "an accepted-response energy gate certifies, for every refined attacker outcome, a conditional mean return no larger than the calibrated authentic return budget over every spatial/modal, spectral, polarization, and timing degree of freedom capable of causing an accepted detector event",
+        "attacker performs challenge estimation and digital emulation",
+        "attacker cannot substitute a fast, sufficiently low-loss physical realization of H or an isometric dilation"
+      ],
+      "attacker_per_round_click_mean": "background + absolute_projection_factor * Lambda * detector_efficiency, with illustrative Lambda = return_efficiency * nbar",
+      "decision": "accept when the sum of focused-detector clicks over fresh rounds reaches an integer threshold chosen to minimize the larger of exact Poisson FAR and FRR",
+      "honest_per_round_click_mean": "background + nbar * focused_fraction * return_efficiency * detector_efficiency",
+      "main_attacker_factor": "(nbar + 1) / (nbar + K)",
+      "main_bound_scope": "Jensen bound for arbitrary-POVM estimation of private, uniformly phase-randomized, freshly sampled Haar K-dimensional coherent states. Every refined attacker outcome is assumed to obey the accepted-response conditional energy cap. The model excludes a fast, sufficiently low-loss physical realization of the enrolled K-input-mode transfer map H directly (or an isometric dilation thereof).",
+      "not_covered": [
+        "physical cloning or substitution of the scattering key",
+        "phishing, relay, replay, database poisoning, or verifier compromise",
+        "side channels, Trojan-horse light, detector blinding, or denial of service",
+        "full count-valued adaptive or correlated tails outside the Poisson surrogate; only the reported binary-round bound covers adaptive histories",
+        "imperfect global-phase randomization or a finite challenge set",
+        "evasion or miscalibration of the conditional accepted-response energy cap"
+      ],
+      "poisson_tail_scope": "exact for the stipulated independent Poisson click model; a mean fidelity bound alone does not prove Poisson attacker tails against correlated or adaptive strategies"
+    },
+    "status": "deterministic analytical study; no hardware demonstration",
+    "study": "passive high-dimensional optical-key receiver model",
+    "t_chip_role": {
+      "dimensionality_warning": "A fixed expansion of four controllable amplitudes into many pixels still has challenge dimension at most four. The K=1024 point requires 1024 independently controlled challenge modes; the T-chip does not manufacture those dimensions.",
+      "positive_role": "The exact mixer exposes sum and difference ports of two independently fabricated high-dimensional passive branch maps X and Y; X=BA and Y=AB is an optional commutator reference. No advantage over a generic balanced coupler has been demonstrated.",
+      "security_statement": "The public deterministic four-mode Burau/T-chip transform is not the secret and provides no unclonability by itself.",
+      "verified_fixed_passive_mixer": {
+        "application_order_braid_word": "sigma_2^-1 sigma_1 sigma_2^-1",
+        "application_order_letter_codes": [
+          3,
+          0,
+          3
+        ],
+        "baseline": "A conventional 50:50 directional coupler or MZI implements the same balanced recombination up to port phases and is the required cost, loss, and stability baseline.",
+        "branch_bias_radians": 4.539962982671842,
+        "commutator_port_identity": "For unitary A and B and normalized x, P_minus = ||[B,A]x||^2/4 = [1-Re x^dagger A^dagger B^dagger A B x]/2, and P_plus + P_minus = 1.",
+        "commutator_probability_identity_residual": 8.326672684688674e-17,
+        "controlled_order_specialization": "Setting X=BA and Y=AB makes the difference port [B,A]x/2.",
+        "deployable_branch_topology": "Independent high-dimensional branches X and Y can be fabricated and enrolled directly. Exact reuse of A and B in opposite orders is required only for the optional commutator specialization.",
+        "generic_branch_action": "With an equal path superposition and this fixed branch bias, the two output ports are, up to fixed port phases, (X+Y)x/2 and (X-Y)x/2 for arbitrary branch maps X,Y.",
+        "matrix": {
+          "imaginary": [
+            [
+              -0.674155349874503,
+              0.27059805007309856
+            ],
+            [
+              0.27059805007309856,
+              -0.32584465012549685
+            ]
+          ],
+          "real": [
+            [
+              0.21334142644030982,
+              -0.6532814824381882
+            ],
+            [
+              -0.6532814824381878,
+              -0.6275549888134048
+            ]
+          ]
+        },
+        "maximum_entry_magnitude_residual_from_one_over_sqrt_two": 3.3306690738754696e-16,
+        "omega": 0.7853981633974483,
+        "omega_exact": "pi/4",
+        "phase_equivalence_residual_to_standard_50_50_coupler": 6.730369402342474e-16,
+        "plus_minus_probability_normalization_residual": 3.3306690738754696e-16,
+        "primitive_codebook": {
+          "0": "sigma_1",
+          "1": "sigma_1^-1",
+          "2": "sigma_2",
+          "3": "sigma_2^-1"
+        },
+        "security_scope": "This exact passive identity supplies no secrecy or unclonability and does not improve the state-estimation bound by itself.",
+        "sum_difference_coefficient_residual": 4.887365971079175e-16,
+        "symmetry_residual": 4.710277376051325e-16,
+        "unitarity_residual": 1.0532500405730103e-15
+      },
+      "verified_stacked_map_and_defect_bound": {
+        "declared_isometry_defect": 0.03,
+        "defect_bound_trials": 512,
+        "dimension": 7,
+        "maximum_overlap_preservation_residual": 2.7755575615628914e-16,
+        "maximum_sampled_defect_bound_violation": 0.0,
+        "measured_isometry_defect": 0.030000000000000828,
+        "minimum_sampled_defect_bound_slack": 0.0009255155549528606,
+        "overlap_trials": 128,
+        "stacked_map_isometry_residual": 6.292196408929318e-16
+      }
+    }
+  },
+  "scope": "independent security-control, passive-security, inference, inference-scaling, classical digital-twin, and compiler studies; not experimental hardware results",
   "security": {
     "attack_model": "enumeration of all fixed-length braid words",
     "attack_results_by_noise": {
       "0.0005": {
+        "exact_class_recovery_95_percent_wilson_interval": [
+          [
+            0.628209630575965,
+            0.676343749910806
+          ],
+          [
+            0.7494028504105102,
+            0.7918776118520047
+          ],
+          [
+            0.7769325374819857,
+            0.8175450218087862
+          ],
+          [
+            0.9181251373459254,
+            0.9436678345118379
+          ],
+          [
+            0.9341120027548854,
+            0.9569393724684191
+          ],
+          [
+            0.9518307049496499,
+            0.9711389284906089
+          ],
+          [
+            0.9835660953982986,
+            0.9939305624959235
+          ],
+          [
+            0.9962333345857864,
+            0.9998823072683257
+          ]
+        ],
         "exact_class_recovery_rate": [
           0.6526666666666666,
           0.7713333333333333,
@@ -3784,9 +5399,53 @@
           2.9441402439666578e-05,
           1.0404336168747181e-05,
           4.1484641121672465e-07
+        ],
+        "mean_full_curve_rmse_over_noise": [
+          9.821840320046796,
+          4.679200597325977,
+          3.6872064605390302,
+          0.8616304281520661,
+          0.2061363154411043,
+          0.05888280487933315,
+          0.020808672337494363,
+          0.0008296928224334493
         ]
       },
       "0.002": {
+        "exact_class_recovery_95_percent_wilson_interval": [
+          [
+            0.3827360242725105,
+            0.4324040635542964
+          ],
+          [
+            0.5414507398271358,
+            0.5915420027435068
+          ],
+          [
+            0.58035923912081,
+            0.629769294140805
+          ],
+          [
+            0.7452842084934089,
+            0.7880166892148673
+          ],
+          [
+            0.7727947334785875,
+            0.8137032612579459
+          ],
+          [
+            0.8731585444191344,
+            0.9048489996191241
+          ],
+          [
+            0.901592932354254,
+            0.9296117087122615
+          ],
+          [
+            0.9638923721492686,
+            0.980356100102293
+          ]
+        ],
         "exact_class_recovery_rate": [
           0.4073333333333333,
           0.5666666666666667,
@@ -3806,9 +5465,53 @@
           0.00017312182529148826,
           0.00012281549328249026,
           2.4555878248545836e-05
+        ],
+        "mean_full_curve_rmse_over_noise": [
+          4.208821579870587,
+          2.2533228343107594,
+          1.850745458653308,
+          0.720366053567156,
+          0.39587226611794035,
+          0.08656091264574413,
+          0.06140774664124513,
+          0.012277939124272918
         ]
       },
       "0.01": {
+        "exact_class_recovery_95_percent_wilson_interval": [
+          [
+            0.12587993087477012,
+            0.16127896894658622
+          ],
+          [
+            0.2643500794578743,
+            0.31007314431606986
+          ],
+          [
+            0.33871617790386577,
+            0.38731877240061074
+          ],
+          [
+            0.42035339342971756,
+            0.47059255766235564
+          ],
+          [
+            0.509368082054686,
+            0.559788144082048
+          ],
+          [
+            0.5924667581384538,
+            0.6416004687858768
+          ],
+          [
+            0.6417348740634559,
+            0.6894170549374439
+          ],
+          [
+            0.7274670190746881,
+            0.7712557655652212
+          ]
+        ],
         "exact_class_recovery_rate": [
           0.14266666666666666,
           0.2866666666666667,
@@ -3828,10 +5531,21 @@
           0.00239620372721138,
           0.0016276383645087496,
           0.001094008224283968
+        ],
+        "mean_full_curve_rmse_over_noise": [
+          1.3019715489918644,
+          0.9711010621667056,
+          0.8120453612867484,
+          0.5459102725667612,
+          0.37619219242991836,
+          0.239620372721138,
+          0.16276383645087497,
+          0.1094008224283968
         ]
       }
     },
     "attack_target_sampling": "uniform over distinct response classes",
+    "centered_response_matrix_numerical_rank": 35,
     "challenge_count": 72,
     "challenge_phases": [
       0.06,
@@ -3911,14 +5625,23 @@
     "challenges_per_definiteness_component": 36,
     "dimensions_for_99_9_percent_variance": 14,
     "dimensions_for_99_percent_variance": 10,
+    "distinct_classes_among_freely_reduced_words": 36,
     "distinct_sampled_response_classes": 36,
     "enumerated_words": 1024,
+    "freely_reduced_word_prior_class_min_entropy_bits": 2.3398500028846247,
+    "freely_reduced_word_prior_class_shannon_entropy_bits": 4.4981116143984,
+    "freely_reduced_words": 324,
     "largest_equivalent_word_class": 220,
     "noise_standard_deviations": [
       0.0005,
       0.002,
       0.01
     ],
+    "off_grid_equivalence_validation": {
+      "maximum_within_class_absolute_response_spread": 4.440892098500626e-16,
+      "phases_per_definiteness_component": 20,
+      "seed": 21701
+    },
     "probe_counts": [
       1,
       2,
@@ -3929,6 +5652,90 @@
       12,
       16
     ],
+    "raw_word_prior_class_min_entropy_bits": 2.2186402864753405,
+    "raw_word_prior_class_shannon_entropy_bits": 3.81082542152068,
+    "same_sided_projective_spectrum_symmetry_audit": {
+      "assertion_tolerance": 1e-10,
+      "burnside_formula": "(4^L + 4^ceil(L/2) + 1_{L even} 4^(L/2)) / 4",
+      "generator_checks_on_main_and_validation_phases": {
+        "maximum_generator_exchange_residual": 7.570711667007543e-16,
+        "maximum_signed_generator_transpose_residual": 1.229418488699069e-15
+      },
+      "maximum_main_grid_reversal_response_residual": 4.440892098500626e-16,
+      "maximum_main_grid_tau_after_inverse_response_residual": 4.440892098500626e-16,
+      "maximum_validation_grid_reversal_response_residual": 4.440892098500626e-16,
+      "maximum_validation_grid_tau_after_inverse_response_residual": 4.440892098500626e-16,
+      "orbit_counts": [
+        {
+          "burnside_response_orbit_upper_bound": 2,
+          "enumerated_symmetry_orbits": 2,
+          "fixed_by_identity": 4,
+          "fixed_by_nonidentity_composition": 0,
+          "fixed_by_reversal": 4,
+          "fixed_by_tau_after_inverse": 0,
+          "raw_signed_words": 4,
+          "word_length": 1
+        },
+        {
+          "burnside_response_orbit_upper_bound": 6,
+          "enumerated_symmetry_orbits": 6,
+          "fixed_by_identity": 16,
+          "fixed_by_nonidentity_composition": 0,
+          "fixed_by_reversal": 4,
+          "fixed_by_tau_after_inverse": 4,
+          "raw_signed_words": 16,
+          "word_length": 2
+        },
+        {
+          "burnside_response_orbit_upper_bound": 20,
+          "enumerated_symmetry_orbits": 20,
+          "fixed_by_identity": 64,
+          "fixed_by_nonidentity_composition": 0,
+          "fixed_by_reversal": 16,
+          "fixed_by_tau_after_inverse": 0,
+          "raw_signed_words": 64,
+          "word_length": 3
+        },
+        {
+          "burnside_response_orbit_upper_bound": 72,
+          "enumerated_symmetry_orbits": 72,
+          "fixed_by_identity": 256,
+          "fixed_by_nonidentity_composition": 0,
+          "fixed_by_reversal": 16,
+          "fixed_by_tau_after_inverse": 16,
+          "raw_signed_words": 256,
+          "word_length": 4
+        },
+        {
+          "burnside_response_orbit_upper_bound": 272,
+          "enumerated_symmetry_orbits": 272,
+          "fixed_by_identity": 1024,
+          "fixed_by_nonidentity_composition": 0,
+          "fixed_by_reversal": 64,
+          "fixed_by_tau_after_inverse": 0,
+          "raw_signed_words": 1024,
+          "word_length": 5
+        },
+        {
+          "burnside_response_orbit_upper_bound": 1056,
+          "enumerated_symmetry_orbits": 1056,
+          "fixed_by_identity": 4096,
+          "fixed_by_nonidentity_composition": 0,
+          "fixed_by_reversal": 64,
+          "fixed_by_tau_after_inverse": 64,
+          "raw_signed_words": 4096,
+          "word_length": 6
+        }
+      ],
+      "scope": "same-sided dressing D_S(M)=(M tensor I) S (M tensor I), block-diagonal S, and responses depending only on the projective spectrum",
+      "symbolic_checks": {
+        "generator_exchange": "beta_2 = P beta_1 P",
+        "same_sided_transpose_similarity": "D_S(M^T) = T^-1 D_S(M) T for block-diagonal S",
+        "tau_inverse_projective_conjugacy": "P M^-1 P = det(M)^-1 Z M^T Z",
+        "unitarized_generator_transpose": "U_i^T = U_i from C^2 = epsilon J and 1+s^2=(s+s^-1)s"
+      }
+    },
+    "sampled_response_class_capacity_bits": 5.169925001442312,
     "seed": 1701,
     "selected_probe_indices": [
       2,

@@ -8,6 +8,8 @@ from pathlib import Path
 from programs.compiler.reproduce import run_compiler_study
 from programs.digital_twin.reproduce import run_digital_twin
 from programs.inference.reproduce import run_inference_probe
+from programs.inference_scaling.reproduce import run_inference_scaling
+from programs.passive_security.reproduce import run_passive_security_study
 from programs.security.reproduce import run_security_probe
 
 
@@ -16,16 +18,21 @@ RESULTS_PATH = Path(__file__).resolve().parent / "results" / "programs_summary.j
 
 def main() -> None:
     security = run_security_probe()
+    passive_security = run_passive_security_study()
     inference = run_inference_probe()
+    inference_scaling = run_inference_scaling()
     digital_twin = run_digital_twin()
     compiler = run_compiler_study()
     summary = {
         "scope": (
-            "independent security, inference, classical digital-twin, and "
-            "compiler studies; not manuscript results"
+            "independent security-control, passive-security, inference, "
+            "inference-scaling, classical digital-twin, and compiler studies; "
+            "not experimental hardware results"
         ),
         "security": security,
+        "passive_security": passive_security,
         "inference": inference,
+        "inference_scaling": inference_scaling,
         "digital_twin": digital_twin,
         "compiler": compiler,
     }

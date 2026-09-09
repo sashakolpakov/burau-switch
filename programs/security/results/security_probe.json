@@ -2,6 +2,40 @@
   "attack_model": "enumeration of all fixed-length braid words",
   "attack_results_by_noise": {
     "0.0005": {
+      "exact_class_recovery_95_percent_wilson_interval": [
+        [
+          0.628209630575965,
+          0.676343749910806
+        ],
+        [
+          0.7494028504105102,
+          0.7918776118520047
+        ],
+        [
+          0.7769325374819857,
+          0.8175450218087862
+        ],
+        [
+          0.9181251373459254,
+          0.9436678345118379
+        ],
+        [
+          0.9341120027548854,
+          0.9569393724684191
+        ],
+        [
+          0.9518307049496499,
+          0.9711389284906089
+        ],
+        [
+          0.9835660953982986,
+          0.9939305624959235
+        ],
+        [
+          0.9962333345857864,
+          0.9998823072683257
+        ]
+      ],
       "exact_class_recovery_rate": [
         0.6526666666666666,
         0.7713333333333333,
@@ -21,9 +55,53 @@
         2.9441402439666578e-05,
         1.0404336168747181e-05,
         4.1484641121672465e-07
+      ],
+      "mean_full_curve_rmse_over_noise": [
+        9.821840320046796,
+        4.679200597325977,
+        3.6872064605390302,
+        0.8616304281520661,
+        0.2061363154411043,
+        0.05888280487933315,
+        0.020808672337494363,
+        0.0008296928224334493
       ]
     },
     "0.002": {
+      "exact_class_recovery_95_percent_wilson_interval": [
+        [
+          0.3827360242725105,
+          0.4324040635542964
+        ],
+        [
+          0.5414507398271358,
+          0.5915420027435068
+        ],
+        [
+          0.58035923912081,
+          0.629769294140805
+        ],
+        [
+          0.7452842084934089,
+          0.7880166892148673
+        ],
+        [
+          0.7727947334785875,
+          0.8137032612579459
+        ],
+        [
+          0.8731585444191344,
+          0.9048489996191241
+        ],
+        [
+          0.901592932354254,
+          0.9296117087122615
+        ],
+        [
+          0.9638923721492686,
+          0.980356100102293
+        ]
+      ],
       "exact_class_recovery_rate": [
         0.4073333333333333,
         0.5666666666666667,
@@ -43,9 +121,53 @@
         0.00017312182529148826,
         0.00012281549328249026,
         2.4555878248545836e-05
+      ],
+      "mean_full_curve_rmse_over_noise": [
+        4.208821579870587,
+        2.2533228343107594,
+        1.850745458653308,
+        0.720366053567156,
+        0.39587226611794035,
+        0.08656091264574413,
+        0.06140774664124513,
+        0.012277939124272918
       ]
     },
     "0.01": {
+      "exact_class_recovery_95_percent_wilson_interval": [
+        [
+          0.12587993087477012,
+          0.16127896894658622
+        ],
+        [
+          0.2643500794578743,
+          0.31007314431606986
+        ],
+        [
+          0.33871617790386577,
+          0.38731877240061074
+        ],
+        [
+          0.42035339342971756,
+          0.47059255766235564
+        ],
+        [
+          0.509368082054686,
+          0.559788144082048
+        ],
+        [
+          0.5924667581384538,
+          0.6416004687858768
+        ],
+        [
+          0.6417348740634559,
+          0.6894170549374439
+        ],
+        [
+          0.7274670190746881,
+          0.7712557655652212
+        ]
+      ],
       "exact_class_recovery_rate": [
         0.14266666666666666,
         0.2866666666666667,
@@ -65,10 +187,21 @@
         0.00239620372721138,
         0.0016276383645087496,
         0.001094008224283968
+      ],
+      "mean_full_curve_rmse_over_noise": [
+        1.3019715489918644,
+        0.9711010621667056,
+        0.8120453612867484,
+        0.5459102725667612,
+        0.37619219242991836,
+        0.239620372721138,
+        0.16276383645087497,
+        0.1094008224283968
       ]
     }
   },
   "attack_target_sampling": "uniform over distinct response classes",
+  "centered_response_matrix_numerical_rank": 35,
   "challenge_count": 72,
   "challenge_phases": [
     0.06,
@@ -148,14 +281,23 @@
   "challenges_per_definiteness_component": 36,
   "dimensions_for_99_9_percent_variance": 14,
   "dimensions_for_99_percent_variance": 10,
+  "distinct_classes_among_freely_reduced_words": 36,
   "distinct_sampled_response_classes": 36,
   "enumerated_words": 1024,
+  "freely_reduced_word_prior_class_min_entropy_bits": 2.3398500028846247,
+  "freely_reduced_word_prior_class_shannon_entropy_bits": 4.4981116143984,
+  "freely_reduced_words": 324,
   "largest_equivalent_word_class": 220,
   "noise_standard_deviations": [
     0.0005,
     0.002,
     0.01
   ],
+  "off_grid_equivalence_validation": {
+    "maximum_within_class_absolute_response_spread": 4.440892098500626e-16,
+    "phases_per_definiteness_component": 20,
+    "seed": 21701
+  },
   "probe_counts": [
     1,
     2,
@@ -166,6 +308,90 @@
     12,
     16
   ],
+  "raw_word_prior_class_min_entropy_bits": 2.2186402864753405,
+  "raw_word_prior_class_shannon_entropy_bits": 3.81082542152068,
+  "same_sided_projective_spectrum_symmetry_audit": {
+    "assertion_tolerance": 1e-10,
+    "burnside_formula": "(4^L + 4^ceil(L/2) + 1_{L even} 4^(L/2)) / 4",
+    "generator_checks_on_main_and_validation_phases": {
+      "maximum_generator_exchange_residual": 7.570711667007543e-16,
+      "maximum_signed_generator_transpose_residual": 1.229418488699069e-15
+    },
+    "maximum_main_grid_reversal_response_residual": 4.440892098500626e-16,
+    "maximum_main_grid_tau_after_inverse_response_residual": 4.440892098500626e-16,
+    "maximum_validation_grid_reversal_response_residual": 4.440892098500626e-16,
+    "maximum_validation_grid_tau_after_inverse_response_residual": 4.440892098500626e-16,
+    "orbit_counts": [
+      {
+        "burnside_response_orbit_upper_bound": 2,
+        "enumerated_symmetry_orbits": 2,
+        "fixed_by_identity": 4,
+        "fixed_by_nonidentity_composition": 0,
+        "fixed_by_reversal": 4,
+        "fixed_by_tau_after_inverse": 0,
+        "raw_signed_words": 4,
+        "word_length": 1
+      },
+      {
+        "burnside_response_orbit_upper_bound": 6,
+        "enumerated_symmetry_orbits": 6,
+        "fixed_by_identity": 16,
+        "fixed_by_nonidentity_composition": 0,
+        "fixed_by_reversal": 4,
+        "fixed_by_tau_after_inverse": 4,
+        "raw_signed_words": 16,
+        "word_length": 2
+      },
+      {
+        "burnside_response_orbit_upper_bound": 20,
+        "enumerated_symmetry_orbits": 20,
+        "fixed_by_identity": 64,
+        "fixed_by_nonidentity_composition": 0,
+        "fixed_by_reversal": 16,
+        "fixed_by_tau_after_inverse": 0,
+        "raw_signed_words": 64,
+        "word_length": 3
+      },
+      {
+        "burnside_response_orbit_upper_bound": 72,
+        "enumerated_symmetry_orbits": 72,
+        "fixed_by_identity": 256,
+        "fixed_by_nonidentity_composition": 0,
+        "fixed_by_reversal": 16,
+        "fixed_by_tau_after_inverse": 16,
+        "raw_signed_words": 256,
+        "word_length": 4
+      },
+      {
+        "burnside_response_orbit_upper_bound": 272,
+        "enumerated_symmetry_orbits": 272,
+        "fixed_by_identity": 1024,
+        "fixed_by_nonidentity_composition": 0,
+        "fixed_by_reversal": 64,
+        "fixed_by_tau_after_inverse": 0,
+        "raw_signed_words": 1024,
+        "word_length": 5
+      },
+      {
+        "burnside_response_orbit_upper_bound": 1056,
+        "enumerated_symmetry_orbits": 1056,
+        "fixed_by_identity": 4096,
+        "fixed_by_nonidentity_composition": 0,
+        "fixed_by_reversal": 64,
+        "fixed_by_tau_after_inverse": 64,
+        "raw_signed_words": 4096,
+        "word_length": 6
+      }
+    ],
+    "scope": "same-sided dressing D_S(M)=(M tensor I) S (M tensor I), block-diagonal S, and responses depending only on the projective spectrum",
+    "symbolic_checks": {
+      "generator_exchange": "beta_2 = P beta_1 P",
+      "same_sided_transpose_similarity": "D_S(M^T) = T^-1 D_S(M) T for block-diagonal S",
+      "tau_inverse_projective_conjugacy": "P M^-1 P = det(M)^-1 Z M^T Z",
+      "unitarized_generator_transpose": "U_i^T = U_i from C^2 = epsilon J and 1+s^2=(s+s^-1)s"
+    }
+  },
+  "sampled_response_class_capacity_bits": 5.169925001442312,
   "seed": 1701,
   "selected_probe_indices": [
     2,

@@ -1,0 +1,381 @@
+{
+  "condition_number_convention": "sigma_max/sigma_min of the real Hilbert--Schmidt coordinate matrix whose rows are rank-one output projectors; the reported primary condition includes the identity direction and uses singular-value rank threshold 1e-10",
+  "condition_seed": 20260908,
+  "dimensions_tested": [
+    3,
+    4,
+    5,
+    7,
+    11,
+    13
+  ],
+  "interpretation": "Complete MUBs are tight on the traceless Hermitian subspace and remain well conditioned as d grows. Random banks at the rank-bound minimum are generically full rank in this sample but develop severe, heavy-tailed noise amplification. Under the declared fixed detected-light model, the spectral scorer follows approximately sqrt(d/N) normalized error and the complete MUB bank approximately d/sqrt(N).",
+  "limitations": [
+    "No Burau-derived compilation is performed or implied.",
+    "Complete mutually unbiased bases are guaranteed in prime-power dimensions, not in every dimension; only the listed constructions are implemented here.",
+    "The detector budget is fixed after optical losses and therefore is not an end-to-end source-energy comparison.",
+    "The model omits component loss, detector gain mismatch, quantization, laser noise, thermal crosstalk, and transfer-matrix drift.",
+    "The random-bank tails are finite deterministic Monte Carlo samples, not an asymptotic theorem."
+  ],
+  "mub_construction": {
+    "dimension_4": "two-qubit stabilizer bases from commuting Pauli classes {ZI,IZ}, {XI,IX}, {YI,IY}, {XY,YZ}, {XZ,ZY}",
+    "odd_prime_dimensions": [
+      3,
+      5,
+      7,
+      11,
+      13
+    ],
+    "odd_prime_formula": "computational basis plus rows d^(-1/2) exp[2 pi i (a n^2 + b n)/d], with a,b,n in Z_d"
+  },
+  "noise_model": {
+    "budget_scope": "post-fanout, post-coupling, post-mesh detected electrons; source power and component insertion loss are not modeled",
+    "detector_model": "Poisson counts plus additive Gaussian read noise; total detected budget divided equally over settings; each setting normalized to unit summed intensity after clipping",
+    "input_states": "normalized complex-Gaussian vectors (Haar-distributed pure states)",
+    "observables": "independent random traceless Hermitian matrices with unit Frobenius norm",
+    "read_noise_electrons_rms_per_output": 5.0,
+    "samples_per_trial": 1200,
+    "total_detected_photoelectrons_per_inference": 1000000.0
+  },
+  "noise_seed": 260908,
+  "resource_scaling": {
+    "parallel_generic_minimum_bank": "d+1 settings and d(d+1) detectors; d+1 independently instantiated universal meshes contain (d+1)d(d-1)/2 generic two-mode cells, while specializing the computational-basis branch as a direct detector path reduces this to d^2(d-1)/2",
+    "structured_mub_opportunity": "the odd-prime chirp bases factor into a Fourier transform and basis-dependent diagonal phases, so a specialized implementation need not pay the independent-generic-mesh cell count",
+    "task_specific_spectral": "one generic d-mode unitary, d detectors, d(d-1)/2 generic two-mode cells, and O(d) path depth",
+    "time_multiplexed_generic_minimum_bank": "one reusable O(d^2)-cell universal mesh and d detectors, at the cost of d+1 sequential settings and mesh reprogramming"
+  },
+  "results_by_dimension": {
+    "11": {
+      "condition_trials_per_random_architecture": 20,
+      "frame_condition_number": {
+        "complete_mub": 3.4641016151378548,
+        "complete_mub_centered_traceless_subspace": 1.0000000000000586,
+        "complete_mub_closed_form_including_identity": 3.4641016151377544,
+        "haar_minimum_d_plus_1": {
+          "maximum": 8949.055560105711,
+          "median": 677.7515133152381,
+          "p10": 296.3829936343177,
+          "p90": 3763.8551366735974
+        },
+        "haar_overcomplete_2d": {
+          "maximum": 12.913232417174683,
+          "median": 11.970396266861139,
+          "p10": 11.357786219129762,
+          "p90": 12.635116852431011
+        },
+        "sampled_haar_full_rank_fraction": {
+          "2d_settings": 1.0,
+          "d_plus_1_settings": 1.0
+        }
+      },
+      "mub_validation": {
+        "maximum_unbiasedness_error": 1.1449174941446927e-14,
+        "maximum_unitarity_error": 9.124336313680766e-14
+      },
+      "noise_trials_per_architecture": 10,
+      "normalized_score_rmse": {
+        "complete_mub_d_plus_1_settings": {
+          "maximum": 0.011746708599189679,
+          "median": 0.01138719376679432,
+          "p10": 0.011213508835944502,
+          "p90": 0.011725402782357381
+        },
+        "haar_minimum_d_plus_1_settings": {
+          "maximum": 2.172607638639403,
+          "median": 0.1729323645727226,
+          "p10": 0.08074062969373075,
+          "p90": 0.7162704866261507
+        },
+        "haar_overcomplete_2d_settings": {
+          "maximum": 0.0205234801440079,
+          "median": 0.01607517964213051,
+          "p10": 0.014911288450390671,
+          "p90": 0.019324491588299898
+        },
+        "spectral_one_setting": {
+          "maximum": 0.0033895579630326728,
+          "median": 0.003269957399853192,
+          "p10": 0.0031939668613983753,
+          "p90": 0.0033891096270388795
+        }
+      }
+    },
+    "13": {
+      "condition_trials_per_random_architecture": 12,
+      "frame_condition_number": {
+        "complete_mub": 3.7416573867741008,
+        "complete_mub_centered_traceless_subspace": 1.0000000000000846,
+        "complete_mub_closed_form_including_identity": 3.7416573867739413,
+        "haar_minimum_d_plus_1": {
+          "maximum": 16069.147024669594,
+          "median": 2465.9677937487786,
+          "p10": 1181.406340372455,
+          "p90": 10179.593501070574
+        },
+        "haar_overcomplete_2d": {
+          "maximum": 14.263240979270668,
+          "median": 13.18431432557545,
+          "p10": 12.78519123869874,
+          "p90": 14.068089635081298
+        },
+        "sampled_haar_full_rank_fraction": {
+          "2d_settings": 1.0,
+          "d_plus_1_settings": 1.0
+        }
+      },
+      "mub_validation": {
+        "maximum_unbiasedness_error": 1.49741330446318e-14,
+        "maximum_unitarity_error": 1.5605684557657854e-13
+      },
+      "noise_trials_per_architecture": 8,
+      "normalized_score_rmse": {
+        "complete_mub_d_plus_1_settings": {
+          "maximum": 0.013858285317590724,
+          "median": 0.01329705554185212,
+          "p10": 0.012904787571556695,
+          "p90": 0.013766161438508239
+        },
+        "haar_minimum_d_plus_1_settings": {
+          "maximum": 0.4018848182913783,
+          "median": 0.25120763755623177,
+          "p10": 0.12754909053786903,
+          "p90": 0.3844929358763942
+        },
+        "haar_overcomplete_2d_settings": {
+          "maximum": 0.02194309914962556,
+          "median": 0.020485994677125946,
+          "p10": 0.018169554206419157,
+          "p90": 0.021549471567140367
+        },
+        "spectral_one_setting": {
+          "maximum": 0.0037084733298940013,
+          "median": 0.003621896397363984,
+          "p10": 0.003591021731937391,
+          "p90": 0.0036941025949102256
+        }
+      }
+    },
+    "3": {
+      "condition_trials_per_random_architecture": 80,
+      "frame_condition_number": {
+        "complete_mub": 2.0000000000000004,
+        "complete_mub_centered_traceless_subspace": 1.0000000000000009,
+        "complete_mub_closed_form_including_identity": 2.0,
+        "haar_minimum_d_plus_1": {
+          "maximum": 2541.3164861147307,
+          "median": 19.17548063712756,
+          "p10": 8.927089211432225,
+          "p90": 123.00300612425033
+        },
+        "haar_overcomplete_2d": {
+          "maximum": 11.770320667321867,
+          "median": 5.722022913808228,
+          "p10": 4.390960147331416,
+          "p90": 8.25102438456647
+        },
+        "sampled_haar_full_rank_fraction": {
+          "2d_settings": 1.0,
+          "d_plus_1_settings": 1.0
+        }
+      },
+      "mub_validation": {
+        "maximum_unbiasedness_error": 1.4988010832439613e-15,
+        "maximum_unitarity_error": 1.5464501043030916e-15
+      },
+      "noise_trials_per_architecture": 20,
+      "normalized_score_rmse": {
+        "complete_mub_d_plus_1_settings": {
+          "maximum": 0.0036278689999874607,
+          "median": 0.003476776825118297,
+          "p10": 0.0033418547548997707,
+          "p90": 0.0035831449402949065
+        },
+        "haar_minimum_d_plus_1_settings": {
+          "maximum": 0.19490981365260412,
+          "median": 0.013418152222490466,
+          "p10": 0.005284524540402493,
+          "p90": 0.15894858067753417
+        },
+        "haar_overcomplete_2d_settings": {
+          "maximum": 0.011392101713660773,
+          "median": 0.004727600129703245,
+          "p10": 0.0037706507031739687,
+          "p90": 0.007300393633899673
+        },
+        "spectral_one_setting": {
+          "maximum": 0.0018843744157476152,
+          "median": 0.0017340182225992215,
+          "p10": 0.0016475513082914266,
+          "p90": 0.0018418699447176827
+        }
+      }
+    },
+    "4": {
+      "condition_trials_per_random_architecture": 80,
+      "frame_condition_number": {
+        "complete_mub": 2.2360679774997907,
+        "complete_mub_centered_traceless_subspace": 1.0000000000000009,
+        "complete_mub_closed_form_including_identity": 2.23606797749979,
+        "haar_minimum_d_plus_1": {
+          "maximum": 9780.958630950276,
+          "median": 46.93853428688601,
+          "p10": 20.937466966638688,
+          "p90": 440.86575951550464
+        },
+        "haar_overcomplete_2d": {
+          "maximum": 15.417104234547981,
+          "median": 7.222338090751796,
+          "p10": 5.804880298718355,
+          "p90": 9.128557710466193
+        },
+        "sampled_haar_full_rank_fraction": {
+          "2d_settings": 1.0,
+          "d_plus_1_settings": 1.0
+        }
+      },
+      "mub_validation": {
+        "maximum_unbiasedness_error": 6.661338147750939e-16,
+        "maximum_unitarity_error": 1.4503118246647925e-15
+      },
+      "noise_trials_per_architecture": 20,
+      "normalized_score_rmse": {
+        "complete_mub_d_plus_1_settings": {
+          "maximum": 0.00463846752740267,
+          "median": 0.004507420178666067,
+          "p10": 0.004324972245160822,
+          "p90": 0.004592363918735516
+        },
+        "haar_minimum_d_plus_1_settings": {
+          "maximum": 0.2720880315008056,
+          "median": 0.0237809851637336,
+          "p10": 0.013936576908374135,
+          "p90": 0.10022213699106675
+        },
+        "haar_overcomplete_2d_settings": {
+          "maximum": 0.009768648679685495,
+          "median": 0.006516475026884692,
+          "p10": 0.004973679651486153,
+          "p90": 0.008104214207935482
+        },
+        "spectral_one_setting": {
+          "maximum": 0.0021643473807887036,
+          "median": 0.002013075762701353,
+          "p10": 0.0019228349936668838,
+          "p90": 0.002092902243882404
+        }
+      }
+    },
+    "5": {
+      "condition_trials_per_random_architecture": 60,
+      "frame_condition_number": {
+        "complete_mub": 2.4494897427831805,
+        "complete_mub_centered_traceless_subspace": 1.0000000000000024,
+        "complete_mub_closed_form_including_identity": 2.449489742783178,
+        "haar_minimum_d_plus_1": {
+          "maximum": 21197.08888571822,
+          "median": 94.05819176290447,
+          "p10": 31.869068498314373,
+          "p90": 354.5986774029773
+        },
+        "haar_overcomplete_2d": {
+          "maximum": 14.702042403609068,
+          "median": 8.503392519562489,
+          "p10": 7.1389550033235665,
+          "p90": 10.232298522577308
+        },
+        "sampled_haar_full_rank_fraction": {
+          "2d_settings": 1.0,
+          "d_plus_1_settings": 1.0
+        }
+      },
+      "mub_validation": {
+        "maximum_unbiasedness_error": 3.747002708109903e-15,
+        "maximum_unitarity_error": 9.992847571157804e-15
+      },
+      "noise_trials_per_architecture": 20,
+      "normalized_score_rmse": {
+        "complete_mub_d_plus_1_settings": {
+          "maximum": 0.00573896938340909,
+          "median": 0.0054965279096746995,
+          "p10": 0.0053604332730393,
+          "p90": 0.005676383289567971
+        },
+        "haar_minimum_d_plus_1_settings": {
+          "maximum": 2.8248980741678507,
+          "median": 0.03432323476810277,
+          "p10": 0.01738561495171415,
+          "p90": 0.7345163139329342
+        },
+        "haar_overcomplete_2d_settings": {
+          "maximum": 0.011626000187260009,
+          "median": 0.007407701445758878,
+          "p10": 0.006338277115632137,
+          "p90": 0.009586262697588438
+        },
+        "spectral_one_setting": {
+          "maximum": 0.00235181628460259,
+          "median": 0.0022310612969136034,
+          "p10": 0.0021291353433569716,
+          "p90": 0.002288317434789238
+        }
+      }
+    },
+    "7": {
+      "condition_trials_per_random_architecture": 40,
+      "frame_condition_number": {
+        "complete_mub": 2.8284271247461965,
+        "complete_mub_centered_traceless_subspace": 1.0000000000000056,
+        "complete_mub_closed_form_including_identity": 2.8284271247461903,
+        "haar_minimum_d_plus_1": {
+          "maximum": 3685.545492402788,
+          "median": 218.9688641678585,
+          "p10": 80.74952852857044,
+          "p90": 878.4757403518942
+        },
+        "haar_overcomplete_2d": {
+          "maximum": 12.332719100430008,
+          "median": 9.921953981864844,
+          "p10": 8.967743480688096,
+          "p90": 11.155877528202371
+        },
+        "sampled_haar_full_rank_fraction": {
+          "2d_settings": 1.0,
+          "d_plus_1_settings": 1.0
+        }
+      },
+      "mub_validation": {
+        "maximum_unbiasedness_error": 6.827871601444713e-15,
+        "maximum_unitarity_error": 2.5015973812584158e-14
+      },
+      "noise_trials_per_architecture": 16,
+      "normalized_score_rmse": {
+        "complete_mub_d_plus_1_settings": {
+          "maximum": 0.007836239239080363,
+          "median": 0.007555033114072825,
+          "p10": 0.007385958223035196,
+          "p90": 0.007812976969138378
+        },
+        "haar_minimum_d_plus_1_settings": {
+          "maximum": 0.29367188351654555,
+          "median": 0.04304919058287736,
+          "p10": 0.02968611222010157,
+          "p90": 0.2219457798706797
+        },
+        "haar_overcomplete_2d_settings": {
+          "maximum": 0.013910242458891647,
+          "median": 0.011380194614746323,
+          "p10": 0.010362354416236078,
+          "p90": 0.01256788418120482
+        },
+        "spectral_one_setting": {
+          "maximum": 0.0028076407450898875,
+          "median": 0.0026774212542562507,
+          "p10": 0.0025257217516593874,
+          "p90": 0.0027630118866872775
+        }
+      }
+    }
+  },
+  "schema_version": 1,
+  "scope": "generic-unitary scaling audit only; the complete MUB bases are not compiled into, or claimed reachable by, the fixed Burau-derived two-mode block library"
+}
