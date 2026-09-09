@@ -10,6 +10,7 @@ from programs.digital_twin.reproduce import run_digital_twin
 from programs.inference.reproduce import run_inference_probe
 from programs.inference_scaling.reproduce import run_inference_scaling
 from programs.passive_security.reproduce import run_passive_security_study
+from programs.satcom_guardian.reproduce import run_satcom_guardian_study
 from programs.security.reproduce import run_security_probe
 
 
@@ -23,11 +24,13 @@ def main() -> None:
     inference_scaling = run_inference_scaling()
     digital_twin = run_digital_twin()
     compiler = run_compiler_study()
+    satcom_guardian = run_satcom_guardian_study()
     summary = {
         "scope": (
             "independent security-control, passive-security, inference, "
-            "inference-scaling, classical digital-twin, and compiler studies; "
-            "not experimental hardware results"
+            "inference-scaling, classical digital-twin, compiler, and "
+            "epitaxial-laser SATCOM guardian studies; not experimental "
+            "hardware results"
         ),
         "security": security,
         "passive_security": passive_security,
@@ -35,6 +38,7 @@ def main() -> None:
         "inference_scaling": inference_scaling,
         "digital_twin": digital_twin,
         "compiler": compiler,
+        "satcom_guardian": satcom_guardian,
     }
     RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
     RESULTS_PATH.write_text(

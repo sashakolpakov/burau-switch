@@ -8,7 +8,7 @@ The [classical device blueprint](DEVICE_BLUEPRINT.md) turns the numerical
 results into explicit inference and security hardware proposals. It is an
 engineering note, not another manuscript.
 
-Run all six applied studies from the repository root with:
+Run all seven applied studies from the repository root with:
 
     python -m programs.reproduce
 
@@ -33,6 +33,11 @@ This command is intentionally separate from the manuscript-level
   restricted Burau--Squier blocks, including a constructive approximation from
   one shared-$\omega$ two-mode block library, and compares them with an exact
   generic interferometer decomposition.
+- [SATCOM guardian](satcom_guardian/README.md) couples a parameterized 1.55-um
+  epitaxial-laser source envelope to a shallow T sum/difference receiver and
+  explores optical inter-satellite link budget, coherence, pointing and
+  polarization degradation, detector noise, and warning performance against a
+  scalar power monitor.
 
 Each directory owns its code, generated figures, and results. Any later
 manuscript will live in its own directory; none of these artifacts changes the
