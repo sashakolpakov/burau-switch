@@ -6,7 +6,7 @@ import sympy as sp
 
 
 def run_symbolic_checks() -> dict[str, str]:
-    """Verify the Squier identities and commutator invariants exactly."""
+    """Verify the Squier identities and the one-word mixer exactly."""
     s = sp.symbols("s", nonzero=True)
     beta_one = sp.Matrix([[-s**2, s], [0, 1]])
     beta_two = sp.Matrix([[1, 0], [s, -s**2]])
@@ -28,12 +28,22 @@ def run_symbolic_checks() -> dict[str, str]:
     )
     assert sp.simplify(order_difference - expected_difference) == zero
 
-    group_commutator = sp.simplify(
-        beta_two.inv() * beta_one.inv() * beta_two * beta_one
+    commutator_word = sp.simplify(
+        beta_one * beta_two * beta_one.inv() * beta_two.inv()
     )
-    expected_trace = 1 - s**2 - s**-2
-    assert sp.simplify(sp.det(group_commutator) - 1) == 0
-    assert sp.simplify(sp.trace(group_commutator) - expected_trace) == 0
+    assert sp.simplify(sp.det(commutator_word) - 1) == 0
+    assert sp.simplify(commutator_word - sp.eye(2)) != zero
+
+    a, b, c, d = sp.symbols("a b c d", nonzero=True)
+    diagonal_one = sp.diag(a, b)
+    diagonal_two = sp.diag(c, d)
+    abelian_commutator = sp.simplify(
+        diagonal_one
+        * diagonal_two
+        * diagonal_one.inv()
+        * diagonal_two.inv()
+    )
+    assert abelian_commutator == sp.eye(2)
 
     determinant_form = sp.factor(form.det())
     assert sp.simplify(determinant_form - (s**4 + s**2 + 1) / s**2) == 0
@@ -42,7 +52,9 @@ def run_symbolic_checks() -> dict[str, str]:
         "beta_i_star_J_beta_i": "J for i=1,2",
         "braid_relation": "beta_1 beta_2 beta_1 = beta_2 beta_1 beta_2",
         "det_J_s": str(determinant_form),
-        "det_group_commutator": "1",
-        "trace_group_commutator": str(expected_trace),
+        "mixer_word": "sigma_1 sigma_2 sigma_1^-1 sigma_2^-1",
+        "det_commutator_word": "1",
+        "trace_commutator_word": str(sp.factor(sp.trace(commutator_word))),
+        "abelianized_commutator": "I_2",
         "order_difference": str(order_difference),
     }

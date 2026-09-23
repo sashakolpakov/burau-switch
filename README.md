@@ -2,33 +2,24 @@
 
 Reproducible calculations for [arXiv:2510.18186](https://arxiv.org/abs/2510.18186).
 
-The central Gedankenexperiment asks whether an ordinary coherent device can
-realize the operational content of non-Abelian braid statistics without
-assuming that microscopic anyons were present at the outset. It has two
-complementary physical readings:
-
-- an **effective-anyonic realization**, if the encoded state space and its
-  exchange-like operations form a genuine emergent excitation sector; or
-- an **anyonic simulacrum**, if the apparatus reproduces the same
-  matrix-valued braid statistics only at the input-output level.
-
-The present calculation certifies the representation-theoretic core shared by
-both readings. Distinguishing them physically requires additional fusion,
-locality, degeneracy, and robustness tests.
+The code reproduces the manuscript's algebraic Gedankenexperiment. A single
+braid word produces the control mixer, while the target switch retains the
+two orders `BA` and `AB`.
 
 The scripts verify:
 
 - the exact Squier form and its two definite intervals;
 - Euclidean unitarity of the sign-normalized Burau generators;
-- the Yang--Baxter relation and noncommutativity of both $B_3$ generators;
-- the closed-form Helstrom witness for distinguishing $U_1U_2$ from
-  $U_2U_1$; and
-- the original braid-dressed-versus-bare $T$--$S$ response, together with a
-  phase-only control showing why this phenomenology must be paired with the
-  two-generator test.
+- the Yang--Baxter relation and noncommutativity of the $B_3$ generators;
+- the mixer from the one braid word
+  $[\sigma_1,\sigma_2]=\sigma_1\sigma_2\sigma_1^{-1}\sigma_2^{-1}$;
+- the braid-dressed-versus-bare $T$--$S$ response with no imposed
+  $\omega$-dependent switch phase; and
+- the exact null obtained by replacing the generator images with commuting
+  diagonal matrices.
 
-Thus the $T$--$S$ experiment remains the observable device-response layer; the
-ordered-generator experiment identifies the non-Abelian origin of that layer.
+The reported Helstrom contrast compares two specified closed unitaries. It is
+not used as a causal-nonseparability witness.
 
 Using Python 3.11 or newer, run everything from a clean environment with:
 
