@@ -5,8 +5,8 @@ out-of-path optical-link guardian for inter-satellite laser communication. It
 is a simulation, not a hardware result, modem model, reliability prediction,
 or space-qualification claim.
 
-The corrected design is a **two-axis directional Burau T bank**, not the older
-single radial Householder score. At the checked 8,000-km, 2.5-W corner, the
+The design is a **two-axis directional Burau T bank**. At the checked
+8,000-km, 2.5-W corner, the
 optimized bank reaches `0.9331` fault detection with the same modeled 1.5-dB
 loss, essentially identical to the pre-core quadrant detector's `0.9332`. In a
 paired zero-loss counterfactual it reaches `0.9688`.
@@ -78,11 +78,6 @@ reported as a pure-signed ablation. The alarm statistic is
 The bank uses four photodiodes total, matching the QPD channel count, and all
 post-core photons are allocated between the two cells.
 
-The former construction `Y=2|h><h|-I` is retained only as the
-`radial_householder_ablation`. It is even in displacement, has zero first
-derivative at boresight, and is equivalent to an ideal enrolled-mode sorter.
-It must not be interpreted as the optimized Burau T result.
-
 For the stated 1550-nm wavelength and 10-cm circular aperture, the directional
 T's local signed slope is `0.2027 / microradian`, versus `0.1182 /
 microradian` for the default QPD model. After the 50:50 fanout and 1.5-dB loss,
@@ -126,8 +121,7 @@ tap, and a receiver-AoA-only 1.5-microradian bias:
 |---|---:|---:|---:|
 | Optimized directional Burau T | 1.5 dB, post-core | 0.9331 | 0.99601 |
 | Four-quadrant detector | pre-core | 0.9332 | 0.99612 |
-| Radial Householder ablation | 1.5 dB, post-core | 0.8270 | 0.98056 |
-| Loss-matched radial mode sorter | 1.5 dB, post-core | 0.8322 | 0.98021 |
+| Loss-matched conventional mode sorter | 1.5 dB, post-core | 0.8322 | 0.98021 |
 | Scalar-power negative control | pre-core | 0.0099 | 0.50206 |
 
 The directional T and QPD 95% conditional Wilson intervals are respectively
@@ -164,7 +158,7 @@ The baseline hierarchy is:
 2. existing PAT plus modem/FEC telemetry as the mandatory system baseline;
 3. a generic two-cell balanced interferometer as the matched directional
    control;
-4. the radial mode sorter as the matched control for the old ablation;
+4. a conventional mode sorter as an independent modal-sensing baseline;
 5. a pixel focal-plane sensor when acquisition FOV or multi-spot estimation
    matters;
 6. scalar power only as a negative control.

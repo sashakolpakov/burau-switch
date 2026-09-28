@@ -161,12 +161,6 @@
     "directional_x_hybrid_score_residual": 2.7755575615628914e-16,
     "directional_y_branch_unitarity_residual": 0.0,
     "directional_y_hybrid_score_residual": 2.498001805406602e-16,
-    "householder_unitarity_residual": 4.193942902594652e-16,
-    "maximum_energy_checksum_error": 6.661338147750939e-16,
-    "maximum_global_phase_error": 5.551115123125783e-16,
-    "maximum_minus_port_residual_error": 6.661338147750939e-16,
-    "maximum_plus_port_projector_error": 4.440892098500626e-16,
-    "maximum_quadratic_score_error": 8.881784197001252e-16,
     "tie_correct_auc_self_test_error": 0.0
   },
   "guardian_insertion_loss_sensitivity": {
@@ -982,9 +976,9 @@
     "elevation pointing leakage",
     "orthogonal polarization leakage"
   ],
-  "model_revision": "hybrid_directional_burau_t_bank_v2",
+  "model_revision": "hybrid_directional_burau_t_bank_v3",
   "monte_carlo_fault_detection": {
-    "comparison": "four-output directional Burau T versus (1) a four-segment quadrant pointing detector on the pre-core tap, (2) the old two-output radial Householder score, (3) a loss-matched conventional mode sorter, and (4) a one-detector pre-core scalar-power negative control",
+    "comparison": "four-output directional Burau T versus (1) a four-segment quadrant pointing detector on the pre-core tap, (2) a loss-matched conventional mode sorter, and (3) a one-detector pre-core scalar-power negative control",
     "fault": "1.5-urad mean receiver-AoA azimuth displacement with unchanged transmitter pointing, receiver jitter, and polarization distributions; this is a selected stress case, not a fitted fault-occurrence distribution",
     "rare_event_warning": "threshold calibration, nominal evaluation, and fault evaluation use independent 30,000-trial populations; the 1% operating point would flag about 100,000 independent 100-ns windows per second and is only a diagnostic ROC point, not an operational alarm or mission-reliability claim",
     "results_by_transmit_power": {
@@ -1010,7 +1004,6 @@
             },
             "fault_mean_true_directional_t_radial_score": 0.30386903845848867,
             "fault_mean_true_qpd_radial_discriminant": 0.17836684722787366,
-            "fault_mean_true_radial_householder_score": 0.9510921475242904,
             "loss_matched_mode_sorter": {
               "area_under_roc": 0.9999347511111111,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1029,7 +1022,6 @@
             },
             "mean_fault_total_power_reduction_fraction": -6.0908692383065954e-06,
             "nominal_mean_true_directional_t_radial_score": 0.06374164450329559,
-            "nominal_mean_true_radial_householder_score": 0.9968010806506254,
             "quadrant_detector": {
               "area_under_roc": 0.9999551400000001,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1044,22 +1036,6 @@
                 0.9995420905381628
               ],
               "threshold": 0.09008579522523968,
-              "threshold_operator": "strictly_greater_than"
-            },
-            "radial_householder_ablation": {
-              "area_under_roc": 0.9999345144444445,
-              "calibration_exceedance_probability": 0.009966666666666667,
-              "evaluation_false_alarm_probability": 0.008766666666666667,
-              "evaluation_false_alarm_probability_95_percent_interval": [
-                0.007772899740200295,
-                0.009886220994319133
-              ],
-              "fault_detection_probability": 0.9986333333333334,
-              "fault_detection_probability_95_percent_interval": [
-                0.9981466282203537,
-                0.9989923561680785
-              ],
-              "threshold": -0.9872033089214456,
               "threshold_operator": "strictly_greater_than"
             },
             "range_km": 500.0,
@@ -1100,7 +1076,6 @@
             },
             "fault_mean_true_directional_t_radial_score": 0.3035389225907235,
             "fault_mean_true_qpd_radial_discriminant": 0.17816604360447108,
-            "fault_mean_true_radial_householder_score": 0.9511925055697014,
             "loss_matched_mode_sorter": {
               "area_under_roc": 0.99992594,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1119,7 +1094,6 @@
             },
             "mean_fault_total_power_reduction_fraction": 1.3460296738321276e-06,
             "nominal_mean_true_directional_t_radial_score": 0.06351843094650887,
-            "nominal_mean_true_radial_householder_score": 0.9968192316324401,
             "quadrant_detector": {
               "area_under_roc": 0.9999399544444445,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1134,22 +1108,6 @@
                 0.9993813651360572
               ],
               "threshold": 0.09022586606080311,
-              "threshold_operator": "strictly_greater_than"
-            },
-            "radial_householder_ablation": {
-              "area_under_roc": 0.9999278644444444,
-              "calibration_exceedance_probability": 0.009966666666666667,
-              "evaluation_false_alarm_probability": 0.009433333333333334,
-              "evaluation_false_alarm_probability_95_percent_interval": [
-                0.008400549457634847,
-                0.010591733900573906
-              ],
-              "fault_detection_probability": 0.9988,
-              "fault_detection_probability_95_percent_interval": [
-                0.998339233592663,
-                0.9991330414516916
-              ],
-              "threshold": -0.9872848148346117,
               "threshold_operator": "strictly_greater_than"
             },
             "range_km": 1000.0,
@@ -1190,7 +1148,6 @@
             },
             "fault_mean_true_directional_t_radial_score": 0.3040129301610998,
             "fault_mean_true_qpd_radial_discriminant": 0.17847439303906842,
-            "fault_mean_true_radial_householder_score": 0.9510426255671882,
             "loss_matched_mode_sorter": {
               "area_under_roc": 0.9999278433333333,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1209,7 +1166,6 @@
             },
             "mean_fault_total_power_reduction_fraction": 6.4798007657351775e-06,
             "nominal_mean_true_directional_t_radial_score": 0.06331842686909799,
-            "nominal_mean_true_radial_householder_score": 0.9968386949882679,
             "quadrant_detector": {
               "area_under_roc": 0.9999409511111111,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1224,22 +1180,6 @@
                 0.9991330414516916
               ],
               "threshold": 0.09223903040194786,
-              "threshold_operator": "strictly_greater_than"
-            },
-            "radial_householder_ablation": {
-              "area_under_roc": 0.9999241444444444,
-              "calibration_exceedance_probability": 0.009966666666666667,
-              "evaluation_false_alarm_probability": 0.0098,
-              "evaluation_false_alarm_probability_95_percent_interval": [
-                0.008746357055770405,
-                0.010979165745467478
-              ],
-              "fault_detection_probability": 0.9986,
-              "fault_detection_probability_95_percent_interval": [
-                0.9981082971108366,
-                0.998964029146411
-              ],
-              "threshold": -0.9870492524329981,
               "threshold_operator": "strictly_greater_than"
             },
             "range_km": 2000.0,
@@ -1280,7 +1220,6 @@
             },
             "fault_mean_true_directional_t_radial_score": 0.30395620952422847,
             "fault_mean_true_qpd_radial_discriminant": 0.17839261037352655,
-            "fault_mean_true_radial_householder_score": 0.9510854119957562,
             "loss_matched_mode_sorter": {
               "area_under_roc": 0.9997101011111111,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1299,7 +1238,6 @@
             },
             "mean_fault_total_power_reduction_fraction": 4.36664046865598e-06,
             "nominal_mean_true_directional_t_radial_score": 0.06359918236996383,
-            "nominal_mean_true_radial_householder_score": 0.9968045588895593,
             "quadrant_detector": {
               "area_under_roc": 0.9997697966666667,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1314,22 +1252,6 @@
                 0.9962270866202845
               ],
               "threshold": 0.0983448558306182,
-              "threshold_operator": "strictly_greater_than"
-            },
-            "radial_householder_ablation": {
-              "area_under_roc": 0.9996924244444445,
-              "calibration_exceedance_probability": 0.009966666666666667,
-              "evaluation_false_alarm_probability": 0.0091,
-              "evaluation_false_alarm_probability_95_percent_interval": [
-                0.00808654194942889,
-                0.010239160096935202
-              ],
-              "fault_detection_probability": 0.9948,
-              "fault_detection_probability_95_percent_interval": [
-                0.9939203660687991,
-                0.9955529332334193
-              ],
-              "threshold": -0.9852750316531307,
               "threshold_operator": "strictly_greater_than"
             },
             "range_km": 4000.0,
@@ -1370,7 +1292,6 @@
             },
             "fault_mean_true_directional_t_radial_score": 0.30398290252733945,
             "fault_mean_true_qpd_radial_discriminant": 0.1784137449466433,
-            "fault_mean_true_radial_householder_score": 0.9510809570096876,
             "loss_matched_mode_sorter": {
               "area_under_roc": 0.9802071066666667,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1389,7 +1310,6 @@
             },
             "mean_fault_total_power_reduction_fraction": 7.201903697295897e-06,
             "nominal_mean_true_directional_t_radial_score": 0.0632213185745476,
-            "nominal_mean_true_radial_householder_score": 0.9968454179497751,
             "quadrant_detector": {
               "area_under_roc": 0.9961178622222222,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1404,22 +1324,6 @@
                 0.9359701901345125
               ],
               "threshold": 0.12434007740212205,
-              "threshold_operator": "strictly_greater_than"
-            },
-            "radial_householder_ablation": {
-              "area_under_roc": 0.9805616533333333,
-              "calibration_exceedance_probability": 0.009966666666666667,
-              "evaluation_false_alarm_probability": 0.009733333333333333,
-              "evaluation_false_alarm_probability_95_percent_interval": [
-                0.008683452840554929,
-                0.010908753698314021
-              ],
-              "fault_detection_probability": 0.8270333333333333,
-              "fault_detection_probability_95_percent_interval": [
-                0.8227116656227597,
-                0.8312712594280395
-              ],
-              "threshold": -0.9708231006118997,
               "threshold_operator": "strictly_greater_than"
             },
             "range_km": 8000.0,
@@ -1465,7 +1369,6 @@
             },
             "fault_mean_true_directional_t_radial_score": 0.3039071154653501,
             "fault_mean_true_qpd_radial_discriminant": 0.1783642340657378,
-            "fault_mean_true_radial_householder_score": 0.9511020881506432,
             "loss_matched_mode_sorter": {
               "area_under_roc": 0.9999208211111111,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1484,7 +1387,6 @@
             },
             "mean_fault_total_power_reduction_fraction": 4.770514730467745e-06,
             "nominal_mean_true_directional_t_radial_score": 0.0633991002936427,
-            "nominal_mean_true_radial_householder_score": 0.9968272530035718,
             "quadrant_detector": {
               "area_under_roc": 0.9999361155555556,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1499,22 +1401,6 @@
                 0.9991609709090733
               ],
               "threshold": 0.09266878980206163,
-              "threshold_operator": "strictly_greater_than"
-            },
-            "radial_householder_ablation": {
-              "area_under_roc": 0.9999080388888889,
-              "calibration_exceedance_probability": 0.009966666666666667,
-              "evaluation_false_alarm_probability": 0.008966666666666666,
-              "evaluation_false_alarm_probability_95_percent_interval": [
-                0.007961040109720829,
-                0.010098029411905397
-              ],
-              "fault_detection_probability": 0.9984,
-              "fault_detection_probability_95_percent_interval": [
-                0.9978794659659608,
-                0.9987929115041799
-              ],
-              "threshold": -0.9868166331349958,
               "threshold_operator": "strictly_greater_than"
             },
             "range_km": 500.0,
@@ -1555,7 +1441,6 @@
             },
             "fault_mean_true_directional_t_radial_score": 0.3037734288540302,
             "fault_mean_true_qpd_radial_discriminant": 0.1782996532756335,
-            "fault_mean_true_radial_householder_score": 0.9511631495583579,
             "loss_matched_mode_sorter": {
               "area_under_roc": 0.9996486355555555,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1574,7 +1459,6 @@
             },
             "mean_fault_total_power_reduction_fraction": -3.0312601415616314e-06,
             "nominal_mean_true_directional_t_radial_score": 0.06323392378724912,
-            "nominal_mean_true_radial_householder_score": 0.9968438190684499,
             "quadrant_detector": {
               "area_under_roc": 0.9997618,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1589,22 +1473,6 @@
                 0.9953375353959614
               ],
               "threshold": 0.10057258164178566,
-              "threshold_operator": "strictly_greater_than"
-            },
-            "radial_householder_ablation": {
-              "area_under_roc": 0.9996350311111111,
-              "calibration_exceedance_probability": 0.009966666666666667,
-              "evaluation_false_alarm_probability": 0.008966666666666666,
-              "evaluation_false_alarm_probability_95_percent_interval": [
-                0.007961040109720829,
-                0.010098029411905397
-              ],
-              "fault_detection_probability": 0.9946333333333334,
-              "fault_detection_probability_95_percent_interval": [
-                0.9937408906939705,
-                0.9953991179523257
-              ],
-              "threshold": -0.9849740620531435,
               "threshold_operator": "strictly_greater_than"
             },
             "range_km": 1000.0,
@@ -1645,7 +1513,6 @@
             },
             "fault_mean_true_directional_t_radial_score": 0.30381906055798025,
             "fault_mean_true_qpd_radial_discriminant": 0.17833066768293818,
-            "fault_mean_true_radial_householder_score": 0.9511106936228556,
             "loss_matched_mode_sorter": {
               "area_under_roc": 0.9797039866666667,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1664,7 +1531,6 @@
             },
             "mean_fault_total_power_reduction_fraction": -1.754729857306181e-05,
             "nominal_mean_true_directional_t_radial_score": 0.063723184996193,
-            "nominal_mean_true_radial_householder_score": 0.996792919881525,
             "quadrant_detector": {
               "area_under_roc": 0.9957915911111112,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1679,22 +1545,6 @@
                 0.931459196327336
               ],
               "threshold": 0.1250049704404131,
-              "threshold_operator": "strictly_greater_than"
-            },
-            "radial_householder_ablation": {
-              "area_under_roc": 0.9792113433333334,
-              "calibration_exceedance_probability": 0.009966666666666667,
-              "evaluation_false_alarm_probability": 0.009,
-              "evaluation_false_alarm_probability_95_percent_interval": [
-                0.007992410022245666,
-                0.010133317630565023
-              ],
-              "fault_detection_probability": 0.8171,
-              "fault_detection_probability_95_percent_interval": [
-                0.8126849573633906,
-                0.8214338445944379
-              ],
-              "threshold": -0.9703457112808943,
               "threshold_operator": "strictly_greater_than"
             },
             "range_km": 2000.0,
@@ -1735,7 +1585,6 @@
             },
             "fault_mean_true_directional_t_radial_score": 0.3035210098366396,
             "fault_mean_true_qpd_radial_discriminant": 0.17815010255150707,
-            "fault_mean_true_radial_householder_score": 0.9512208184954898,
             "loss_matched_mode_sorter": {
               "area_under_roc": 0.7617872844444444,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1754,7 +1603,6 @@
             },
             "mean_fault_total_power_reduction_fraction": 1.2113533024993295e-05,
             "nominal_mean_true_directional_t_radial_score": 0.06333016677159739,
-            "nominal_mean_true_radial_householder_score": 0.9968144008253669,
             "quadrant_detector": {
               "area_under_roc": 0.9072691911111112,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1769,22 +1617,6 @@
                 0.3980056273917778
               ],
               "threshold": 0.20945882955483433,
-              "threshold_operator": "strictly_greater_than"
-            },
-            "radial_householder_ablation": {
-              "area_under_roc": 0.757900798888889,
-              "calibration_exceedance_probability": 0.009966666666666667,
-              "evaluation_false_alarm_probability": 0.0097,
-              "evaluation_false_alarm_probability_95_percent_interval": [
-                0.008652005682497247,
-                0.010873542725187237
-              ],
-              "fault_detection_probability": 0.14493333333333333,
-              "fault_detection_probability_95_percent_interval": [
-                0.1409952268272131,
-                0.14896235979585137
-              ],
-              "threshold": -0.9012106271110868,
               "threshold_operator": "strictly_greater_than"
             },
             "range_km": 4000.0,
@@ -1825,7 +1657,6 @@
             },
             "fault_mean_true_directional_t_radial_score": 0.30402806591083015,
             "fault_mean_true_qpd_radial_discriminant": 0.17847444753378053,
-            "fault_mean_true_radial_householder_score": 0.9510392308687303,
             "loss_matched_mode_sorter": {
               "area_under_roc": 0.5747847866666667,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1844,7 +1675,6 @@
             },
             "mean_fault_total_power_reduction_fraction": -1.2325691259418292e-05,
             "nominal_mean_true_directional_t_radial_score": 0.0631512549569075,
-            "nominal_mean_true_radial_householder_score": 0.9968567446391554,
             "quadrant_detector": {
               "area_under_roc": 0.6263739777777778,
               "calibration_exceedance_probability": 0.009966666666666667,
@@ -1859,22 +1689,6 @@
                 0.03212879536869561
               ],
               "threshold": 0.5611777414617082,
-              "threshold_operator": "strictly_greater_than"
-            },
-            "radial_householder_ablation": {
-              "area_under_roc": 0.5748099788888889,
-              "calibration_exceedance_probability": 0.009966666666666667,
-              "evaluation_false_alarm_probability": 0.0106,
-              "evaluation_false_alarm_probability_95_percent_interval": [
-                0.009502192639570164,
-                0.011823125310094912
-              ],
-              "fault_detection_probability": 0.0278,
-              "fault_detection_probability_95_percent_interval": [
-                0.02599927368228039,
-                0.02972163995856932
-              ],
-              "threshold": -0.6543456942457131,
               "threshold_operator": "strictly_greater_than"
             },
             "range_km": 8000.0,
@@ -1963,7 +1777,6 @@
         },
         "mean_total_power_reduction_fraction": 1.3824154652453124e-05,
         "mean_true_directional_t_radial_score": 0.06354670420123996,
-        "mean_true_radial_householder_score": 0.996815029515649,
         "pointing_bias_urad": 0.0,
         "quadrant_detector": {
           "area_under_roc": 0.49934178555555553,
@@ -1979,22 +1792,6 @@
             0.01224446325002323
           ],
           "threshold": 0.1240394021464181,
-          "threshold_operator": "strictly_greater_than"
-        },
-        "radial_householder_ablation": {
-          "area_under_roc": 0.5007124522222223,
-          "calibration_exceedance_probability": 0.009966666666666667,
-          "evaluation_false_alarm_probability": 0.010933333333333333,
-          "evaluation_false_alarm_probability_95_percent_interval": [
-            0.009817630831389564,
-            0.012174268430120176
-          ],
-          "fault_detection_probability": 0.0105,
-          "fault_detection_probability_95_percent_interval": [
-            0.009407617387723477,
-            0.011717726168388202
-          ],
-          "threshold": -0.9707282937417648,
           "threshold_operator": "strictly_greater_than"
         },
         "scalar_power_monitor": {
@@ -2051,7 +1848,6 @@
         },
         "mean_total_power_reduction_fraction": 1.5611146804594966e-05,
         "mean_true_directional_t_radial_score": 0.07843834632676772,
-        "mean_true_radial_householder_score": 0.9955592020493287,
         "pointing_bias_urad": 0.25,
         "quadrant_detector": {
           "area_under_roc": 0.5676254766666666,
@@ -2067,22 +1863,6 @@
             0.02903326317963992
           ],
           "threshold": 0.1240394021464181,
-          "threshold_operator": "strictly_greater_than"
-        },
-        "radial_householder_ablation": {
-          "area_under_roc": 0.5292089688888889,
-          "calibration_exceedance_probability": 0.009966666666666667,
-          "evaluation_false_alarm_probability": 0.010933333333333333,
-          "evaluation_false_alarm_probability_95_percent_interval": [
-            0.009817630831389564,
-            0.012174268430120176
-          ],
-          "fault_detection_probability": 0.016866666666666665,
-          "fault_detection_probability_95_percent_interval": [
-            0.01547014061913369,
-            0.018386905993211057
-          ],
-          "threshold": -0.9707282937417648,
           "threshold_operator": "strictly_greater_than"
         },
         "scalar_power_monitor": {
@@ -2139,7 +1919,6 @@
         },
         "mean_total_power_reduction_fraction": 1.5775271031470695e-05,
         "mean_true_directional_t_radial_score": 0.115466731333089,
-        "mean_true_radial_householder_score": 0.991708184968723,
         "pointing_bias_urad": 0.5,
         "quadrant_detector": {
           "area_under_roc": 0.7165025233333334,
@@ -2155,22 +1934,6 @@
             0.1008745794408739
           ],
           "threshold": 0.1240394021464181,
-          "threshold_operator": "strictly_greater_than"
-        },
-        "radial_householder_ablation": {
-          "area_under_roc": 0.6146641777777777,
-          "calibration_exceedance_probability": 0.009966666666666667,
-          "evaluation_false_alarm_probability": 0.010933333333333333,
-          "evaluation_false_alarm_probability_95_percent_interval": [
-            0.009817630831389564,
-            0.012174268430120176
-          ],
-          "fault_detection_probability": 0.0529,
-          "fault_detection_probability_95_percent_interval": [
-            0.05042388669678191,
-            0.05549059972597095
-          ],
-          "threshold": -0.9707282937417648,
           "threshold_operator": "strictly_greater_than"
         },
         "scalar_power_monitor": {
@@ -2227,7 +1990,6 @@
         },
         "mean_total_power_reduction_fraction": 1.7112958435872017e-06,
         "mean_true_directional_t_radial_score": 0.15996888633265385,
-        "mean_true_radial_householder_score": 0.9854118116577814,
         "pointing_bias_urad": 0.75,
         "quadrant_detector": {
           "area_under_roc": 0.8522438633333334,
@@ -2243,22 +2005,6 @@
             0.26982274223171265
           ],
           "threshold": 0.1240394021464181,
-          "threshold_operator": "strictly_greater_than"
-        },
-        "radial_householder_ablation": {
-          "area_under_roc": 0.7331132,
-          "calibration_exceedance_probability": 0.009966666666666667,
-          "evaluation_false_alarm_probability": 0.010933333333333333,
-          "evaluation_false_alarm_probability_95_percent_interval": [
-            0.009817630831389564,
-            0.012174268430120176
-          ],
-          "fault_detection_probability": 0.14623333333333333,
-          "fault_detection_probability_95_percent_interval": [
-            0.14228028141198734,
-            0.15027697232727133
-          ],
-          "threshold": -0.9707282937417648,
           "threshold_operator": "strictly_greater_than"
         },
         "scalar_power_monitor": {
@@ -2315,7 +2061,6 @@
         },
         "mean_total_power_reduction_fraction": 1.1803486286932063e-05,
         "mean_true_directional_t_radial_score": 0.20733126309091915,
-        "mean_true_radial_householder_score": 0.9765841669249533,
         "pointing_bias_urad": 1.0,
         "quadrant_detector": {
           "area_under_roc": 0.9428894877777778,
@@ -2331,22 +2076,6 @@
             0.5314800369364008
           ],
           "threshold": 0.1240394021464181,
-          "threshold_operator": "strictly_greater_than"
-        },
-        "radial_householder_ablation": {
-          "area_under_roc": 0.8499258255555555,
-          "calibration_exceedance_probability": 0.009966666666666667,
-          "evaluation_false_alarm_probability": 0.010933333333333333,
-          "evaluation_false_alarm_probability_95_percent_interval": [
-            0.009817630831389564,
-            0.012174268430120176
-          ],
-          "fault_detection_probability": 0.33566666666666667,
-          "fault_detection_probability_95_percent_interval": [
-            0.33034439926726566,
-            0.34103101399331526
-          ],
-          "threshold": -0.9707282937417648,
           "threshold_operator": "strictly_greater_than"
         },
         "scalar_power_monitor": {
@@ -2403,7 +2132,6 @@
         },
         "mean_total_power_reduction_fraction": 1.8086321213806045e-05,
         "mean_true_directional_t_radial_score": 0.3033309724763854,
-        "mean_true_radial_householder_score": 0.951256647029791,
         "pointing_bias_urad": 1.5,
         "quadrant_detector": {
           "area_under_roc": 0.9959029322222221,
@@ -2419,22 +2147,6 @@
             0.9355780772838069
           ],
           "threshold": 0.1240394021464181,
-          "threshold_operator": "strictly_greater_than"
-        },
-        "radial_householder_ablation": {
-          "area_under_roc": 0.9797053777777778,
-          "calibration_exceedance_probability": 0.009966666666666667,
-          "evaluation_false_alarm_probability": 0.010933333333333333,
-          "evaluation_false_alarm_probability_95_percent_interval": [
-            0.009817630831389564,
-            0.012174268430120176
-          ],
-          "fault_detection_probability": 0.8235666666666667,
-          "fault_detection_probability_95_percent_interval": [
-            0.8192118431115665,
-            0.8278386362960484
-          ],
-          "threshold": -0.9707282937417648,
           "threshold_operator": "strictly_greater_than"
         },
         "scalar_power_monitor": {
@@ -2491,7 +2203,6 @@
         },
         "mean_total_power_reduction_fraction": 9.037938125899814e-06,
         "mean_true_directional_t_radial_score": 0.39755633004882474,
-        "mean_true_radial_householder_score": 0.916162446123437,
         "pointing_bias_urad": 2.0,
         "quadrant_detector": {
           "area_under_roc": 0.9999164577777777,
@@ -2507,22 +2218,6 @@
             0.9990769668965112
           ],
           "threshold": 0.1240394021464181,
-          "threshold_operator": "strictly_greater_than"
-        },
-        "radial_householder_ablation": {
-          "area_under_roc": 0.9991774544444445,
-          "calibration_exceedance_probability": 0.009966666666666667,
-          "evaluation_false_alarm_probability": 0.010933333333333333,
-          "evaluation_false_alarm_probability_95_percent_interval": [
-            0.009817630831389564,
-            0.012174268430120176
-          ],
-          "fault_detection_probability": 0.9907666666666667,
-          "fault_detection_probability_95_percent_interval": [
-            0.9896197676456457,
-            0.9917878977832524
-          ],
-          "threshold": -0.9707282937417648,
           "threshold_operator": "strictly_greater_than"
         },
         "scalar_power_monitor": {
@@ -2682,11 +2377,6 @@
           "0.9": 8000.0,
           "0.99": 4000.0
         },
-        "radial_householder_ablation": {
-          "0.5": 8000.0,
-          "0.9": 4000.0,
-          "0.99": 4000.0
-        },
         "scalar_power_monitor": {
           "0.5": null,
           "0.9": null,
@@ -2707,11 +2397,6 @@
         "quadrant_detector": {
           "0.5": 2000.0,
           "0.9": 2000.0,
-          "0.99": 1000.0
-        },
-        "radial_householder_ablation": {
-          "0.5": 2000.0,
-          "0.9": 1000.0,
           "0.99": 1000.0
         },
         "scalar_power_monitor": {
@@ -2740,7 +2425,7 @@
     "loss_matched_mode_sorter": {
       "detectors": 2,
       "location": "post-loss, matched to the T core's assumed insertion loss",
-      "purpose": "same-observable control that removes T-arm linewidth, delay, phase-jitter, and detuning sensitivity",
+      "purpose": "independent conventional modal-sensing baseline with the same assumed insertion loss",
       "statistic": "nominal-mode power minus residual power over their sum"
     },
     "quadrant_detector": {
@@ -2793,7 +2478,7 @@
     "test_photoelectrons_per_window": 1000000.0,
     "true_normalized_score": 0.8
   },
-  "schema_version": 4,
+  "schema_version": 5,
   "scope": "reduced-order numerical engineering study of a parameterized epitaxial-laser source envelope, optical inter-satellite link, and out-of-path directional Burau T guardian; not a measured laser, waveform modem model, hardware result, or space qualification",
   "source_model": {
     "class": "parameterized selected-carrier envelope anchored only to a published epitaxial-laser output-power scale",
@@ -2811,14 +2496,13 @@
     "ideal_axis_score": "s_j = 2 a_0 b_j + cos(phi_c)(1-a_0^2-b_j^2), phi_c=0",
     "measured_axis_score": "(I_plus_j-I_minus_j)/(I_plus_j+I_minus_j)",
     "path_mixer": "exact reduced-Burau word sigma_2^-1 sigma_1 sigma_2^-1 at omega=pi/4, phase-equivalent to a balanced coupler",
-    "primary_architecture": "two parallel balanced T cells with a 50:50 x/y photon fanout and four detectors total",
-    "radial_ablation": "the legacy Householder projector score 2|<h,x>|^2-1 is retained only as an even, quadratic comparison"
+    "primary_architecture": "two parallel balanced T cells with a 50:50 x/y photon fanout and four detectors total"
   },
   "technology_trade_study": {
     "baseline_selection": {
       "mandatory_system_baseline": "modem_fec_link_telemetry_plus_existing_pat",
       "matched_directional_control": "generic_two_cell_balanced_interferometer",
-      "matched_radial_control": "conventional_mode_sorter",
+      "modal_baseline": "conventional_mode_sorter",
       "negative_control_only": "scalar_power_tap",
       "pixel_sensor_role": "secondary baseline when acquisition field of view, multi-spot disambiguation, or non-Gaussian imagery matters",
       "primary_burau_candidate": "burau_directional_t_guardian",
@@ -2837,7 +2521,7 @@
     "current_decision": {
       "burau_specific_advantage_demonstrated": false,
       "directional_t_architecture_passes_phase0_performance_gate": true,
-      "reason": "The optimized T bank now supplies signed x/y errors and matches the practical QPD at the selected 1.5-dB corner. A generic pair of balanced interferometers implements the same directional observable, while a conventional sorter matches the radial ablation, so the simulation establishes a useful architecture but not a uniquely Burau hardware advantage.",
+      "reason": "The optimized T bank now supplies signed x/y errors and matches the practical QPD at the selected 1.5-dB corner. A generic pair of balanced interferometers implements the same directional observable, so the simulation establishes a useful architecture but not a uniquely Burau hardware advantage. The conventional mode sorter remains a separate modal-sensing baseline.",
       "reconsider_if": "measured hardware shows a loss, bandwidth, stability, fault-coverage, or SWaP advantage over the quadrant detector and both generic matched implementations"
     },
     "score_scale": {
@@ -2897,16 +2581,6 @@
         "photon_and_loss_efficiency": 4,
         "production_readiness": 5,
         "signed_pointing_control_output": 5
-      },
-      "radial_householder_ablation": {
-        "calibration_and_control_ease": 2,
-        "coherence_and_wavelength_robustness": 2,
-        "evidence_maturity": 1,
-        "fault_coverage": 3,
-        "incremental_swa_p": 2,
-        "photon_and_loss_efficiency": 3,
-        "production_readiness": 1,
-        "signed_pointing_control_output": 1
       },
       "scalar_power_tap": {
         "calibration_and_control_ease": 5,
@@ -2974,22 +2648,6 @@
             0.9359701901345125
           ],
           "threshold": 0.12434007740212205,
-          "threshold_operator": "strictly_greater_than"
-        },
-        "radial_householder_ablation": {
-          "area_under_roc": 0.9805616533333333,
-          "calibration_exceedance_probability": 0.009966666666666667,
-          "evaluation_false_alarm_probability": 0.009733333333333333,
-          "evaluation_false_alarm_probability_95_percent_interval": [
-            0.008683452840554929,
-            0.010908753698314021
-          ],
-          "fault_detection_probability": 0.8270333333333333,
-          "fault_detection_probability_95_percent_interval": [
-            0.8227116656227597,
-            0.8312712594280395
-          ],
-          "threshold": -0.9708231006118997,
           "threshold_operator": "strictly_greater_than"
         },
         "scalar_power_monitor": {

@@ -27,24 +27,13 @@ The quadrant detector remains the primary practical baseline because it:
 - is simpler to manufacture, calibrate, and qualify today.
 
 Existing PAT plus modem/FEC telemetry is the mandatory system baseline. The
-generic directional interferometer is the matched-observable control. The
-older radial Householder construction and its loss-matched mode sorter are
-ablations, not the optimized Burau T. Scalar power is only a negative control.
+generic directional interferometer is the matched-observable control. A
+conventional mode sorter is an independent modal-sensing baseline, and scalar
+power is only a negative control.
 
-## Why the old Burau T looked weak
+## Directional observable
 
-The previous receiver measured
-
-```text
-2 |<h,x>|^2 - 1.
-```
-
-That score is even in displacement and quadratic at boresight, so it discards
-the signed first-order information needed for fine pointing. Its `0.8270`
-detection result is therefore not evidence that the optimized T architecture
-is poor.
-
-The corrected device uses two T cells. For each axis, `sigma_y` mixes the
+The device uses two T cells. For each axis, `sigma_y` mixes the
 enrolled piston and corresponding pupil-tangent mode, while the default `+I`
 on the modal complement keeps residual-fault evidence:
 
@@ -72,8 +61,7 @@ threshold calibrated at a nominal 1% false-alarm target.
 |---|---:|---:|---:|---:|
 | Directional Burau T, post-core | 4 | 0.9331 | 0.99601 | 0.01013 |
 | Pre-core quadrant detector | 4 | 0.9332 | 0.99612 | 0.00967 |
-| Radial Householder ablation | 2 | 0.8270 | 0.98056 | 0.00973 |
-| Loss-matched radial mode sorter | 2 | 0.8322 | 0.98021 | 0.01120 |
+| Loss-matched conventional mode sorter | 2 | 0.8322 | 0.98021 | 0.01120 |
 | Pre-core scalar-power control | 1 | 0.0099 | 0.50206 | 0.00827 |
 
 The directional-T detection interval is `[0.9302, 0.9359]`; the QPD interval
@@ -123,8 +111,8 @@ and stability margins.
 3. **Generic two-cell balanced interferometer: matched directional control.**
    It implements the same four-output statistic without Burau provenance and
    is essential for identifying any genuinely Burau-specific hardware benefit.
-4. **Radial mode sorter: matched ablation control.** It measures the same even
-   nominal-versus-residual observable as the older Householder construction.
+4. **Conventional mode sorter: modal-sensing baseline.** It provides a
+   non-directional comparison based on nominal-versus-residual modal power.
 5. **Pixel focal plane: secondary PAT baseline.** It is the stronger comparator
    when acquisition FOV, multiple spots, or non-Gaussian imagery matters.
 6. **Scalar power: negative control.** It is inexpensive and operationally

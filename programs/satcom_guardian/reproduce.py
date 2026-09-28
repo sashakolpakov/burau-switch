@@ -40,8 +40,6 @@ RNG_STREAM_IDS = {
     "transmitter_latent": 11,
     "receiver_latent": 13,
     "common_source": 17,
-    "coherence_phase": 19,
-    "t_detector": 23,
     "scalar_detector": 29,
     "mode_sorter_detector": 31,
     "quadrant_detector": 37,
@@ -276,8 +274,6 @@ def _simulate_population(
     tx_rng = _named_rng(random_seed, "transmitter_latent")
     rx_rng = _named_rng(random_seed, "receiver_latent")
     source_rng = _named_rng(random_seed, "common_source")
-    phase_rng = _named_rng(random_seed, "coherence_phase")
-    t_rng = _named_rng(random_seed, "t_detector")
     scalar_rng = _named_rng(random_seed, "scalar_detector")
     sorter_rng = _named_rng(random_seed, "mode_sorter_detector")
     qpd_rng = _named_rng(random_seed, "quadrant_detector")
@@ -304,7 +300,6 @@ def _simulate_population(
     expected_mode_power = _nominal_mode_power(
         config, rx_x, rx_y, polarization
     )
-    ideal_score = 2.0 * expected_mode_power - 1.0
     ideal_directional_x, ideal_directional_y = _directional_tangent_scores(
         config, rx_x, rx_y, polarization
     )
@@ -325,14 +320,6 @@ def _simulate_population(
         * 1e9
         * delay_s
     )
-    phase = static_phase + phase_rng.normal(
-        0.0, config.residual_phase_jitter_rms_rad, trials
-    )
-    interference_factor = visibility * np.cos(phase)
-    observed_ideal_score = interference_factor * ideal_score
-    plus_fraction = 0.5 * (1.0 + observed_ideal_score)
-    minus_fraction = 1.0 - plus_fraction
-
     dark_per_port = (
         0.5
         * config.detector_total_two_port_dark_count_rate_hz
@@ -343,19 +330,6 @@ def _simulate_population(
     mismatch = config.detector_gain_mismatch_fraction
     plus_gain = 1.0 + 0.5 * mismatch
     minus_gain = 1.0 - 0.5 * mismatch
-
-    plus = t_rng.poisson(
-        total_signal_mean * plus_fraction + dark_per_port
-    ).astype(float)
-    minus = t_rng.poisson(
-        total_signal_mean * minus_fraction + dark_per_port
-    ).astype(float)
-    plus += t_rng.normal(0.0, config.detector_read_noise_e_rms, trials)
-    minus += t_rng.normal(0.0, config.detector_read_noise_e_rms, trials)
-    plus = plus_gain * (plus - dark_per_port)
-    minus = minus_gain * (minus - dark_per_port)
-    measured_total = plus + minus
-    normalized_score = (plus - minus) / np.maximum(measured_total, 1.0)
 
     directional_phase_x = static_phase + directional_phase_x_rng.normal(
         0.0, config.residual_phase_jitter_rms_rad, trials
@@ -468,7 +442,6 @@ def _simulate_population(
     qpd_y = (qpd[:, 0] + qpd[:, 1] - qpd[:, 2] - qpd[:, 3]) / qpd_denominator
     qpd_radial = np.sqrt(qpd_x**2 + qpd_y**2)
     return {
-        "normalized_radial_householder_score": normalized_score,
         "directional_t_radial_discriminant": directional_radial,
         "directional_t_x_discriminant": directional_x,
         "directional_t_y_discriminant": directional_y,
@@ -477,7 +450,6 @@ def _simulate_population(
         "qpd_radial_discriminant": qpd_radial,
         "qpd_x_discriminant": qpd_x,
         "qpd_y_discriminant": qpd_y,
-        "ideal_radial_householder_score": ideal_score,
         "ideal_directional_t_radial_discriminant": np.hypot(
             ideal_directional_x, ideal_directional_y
         ),
@@ -600,44 +572,8 @@ def _exact_burau_t_mixer_checks() -> dict[str, float]:
 def _exact_t_checks() -> dict[str, float]:
     rng = np.random.default_rng(1701)
     dimension = 4
-    raw_h = rng.normal(size=dimension) + 1j * rng.normal(size=dimension)
-    h = raw_h / la.norm(raw_h)
-    projector = np.outer(h, h.conj())
-    identity = np.eye(dimension)
-    x = rng.normal(size=(512, dimension)) + 1j * rng.normal(
-        size=(512, dimension)
-    )
-    x /= la.norm(x, axis=1, keepdims=True)
-    y = 2.0 * projector - identity
-    x_branch = x
-    y_branch = x @ y.T
-    plus = 0.5 * (x_branch + y_branch)
-    minus = 0.5 * (x_branch - y_branch)
-    plus_power = np.sum(np.abs(plus) ** 2, axis=1)
-    minus_power = np.sum(np.abs(minus) ** 2, axis=1)
-    matched_power = np.abs(x @ h.conj()) ** 2
-    expected_score = 2.0 * matched_power - 1.0
-    measured_score = plus_power - minus_power
-    global_phases = np.exp(1j * rng.uniform(-np.pi, np.pi, len(x)))
-    phase_shifted = x * global_phases[:, None]
-    shifted_matched_power = np.abs(phase_shifted @ h.conj()) ** 2
+    identity = np.eye(dimension, dtype=complex)
     checks = {
-        "householder_unitarity_residual": float(la.norm(y.conj().T @ y - identity)),
-        "maximum_plus_port_projector_error": float(
-            np.max(np.abs(plus_power - matched_power))
-        ),
-        "maximum_minus_port_residual_error": float(
-            np.max(np.abs(minus_power - (1.0 - matched_power)))
-        ),
-        "maximum_energy_checksum_error": float(
-            np.max(np.abs(plus_power + minus_power - 1.0))
-        ),
-        "maximum_quadratic_score_error": float(
-            np.max(np.abs(measured_score - expected_score))
-        ),
-        "maximum_global_phase_error": float(
-            np.max(np.abs(shifted_matched_power - matched_power))
-        ),
         "tie_correct_auc_self_test_error": float(
             abs(
                 _rank_auc(
@@ -738,9 +674,6 @@ def _population_anomalies(population: dict[str, np.ndarray]) -> dict[str, np.nda
     return {
         "burau_directional_t_guardian": population[
             "directional_t_radial_discriminant"
-        ],
-        "radial_householder_ablation": -population[
-            "normalized_radial_householder_score"
         ],
         "loss_matched_mode_sorter": -population[
             "normalized_loss_matched_mode_sorter_score"
@@ -1021,9 +954,6 @@ def _fault_severity_sweep(config: GuardianConfig) -> dict[str, object]:
                         / config.receive_aperture_diameter_m
                     )
                 ),
-                "mean_true_radial_householder_score": float(
-                    np.mean(fault["ideal_radial_householder_score"])
-                ),
                 "mean_true_directional_t_radial_score": float(
                     np.mean(fault["ideal_directional_t_radial_discriminant"])
                 ),
@@ -1118,7 +1048,6 @@ def _assessed_range_summary(
     """Summarize the sampled range envelope without extrapolating a max range."""
     receiver_names = (
         "burau_directional_t_guardian",
-        "radial_householder_ablation",
         "loss_matched_mode_sorter",
         "quadrant_detector",
         "scalar_power_monitor",
@@ -1267,16 +1196,6 @@ def _technology_trade_study(
             "incremental_swa_p": 2,
             "evidence_maturity": 1,
         },
-        "radial_householder_ablation": {
-            "signed_pointing_control_output": 1,
-            "calibration_and_control_ease": 2,
-            "production_readiness": 1,
-            "coherence_and_wavelength_robustness": 2,
-            "photon_and_loss_efficiency": 3,
-            "fault_coverage": 3,
-            "incremental_swa_p": 2,
-            "evidence_maturity": 1,
-        },
         "quadrant_detector_pat": {
             "signed_pointing_control_output": 5,
             "calibration_and_control_ease": 4,
@@ -1333,7 +1252,6 @@ def _technology_trade_study(
         name: farthest_boosted[name]
         for name in (
             "burau_directional_t_guardian",
-            "radial_householder_ablation",
             "loss_matched_mode_sorter",
             "quadrant_detector",
             "scalar_power_monitor",
@@ -1374,7 +1292,7 @@ def _technology_trade_study(
                 "modem_fec_link_telemetry_plus_existing_pat"
             ),
             "matched_directional_control": "generic_two_cell_balanced_interferometer",
-            "matched_radial_control": "conventional_mode_sorter",
+            "modal_baseline": "conventional_mode_sorter",
             "negative_control_only": "scalar_power_tap",
             "pixel_sensor_role": (
                 "secondary baseline when acquisition field of view, multi-spot "
@@ -1388,9 +1306,9 @@ def _technology_trade_study(
                 "The optimized T bank now supplies signed x/y errors and matches "
                 "the practical QPD at the selected 1.5-dB corner. A generic pair "
                 "of balanced interferometers implements the same directional "
-                "observable, while a conventional sorter matches the radial "
-                "ablation, so the simulation establishes a useful architecture "
-                "but not a uniquely Burau hardware advantage."
+                "observable, so the simulation establishes a useful architecture "
+                "but not a uniquely Burau hardware advantage. The conventional "
+                "mode sorter remains a separate modal-sensing baseline."
             ),
             "reconsider_if": (
                 "measured hardware shows a loss, bandwidth, stability, fault-coverage, "
@@ -1464,11 +1382,6 @@ def _plot_results(
             "#0072b2",
             "o",
         ),
-        "radial_householder_ablation": (
-            "radial Householder",
-            "#7570b3",
-            "D",
-        ),
         "loss_matched_mode_sorter": ("mode sorter", "#1b9e77", "^"),
         "quadrant_detector": ("quadrant detector", "#e7298a", "s"),
         "scalar_power_monitor": ("scalar power", "#666666", "x"),
@@ -1524,12 +1437,6 @@ def _plot_results(
             "#0072b2",
             "o",
             "-",
-        ),
-        "radial_householder_ablation": (
-            "radial Householder",
-            "#7570b3",
-            "D",
-            ":",
         ),
         "loss_matched_mode_sorter": (
             "loss-matched mode sorter",
@@ -1716,12 +1623,6 @@ def run_satcom_guardian_study(
                             0.0,
                         )
                     ),
-                    "nominal_mean_true_radial_householder_score": float(
-                        np.mean(normal["ideal_radial_householder_score"])
-                    ),
-                    "fault_mean_true_radial_householder_score": float(
-                        np.mean(fault["ideal_radial_householder_score"])
-                    ),
                     "nominal_mean_true_directional_t_radial_score": float(
                         np.mean(
                             normal["ideal_directional_t_radial_discriminant"]
@@ -1843,8 +1744,8 @@ def run_satcom_guardian_study(
         raise AssertionError("quadrant baseline did not distinguish the selected fault")
 
     diagnostics: dict[str, object] = {
-        "schema_version": 4,
-        "model_revision": "hybrid_directional_burau_t_bank_v2",
+        "schema_version": 5,
+        "model_revision": "hybrid_directional_burau_t_bank_v3",
         "scope": (
             "reduced-order numerical engineering study of a parameterized "
             "epitaxial-laser source envelope, optical inter-satellite link, "
@@ -1913,10 +1814,6 @@ def run_satcom_guardian_study(
                 "nonlinear outside the characterized range and acquisition "
                 "still needs a wide-field PAT sensor"
             ),
-            "radial_ablation": (
-                "the legacy Householder projector score 2|<h,x>|^2-1 is "
-                "retained only as an even, quadratic comparison"
-            ),
         },
         "receiver_baseline_models": {
             "quadrant_detector": {
@@ -1942,8 +1839,8 @@ def run_satcom_guardian_study(
                 "detectors": 2,
                 "statistic": "nominal-mode power minus residual power over their sum",
                 "purpose": (
-                    "same-observable control that removes T-arm linewidth, delay, "
-                    "phase-jitter, and detuning sensitivity"
+                    "independent conventional modal-sensing baseline with the "
+                    "same assumed insertion loss"
                 ),
             },
             "generic_directional_balanced_interferometer": {
@@ -1994,9 +1891,8 @@ def run_satcom_guardian_study(
             ),
             "comparison": (
                 "four-output directional Burau T versus (1) a four-segment "
-                "quadrant pointing detector on the pre-core tap, (2) the old "
-                "two-output radial Householder score, (3) a loss-matched "
-                "conventional mode sorter, and (4) a one-detector pre-core "
+                "quadrant pointing detector on the pre-core tap, (2) a "
+                "loss-matched conventional mode sorter, and (3) a one-detector pre-core "
                 "scalar-power negative control"
             ),
             "target_false_alarm_probability": (
