@@ -98,10 +98,14 @@ python -m programs.satcom_guardian.reproduce
 The deterministic run writes:
 
 - `figures/satcom_guardian.png`, with the photon link budget, coherence and
-  detuning sensitivities, detector operating characteristic, fault-severity
-  sweep, and RIN test;
+  detuning sensitivities, practical detector comparison, fault-severity sweep,
+  and RIN test;
 - `results/satcom_guardian.json`, containing every input parameter and
   computed result.
+
+The literature-routed baseline choice, engineering scores, control and
+production assessment, and range interpretation are recorded in the
+[baseline review](BASELINE_REVIEW.md).
 
 The default comparison is intentionally difficult for a scalar received-power
 alarm: a selected 1.5-urad pointing-bias stress case redistributes the coherent
@@ -112,8 +116,18 @@ faults.  A separate sweep includes smaller biases.  At each range, independent
 threshold-calibration, nominal-evaluation, and fault-evaluation Monte Carlo
 populations compare:
 
-- the normalized T/ideal-mode-sorter residual; and
-- a one-detector scalar power tap placed before T-core insertion loss.
+- the normalized two-output T residual after the assumed 1.5-dB core loss;
+- a loss-matched conventional mode sorter measuring the same projector without
+  T-arm coherence sensitivity;
+- a four-segment Gaussian-spot quadrant detector before core loss; and
+- a one-detector scalar power tap before core loss, retained only as a negative
+  control.
+
+The quadrant detector is the primary practical baseline because the simulated
+fault is pointing bias and a quadrant sensor returns signed azimuth/elevation
+errors. Existing modem/FEC/PAT telemetry is a mandatory system baseline, but it
+cannot yet be simulated fairly because this Phase-0 model has no symbol
+waveform, frame synchronizer, or decoder.
 
 The threshold is calibrated at a target 1% false-alarm probability and then
 evaluated on an independent nominal population.  At 100-ns decisions, 1%
@@ -137,19 +151,31 @@ For the selected 1.5-urad pointing fault, total collected power falls only
 Using thresholds fitted on independent nominal samples, the 8,000-km boosted
 case gives:
 
-- T/mode-sorter detection 0.99827 (95% binomial interval 0.99773--0.99868) with
-  an observed false-alarm fraction of 0.00950;
-- pre-core scalar-power detection 0.0609 (0.0583--0.0637) with an observed
-  false-alarm fraction of 0.0102.
+- T detection 0.99827 (95% binomial interval 0.99773--0.99868) with an observed
+  false-alarm fraction of 0.00950;
+- loss-matched conventional-mode-sorter detection 0.99850
+  (0.99799--0.99888), statistically indistinguishable from T;
+- pre-core quadrant-detector detection 0.99820 (0.99765--0.99862), also
+  statistically indistinguishable for this large fault; and
+- pre-core scalar-power detection 0.0583 (0.0557--0.0610).
 
-The seed-only 8,000-km case falls to 0.689 T detection.  This is useful design
-evidence for adding photons, lengthening the integration window, or voting
-across windows; it is not evidence for mission-level reliability.  Most
-importantly, the result depends on the assumed 4-urad modal scale.  That scale
-must be replaced by measured telescope and photonic-lantern fields before the
-detection result can support a device decision.  The severity sweep makes the
-dependence visible: at the boosted 8,000-km corner, detection falls to 0.845 at
-1.0 urad, 0.517 at 0.75 urad, 0.184 at 0.5 urad, and 0.037 at 0.25 urad.
+The seed-only 8,000-km case falls to 0.689 T detection, 0.683 for the
+conventional sorter, and 0.411 for the four-segment detector in the same 100-ns
+window at the default 4-urad QPD spot scale. A separate QPD sensitivity run
+reaches 0.689 with a 2-urad spot assumption, whose reduced physical field of
+view is not charged by this ideal model. The apparent low-photon ranking is
+therefore design-assumption dependent. The near-equal conventional-sorter
+result also means it is not a Burau-specific advantage. It is useful evidence
+for adding photons, lengthening the integration window, or voting across
+windows; it is not evidence for mission-level reliability.
+
+Most importantly, the result depends on assumed 4-urad modal and quadrant-spot
+scales. Those must be replaced by measured telescope, focal-plane, and
+photonic-lantern fields before the detection result can support a device
+decision. The JSON includes a 2/4/8-urad quadrant-spot sensitivity check. At the
+boosted 8,000-km corner, T detection falls to 0.845 at 1.0 urad, 0.517 at 0.75
+urad, 0.184 at 0.5 urad, and 0.037 at 0.25 urad; the quadrant and conventional
+sorter curves are similar under the default assumptions.
 
 The source/interferometer coupling itself looks forgiving for the hypothetical
 narrowband baseline: a 1-MHz Lorentzian linewidth with 1-ps arm mismatch retains
@@ -162,6 +188,27 @@ thermo-optic phase drift is not modeled.  The cited Fabry--Perot prototype's
 large thermal wavelength
 shift also means that wavelength selection or locking remains a system
 requirement for dense WDM.
+
+## Distance context
+
+Distance is a link-budget outcome, not a fixed property of any guardian. The
+present detector grid covers 500--8,000 km and available photoelectrons scale
+approximately as inverse range squared. Under the selected 1.5-urad stress and
+2.5-W scenario, T, the loss-matched sorter, and the quadrant detector all remain
+above 99% detection at the farthest sampled point. With the 155-mW seed, T and
+the sorter remain above 99% through 4,000 km, while the quadrant model does so
+through 2,000 km in the assumed 100-ns window. These are sampled points, not
+maximum supported distances.
+
+For external context, SDA OCT v4 specifies a 5,500-km continuous-mode
+irradiance point and 20,000-km low-rate burst modes. Applying this repository's
+separate continuous Gaussian envelope at those distances gives about 2,029 and
+153 post-core photoelectrons per 100 ns, respectively, in the 2.5-W scenario.
+That calculation does not model the standard waveform, burst duty cycle,
+receiver sensitivity, PAT margin, or demonstrate compliance. The assumed
+1.5-dB T-core loss transmits 70.8% of incident photons and, by inverse-square
+scaling alone, reduces equal-photon range to 84.1% of a lossless pre-core
+sensor's range.
 
 To explore another deterministic configuration from Python, construct a
 `GuardianConfig` and pass it to `run_satcom_guardian_study`; the generated
@@ -186,10 +233,13 @@ run_satcom_guardian_study(
 
 - The T core observes a pilot or tapped field; it does not carry or decode the
   payload and therefore cannot increase Shannon capacity.
-- The scalar baseline uses the same optical tap but avoids T-core insertion
-  loss and uses one detector rather than two.  Existing fine-pointing and modem
-  telemetry, a quadrant detector, and a digital matched filter remain mandatory
-  system baselines.
+- The quadrant detector is the primary pointing baseline, existing
+  fine-pointing and modem/FEC telemetry are mandatory system baselines, and the
+  conventional mode sorter is the matched-observable control. The scalar tap is
+  only a negative control.
+- One T score is unsigned and cannot close a two-axis pointing loop without
+  additional projections, dithering, or another pointing sensor. Its potential
+  role is link-assurance alarm generation, not replacement of PAT.
 - A faster warning can improve delivered goodput only if the terminal and
   network can use it to steer, change lane, or reroute before loss of lock.
 - Each optical carrier must remain coherent with itself across the two T arms.
@@ -216,8 +266,18 @@ primary and official results anchor the explored regime:
 - NASA's TBIRD mission demonstrated a 200-Gbit/s space-to-ground optical link:
   [NASA TBIRD](https://www.nasa.gov/centers-and-facilities/goddard/nasa-partners-achieve-fastest-space-to-ground-laser-comms-link/).
 - SDA OCT v4 defines C-band terminal wavelengths on a 100-GHz grid and a
-  2.5-Gbaud interoperable waveform family:
+  2.5-Gbaud interoperable waveform family, treats PAT as part of the physical
+  layer, and supplies the 5,500/20,000-km range anchors used above:
   [SDA OCT v4](https://www.sda.mil/wp-content/uploads/2024/07/SDA_OCT_Standard_4.0.0_final-20240701.pdf).
+- TBIRD used a quad sensor for two-axis pointing feedback and subsequently
+  demonstrated closed-loop pointing on orbit:
+  [Riesing et al. (2023)](https://ntrs.nasa.gov/citations/20230000001).
+- A spaceborne quadrant-detector positioning scheme was designed around limited
+  onboard compute and memory:
+  [Wei et al. (2024)](https://doi.org/10.1364/AO.517934).
+- Experimental non-mode-selective photonic-lantern reception anchors the
+  conventional mode-diversity alternative:
+  [Wang et al. (2023)](https://doi.org/10.1109/JPHOT.2022.3225337).
 - A wafer-scale InP-on-silicon platform demonstrated 1.55-um electrically
   pumped CW lasers above 155 mW per facet and operation to 120 C:
   [Sun et al. (2024)](https://doi.org/10.1038/s41377-024-01389-2).
@@ -235,8 +295,12 @@ primary and official results anchor the explored regime:
 
 The next model should ingest a measured laser spectrum/RIN trace and a measured
 complex transfer matrix.  The first bench experiment should then compare the
-T score with a quadrant detector and modem telemetry under controlled
-pointing, polarization, detuning, temperature, and component faults.  The
-relevant outputs are warning lead time, missed degradation, false handovers,
-added optical loss, calibration interval, and end-to-end power--not optical
-propagation latency alone.
+T score with a quadrant detector, a conventional implementation of the same
+mode projector, and modem/PAT telemetry under controlled pointing,
+polarization, detuning, temperature, and component faults. Incident photons,
+integration latency, detector technology, and false-alarm cost must be matched.
+The relevant outputs are signed control usefulness, warning lead time, missed
+degradation, false handovers, added optical loss, calibration interval,
+manufacturing tolerance, and end-to-end power--not optical propagation latency
+alone. A Burau-specific go decision requires a measured advantage that a generic
+projector does not share.

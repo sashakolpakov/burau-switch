@@ -37,7 +37,9 @@ This command is intentionally separate from the manuscript-level
   epitaxial-laser source envelope to a shallow T sum/difference receiver and
   explores optical inter-satellite link budget, coherence, pointing and
   polarization degradation, detector noise, and warning performance against a
-  scalar power monitor.
+  practical quadrant detector, a loss-matched conventional mode sorter, and a
+  scalar-power negative control. Its baseline review also scores control,
+  production, SWaP, evidence maturity, and range interpretation.
 
 Each directory owns its code, generated figures, and results. Any later
 manuscript will live in its own directory; none of these artifacts changes the

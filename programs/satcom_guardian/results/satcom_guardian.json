@@ -22,6 +22,7 @@
     "non_pointing_link_efficiency": 0.25,
     "payload_lane_rate_gbps": 100.0,
     "polarization_jitter_deg": 1.0,
+    "qpd_equivalent_spot_radius_urad": 4.0,
     "receive_aperture_diameter_m": 0.1,
     "residual_phase_jitter_rms_rad": 0.01,
     "seed": 20260909,
@@ -536,12 +537,19 @@
     }
   },
   "link_budget": {
-    "boosted_photoelectrons_per_window": [
+    "boosted_post_t_core_photoelectrons_per_window": [
       245500.93238535064,
       61377.27895259499,
       15344.447607716693,
       3836.1198938326697,
       959.030472953003
+    ],
+    "boosted_pre_core_photoelectrons_per_window": [
+      346779.2842342,
+      86697.71090732439,
+      21674.608347396632,
+      5418.6633757129,
+      1354.6665494834338
     ],
     "booster_gain_from_seed_db": 12.07608310501746,
     "main_path_tap_penalty_db": 0.04364805402450088,
@@ -553,28 +561,88 @@
       4000.0,
       8000.0
     ],
-    "seed_only_photoelectrons_per_window": [
+    "seed_only_post_t_core_photoelectrons_per_window": [
       15221.05780789174,
       3805.39129506089,
       951.3557516784348,
       237.83943341762551,
       59.45988932308618
+    ],
+    "seed_only_pre_core_photoelectrons_per_window": [
+      21500.315622520404,
+      5375.258076254113,
+      1343.825717538591,
+      335.9571292941998,
+      83.98932606797288
     ]
   },
   "literature_anchors": [
     {
-      "fact": "200-Gbit/s space-to-ground optical transmission was demonstrated by NASA TBIRD",
-      "url": "https://www.nasa.gov/centers-and-facilities/goddard/nasa-partners-achieve-fastest-space-to-ground-laser-comms-link/"
+      "fact": "TBIRD used a quad sensor for signed two-axis payload feedback; on orbit its overall closed-loop pointing was 20--35 urad RMS per axis while supporting 100/200-Gbit/s demonstrations",
+      "url": "https://ntrs.nasa.gov/citations/20230000001"
     },
     {
-      "fact": "SDA OCT v4 uses a C-band 100-GHz grid and includes 2.5-Gbaud interoperable modes",
+      "fact": "SDA OCT v4 treats PAT as part of the physical layer, requires 2.5-W maximum output capability and a 5,500-km continuous irradiance point, defines 20,000-km burst modes, and reports fast received power plus frame-sync status",
       "url": "https://www.sda.mil/wp-content/uploads/2024/07/SDA_OCT_Standard_4.0.0_final-20240701.pdf"
+    },
+    {
+      "fact": "a 2024 spaceborne laser-communication study implemented a four-quadrant spot-position scheme designed for limited onboard compute and memory",
+      "url": "https://doi.org/10.1364/AO.517934"
+    },
+    {
+      "fact": "ESA's FastSwitching terminal development replaces heritage cascaded four-quadrant acquisition/tracking diodes with a pixel detector, establishing the pixel sensor as a practical secondary PAT baseline",
+      "url": "https://resilience.esa.int/archives/projects/fastswitching"
+    },
+    {
+      "fact": "experimental free-space mode-diversity reception has been demonstrated with non-mode-selective photonic lanterns",
+      "url": "https://doi.org/10.1109/JPHOT.2022.3225337"
+    },
+    {
+      "fact": "programmable photonic circuits can self-calibrate, but the published demonstration explicitly addresses fabrication variation, thermal gradients, and thermal crosstalk",
+      "url": "https://doi.org/10.1038/s41566-022-01020-z"
     },
     {
       "fact": "a 1.55-um InP-on-Si research laser exceeded 155 mW per facet and operated CW to 120 C",
       "url": "https://doi.org/10.1038/s41377-024-01389-2"
     }
   ],
+  "literature_range_context": {
+    "current_sda_resources_url": "https://www.sda.mil/home/work-with-us/resources/",
+    "deployment_context": "SDA's public resources page identifies v3.2 as the standard of record for Tranche 3 and v4 for a smaller set of terminals; the 20,000-km v4 mode is not a generic requirement for every link",
+    "insertion_loss_range_scaling": {
+      "interpretation": "the assumed 1.5-dB T-core loss alone shortens equal-photon range to sqrt(transmission) of a lossless pre-core sensor; detector statistics and fault response can change the actual crossover",
+      "pre_core_to_post_core_photon_ratio": 1.4125375446227544,
+      "t_core_transmission": 0.7079457843841379,
+      "t_range_fraction_at_equal_detected_photons_under_inverse_square_scaling": 0.8413951416451951
+    },
+    "model_at_standard_ranges": [
+      {
+        "model_post_t_core_photoelectrons_per_100_ns_window": 2029.022756369815,
+        "model_pre_core_photoelectrons_per_100_ns_window": 2866.0708222663116,
+        "one_way_light_time_ms": 18.346025235898363,
+        "range_km": 5500.0,
+        "sda_service_context": "continuous interoperable modes"
+      },
+      {
+        "model_post_t_core_photoelectrons_per_100_ns_window": 153.444898049859,
+        "model_pre_core_photoelectrons_per_100_ns_window": 216.7466795262367,
+        "one_way_light_time_ms": 66.71281903963042,
+        "range_km": 20000.0,
+        "sda_service_context": "low-rate burst modes"
+      }
+    ],
+    "non_compliance_warning": "The two model photon counts merely evaluate this repository's continuous Gaussian-envelope assumptions at the standard's distances. They do not model OCT waveforms, burst duty cycle, receiver sensitivity, PAT margin, or demonstrate SDA compliance.",
+    "standard": "SDA Optical Communications Terminal Standard v4.0.0",
+    "standard_facts": {
+      "burst_duration_ns": 102.4,
+      "burst_long_term_receive_aperture_irradiance_uw_per_m2": 6.0,
+      "burst_reference_range_km": 20000.0,
+      "continuous_receive_aperture_irradiance_uw_per_m2": 25.0,
+      "continuous_reference_range_km": 5500.0,
+      "minimum_maximum_transmit_power_w": 2.5
+    },
+    "standard_url": "https://www.sda.mil/wp-content/uploads/2024/07/SDA_OCT_Standard_4.0.0_final-20240701.pdf"
+  },
   "mode_basis": [
     "nominal spatial/polarization pilot mode",
     "azimuth pointing leakage",
@@ -582,7 +650,7 @@
     "orthogonal polarization leakage"
   ],
   "monte_carlo_fault_detection": {
-    "comparison": "normalized T modal-residual score versus scalar total-power alarm on the same optical tap; the scalar baseline is detected before T-core insertion loss with one detector, while the T score uses two post-core detectors",
+    "comparison": "normalized T modal-residual score versus (1) a four-segment quadrant pointing detector on the pre-core tap, (2) a loss-matched two-output conventional mode sorter measuring the same projector, and (3) a one-detector pre-core scalar-power negative control",
     "fault": "1.5-urad mean azimuth displacement with unchanged pointing-jitter and polarization distributions; this is a selected stress case, not a fitted fault-occurrence distribution",
     "rare_event_warning": "threshold calibration, nominal evaluation, and fault evaluation use independent 30,000-trial populations; the 1% operating point would flag about 100,000 independent 100-ns windows per second and is only a diagnostic ROC point, not an operational alarm or mission-reliability claim",
     "results_by_transmit_power": {
@@ -590,24 +658,53 @@
         "by_range": [
           {
             "boresight_photoelectrons_per_window": 245500.93238535064,
+            "fault_mean_true_qpd_radial_discriminant": 0.5526749990856326,
             "fault_mean_true_t_score": 0.491656319600179,
+            "loss_matched_mode_sorter": {
+              "area_under_roc": 0.9999352311111112,
+              "evaluation_false_alarm_probability": 0.0107,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.009596794111692673,
+                0.0119284982315258
+              ],
+              "fault_detection_probability": 0.9991,
+              "fault_detection_probability_95_percent_interval": [
+                0.9986908330889575,
+                0.9993813651360572
+              ],
+              "threshold": -0.8629639598886095
+            },
             "mean_fault_total_power_reduction_fraction": 0.019819111919230248,
             "nominal_mean_true_t_score": 0.9687664043314153,
-            "power_monitor": {
-              "area_under_roc": 0.9996146188888889,
-              "evaluation_false_alarm_probability": 0.009033333333333334,
+            "quadrant_detector": {
+              "area_under_roc": 0.9999357888888889,
+              "evaluation_false_alarm_probability": 0.010833333333333334,
               "evaluation_false_alarm_probability_95_percent_interval": [
-                0.008023783646519254,
-                0.010168602137475904
+                0.009722969570966696,
+                0.012068955296989644
               ],
-              "fault_detection_probability": 0.9937,
+              "fault_detection_probability": 0.9991333333333333,
               "fault_detection_probability_95_percent_interval": [
-                0.9927392845472033,
-                0.9945342964259279
+                0.998730386925393,
+                0.9994084694308061
               ],
-              "threshold": -0.9935150624602195
+              "threshold": 0.29481928291611575
             },
             "range_km": 500.0,
+            "scalar_power_monitor": {
+              "area_under_roc": 0.9995682333333333,
+              "evaluation_false_alarm_probability": 0.010366666666666666,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.009281558480329148,
+                0.011577152551044663
+              ],
+              "fault_detection_probability": 0.9942,
+              "fault_detection_probability_95_percent_interval": [
+                0.9932751677164158,
+                0.9949982852244823
+              ],
+              "threshold": -0.9936195240251858
+            },
             "t_guardian": {
               "area_under_roc": 0.99993474,
               "evaluation_false_alarm_probability": 0.010766666666666667,
@@ -625,24 +722,53 @@
           },
           {
             "boresight_photoelectrons_per_window": 61377.27895259499,
+            "fault_mean_true_qpd_radial_discriminant": 0.5528719842580719,
             "fault_mean_true_t_score": 0.4914391118158999,
+            "loss_matched_mode_sorter": {
+              "area_under_roc": 0.9999479166666667,
+              "evaluation_false_alarm_probability": 0.009566666666666666,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.008526250441628011,
+                0.010732665441318606
+              ],
+              "fault_detection_probability": 0.9988666666666667,
+              "fault_detection_probability_95_percent_interval": [
+                0.9984167668287183,
+                0.9991888244780052
+              ],
+              "threshold": -0.8611680908094012
+            },
             "mean_fault_total_power_reduction_fraction": 0.019837799641035714,
             "nominal_mean_true_t_score": 0.9689453799223816,
-            "power_monitor": {
-              "area_under_roc": 0.9958078555555556,
-              "evaluation_false_alarm_probability": 0.0087,
+            "quadrant_detector": {
+              "area_under_roc": 0.9999483666666666,
+              "evaluation_false_alarm_probability": 0.009633333333333334,
               "evaluation_false_alarm_probability_95_percent_interval": [
-                0.0077102169275766914,
-                0.0098155875445738
+                0.008589121349625087,
+                0.010803110795690466
               ],
-              "fault_detection_probability": 0.9458,
+              "fault_detection_probability": 0.9990333333333333,
               "fault_detection_probability_95_percent_interval": [
-                0.9431804064642382,
-                0.9483054399968147
+                0.998612051717996,
+                0.9993268302446495
               ],
-              "threshold": -0.9902920277666998
+              "threshold": 0.2976364154636526
             },
             "range_km": 1000.0,
+            "scalar_power_monitor": {
+              "area_under_roc": 0.9957665088888888,
+              "evaluation_false_alarm_probability": 0.009166666666666667,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.008149314858519335,
+                0.010309703450213687
+              ],
+              "fault_detection_probability": 0.9490333333333333,
+              "fault_detection_probability_95_percent_interval": [
+                0.9464866450000409,
+                0.9514650401859053
+              ],
+              "threshold": -0.9904259412939825
+            },
             "t_guardian": {
               "area_under_roc": 0.9999474966666667,
               "evaluation_false_alarm_probability": 0.009566666666666666,
@@ -660,24 +786,53 @@
           },
           {
             "boresight_photoelectrons_per_window": 15344.447607716693,
+            "fault_mean_true_qpd_radial_discriminant": 0.5522233234285332,
             "fault_mean_true_t_score": 0.49236998414610006,
+            "loss_matched_mode_sorter": {
+              "area_under_roc": 0.9999305677777778,
+              "evaluation_false_alarm_probability": 0.009566666666666666,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.008526250441628011,
+                0.010732665441318606
+              ],
+              "fault_detection_probability": 0.9987333333333334,
+              "fault_detection_probability_95_percent_interval": [
+                0.9982619918854745,
+                0.9990769668965112
+              ],
+              "threshold": -0.859772352027073
+            },
             "mean_fault_total_power_reduction_fraction": 0.019781860000798845,
             "nominal_mean_true_t_score": 0.968534670056458,
-            "power_monitor": {
-              "area_under_roc": 0.9567178177777778,
-              "evaluation_false_alarm_probability": 0.0102,
+            "quadrant_detector": {
+              "area_under_roc": 0.9999286388888888,
+              "evaluation_false_alarm_probability": 0.010033333333333333,
               "evaluation_false_alarm_probability_95_percent_interval": [
-                0.009124052701573074,
-                0.011401367673878407
+                0.008966624026796415,
+                0.011225505692732732
               ],
-              "fault_detection_probability": 0.6445,
+              "fault_detection_probability": 0.9986666666666667,
               "fault_detection_probability_95_percent_interval": [
-                0.6390653147542347,
-                0.6498976839304269
+                0.9981850195519077,
+                0.9990206229677088
               ],
-              "threshold": -0.9828064162992409
+              "threshold": 0.2993066690078907
             },
             "range_km": 2000.0,
+            "scalar_power_monitor": {
+              "area_under_roc": 0.9563093922222222,
+              "evaluation_false_alarm_probability": 0.010566666666666667,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.00947066462415009,
+                0.01178799519433052
+              ],
+              "fault_detection_probability": 0.6532333333333333,
+              "fault_detection_probability_95_percent_interval": [
+                0.6478283465610291,
+                0.6585990824939627
+              ],
+              "threshold": -0.9830042139098372
+            },
             "t_guardian": {
               "area_under_roc": 0.9999334666666667,
               "evaluation_false_alarm_probability": 0.0097,
@@ -695,24 +850,53 @@
           },
           {
             "boresight_photoelectrons_per_window": 3836.1198938326697,
+            "fault_mean_true_qpd_radial_discriminant": 0.5521491342108195,
             "fault_mean_true_t_score": 0.49259694455958586,
+            "loss_matched_mode_sorter": {
+              "area_under_roc": 0.9999417611111111,
+              "evaluation_false_alarm_probability": 0.010133333333333333,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.009061071874347695,
+                0.01133103223873485
+              ],
+              "fault_detection_probability": 0.9993333333333333,
+              "fault_detection_probability_95_percent_interval": [
+                0.9989704292265574,
+                0.9995683759167483
+              ],
+              "threshold": -0.8628723136715714
+            },
             "mean_fault_total_power_reduction_fraction": 0.019766712042981083,
             "nominal_mean_true_t_score": 0.9684970184575107,
-            "power_monitor": {
-              "area_under_roc": 0.8343225,
-              "evaluation_false_alarm_probability": 0.008866666666666667,
+            "quadrant_detector": {
+              "area_under_roc": 0.9999373555555555,
+              "evaluation_false_alarm_probability": 0.0107,
               "evaluation_false_alarm_probability_95_percent_interval": [
-                0.007866952848138757,
-                0.009992142279934068
+                0.009596794111692673,
+                0.0119284982315258
               ],
-              "fault_detection_probability": 0.20976666666666666,
+              "fault_detection_probability": 0.9992,
               "fault_detection_probability_95_percent_interval": [
-                0.2051968101229064,
-                0.2144108416539451
+                0.9988098520289951,
+                0.9994623205895729
               ],
-              "threshold": -0.9669647587139313
+              "threshold": 0.29931438140611055
             },
             "range_km": 4000.0,
+            "scalar_power_monitor": {
+              "area_under_roc": 0.8351254822222223,
+              "evaluation_false_alarm_probability": 0.009333333333333334,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.008306310009602108,
+                0.010485998955053248
+              ],
+              "fault_detection_probability": 0.2098,
+              "fault_detection_probability_95_percent_interval": [
+                0.20522987038653326,
+                0.2144444395215027
+              ],
+              "threshold": -0.9670536030287883
+            },
             "t_guardian": {
               "area_under_roc": 0.9999446111111111,
               "evaluation_false_alarm_probability": 0.0108,
@@ -730,24 +914,53 @@
           },
           {
             "boresight_photoelectrons_per_window": 959.030472953003,
+            "fault_mean_true_qpd_radial_discriminant": 0.5526661949880122,
             "fault_mean_true_t_score": 0.49164049383155306,
+            "loss_matched_mode_sorter": {
+              "area_under_roc": 0.9999105522222222,
+              "evaluation_false_alarm_probability": 0.009466666666666667,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.008431969555423177,
+                0.010626971933970043
+              ],
+              "fault_detection_probability": 0.9985,
+              "fault_detection_probability_95_percent_interval": [
+                0.997993644815813,
+                0.9988787070478814
+              ],
+              "threshold": -0.8551555500458778
+            },
             "mean_fault_total_power_reduction_fraction": 0.019811134880150738,
             "nominal_mean_true_t_score": 0.9684265848701242,
-            "power_monitor": {
-              "area_under_roc": 0.696059208888889,
-              "evaluation_false_alarm_probability": 0.0102,
+            "quadrant_detector": {
+              "area_under_roc": 0.9998728033333333,
+              "evaluation_false_alarm_probability": 0.010533333333333334,
               "evaluation_false_alarm_probability_95_percent_interval": [
-                0.009124052701573074,
-                0.011401367673878407
+                0.009439139535629927,
+                0.011752862151666215
               ],
-              "fault_detection_probability": 0.06093333333333333,
+              "fault_detection_probability": 0.9982,
               "fault_detection_probability_95_percent_interval": [
-                0.058282294125807405,
-                0.06369680191240185
+                0.9976523633260156,
+                0.9986200653570184
               ],
-              "threshold": -0.9364427394030441
+              "threshold": 0.3083607824621182
             },
             "range_km": 8000.0,
+            "scalar_power_monitor": {
+              "area_under_roc": 0.6948784788888889,
+              "evaluation_false_alarm_probability": 0.010633333333333333,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.00953372356828354,
+                0.011858252512566003
+              ],
+              "fault_detection_probability": 0.058333333333333334,
+              "fault_detection_probability_95_percent_interval": [
+                0.05573732000528795,
+                0.06104244180053293
+              ],
+              "threshold": -0.9356532152014571
+            },
             "t_guardian": {
               "area_under_roc": 0.9998811222222223,
               "evaluation_false_alarm_probability": 0.0095,
@@ -770,24 +983,53 @@
         "by_range": [
           {
             "boresight_photoelectrons_per_window": 15221.05780789174,
+            "fault_mean_true_qpd_radial_discriminant": 0.5533479428701661,
             "fault_mean_true_t_score": 0.49032629854183496,
-            "mean_fault_total_power_reduction_fraction": 0.019884091456875752,
-            "nominal_mean_true_t_score": 0.9687329260096318,
-            "power_monitor": {
-              "area_under_roc": 0.9571395011111111,
+            "loss_matched_mode_sorter": {
+              "area_under_roc": 0.9999468611111111,
               "evaluation_false_alarm_probability": 0.010233333333333334,
               "evaluation_false_alarm_probability_95_percent_interval": [
                 0.009155547748548338,
                 0.01143653075808761
               ],
-              "fault_detection_probability": 0.6576,
+              "fault_detection_probability": 0.9991666666666666,
               "fault_detection_probability_95_percent_interval": [
-                0.652210610676822,
-                0.6629490335633348
+                0.9987700576335687,
+                0.9994354568538149
               ],
-              "threshold": -0.9830615808693627
+              "threshold": -0.8611848864055799
+            },
+            "mean_fault_total_power_reduction_fraction": 0.019884091456875752,
+            "nominal_mean_true_t_score": 0.9687329260096318,
+            "quadrant_detector": {
+              "area_under_roc": 0.9999449644444445,
+              "evaluation_false_alarm_probability": 0.010233333333333334,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.009155547748548338,
+                0.01143653075808761
+              ],
+              "fault_detection_probability": 0.9992,
+              "fault_detection_probability_95_percent_interval": [
+                0.9988098520289951,
+                0.9994623205895729
+              ],
+              "threshold": 0.29821536926316106
             },
             "range_km": 500.0,
+            "scalar_power_monitor": {
+              "area_under_roc": 0.9563723066666667,
+              "evaluation_false_alarm_probability": 0.011566666666666666,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.010417720277332764,
+                0.012840683476681833
+              ],
+              "fault_detection_probability": 0.6557333333333333,
+              "fault_detection_probability_95_percent_interval": [
+                0.6503372148958517,
+                0.661089573997975
+              ],
+              "threshold": -0.9830191638710162
+            },
             "t_guardian": {
               "area_under_roc": 0.9999457733333333,
               "evaluation_false_alarm_probability": 0.010833333333333334,
@@ -805,24 +1047,53 @@
           },
           {
             "boresight_photoelectrons_per_window": 3805.39129506089,
+            "fault_mean_true_qpd_radial_discriminant": 0.5515218774910987,
             "fault_mean_true_t_score": 0.4936436162278857,
+            "loss_matched_mode_sorter": {
+              "area_under_roc": 0.9999480577777777,
+              "evaluation_false_alarm_probability": 0.0103,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.009218547034953405,
+                0.011506847734051473
+              ],
+              "fault_detection_probability": 0.9987666666666667,
+              "fault_detection_probability_95_percent_interval": [
+                0.9983005777510832,
+                0.9991050391620868
+              ],
+              "threshold": -0.8614485526951235
+            },
             "mean_fault_total_power_reduction_fraction": 0.019736331090921544,
             "nominal_mean_true_t_score": 0.9689451064791552,
-            "power_monitor": {
-              "area_under_roc": 0.8346748733333333,
-              "evaluation_false_alarm_probability": 0.009033333333333334,
+            "quadrant_detector": {
+              "area_under_roc": 0.9999387877777778,
+              "evaluation_false_alarm_probability": 0.010733333333333333,
               "evaluation_false_alarm_probability_95_percent_interval": [
-                0.008023783646519254,
-                0.010168602137475904
+                0.009628333699700682,
+                0.011963616774702257
               ],
-              "fault_detection_probability": 0.20493333333333333,
+              "fault_detection_probability": 0.9986666666666667,
               "fault_detection_probability_95_percent_interval": [
-                0.2004035689474208,
-                0.20953865380768308
+                0.9981850195519077,
+                0.9990206229677088
               ],
-              "threshold": -0.9668201458249294
+              "threshold": 0.2984571934968122
             },
             "range_km": 1000.0,
+            "scalar_power_monitor": {
+              "area_under_roc": 0.8331821211111111,
+              "evaluation_false_alarm_probability": 0.0108,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.009691421442375413,
+                0.012033845294396463
+              ],
+              "fault_detection_probability": 0.21936666666666665,
+              "fault_detection_probability_95_percent_interval": [
+                0.21472005878809824,
+                0.22408513476987957
+              ],
+              "threshold": -0.9673553796910533
+            },
             "t_guardian": {
               "area_under_roc": 0.9999453211111111,
               "evaluation_false_alarm_probability": 0.010466666666666668,
@@ -840,24 +1111,53 @@
           },
           {
             "boresight_photoelectrons_per_window": 951.3557516784348,
+            "fault_mean_true_qpd_radial_discriminant": 0.5521660160469838,
             "fault_mean_true_t_score": 0.49247497522661615,
+            "loss_matched_mode_sorter": {
+              "area_under_roc": 0.9999017988888889,
+              "evaluation_false_alarm_probability": 0.012266666666666667,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.011082050498181414,
+                0.013576174010706979
+              ],
+              "fault_detection_probability": 0.9984,
+              "fault_detection_probability_95_percent_interval": [
+                0.9978794659659608,
+                0.9987929115041799
+              ],
+              "threshold": -0.8596114440168832
+            },
             "mean_fault_total_power_reduction_fraction": 0.019777483834635956,
             "nominal_mean_true_t_score": 0.9686459661535475,
-            "power_monitor": {
-              "area_under_roc": 0.6949863399999999,
-              "evaluation_false_alarm_probability": 0.010333333333333333,
+            "quadrant_detector": {
+              "area_under_roc": 0.99987309,
+              "evaluation_false_alarm_probability": 0.011066666666666667,
               "evaluation_false_alarm_probability_95_percent_interval": [
-                0.009250051245033744,
-                0.011542001655155601
+                0.009943884748271327,
+                0.01231464703797628
               ],
-              "fault_detection_probability": 0.0611,
+              "fault_detection_probability": 0.9980333333333333,
               "fault_detection_probability_95_percent_interval": [
-                0.05844548201675587,
-                0.06386690467737571
+                0.9974642301043469,
+                0.9984749079227647
               ],
-              "threshold": -0.9356582163779236
+              "threshold": 0.30807578858745455
             },
             "range_km": 2000.0,
+            "scalar_power_monitor": {
+              "area_under_roc": 0.6913756555555556,
+              "evaluation_false_alarm_probability": 0.010366666666666666,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.009281558480329148,
+                0.011577152551044663
+              ],
+              "fault_detection_probability": 0.06143333333333333,
+              "fault_detection_probability_95_percent_interval": [
+                0.05877187492011907,
+                0.06420709308585716
+              ],
+              "threshold": -0.9360745481542907
+            },
             "t_guardian": {
               "area_under_roc": 0.9999050366666666,
               "evaluation_false_alarm_probability": 0.011433333333333334,
@@ -875,24 +1175,53 @@
           },
           {
             "boresight_photoelectrons_per_window": 237.83943341762551,
+            "fault_mean_true_qpd_radial_discriminant": 0.55197431292398,
             "fault_mean_true_t_score": 0.49293870461392997,
+            "loss_matched_mode_sorter": {
+              "area_under_roc": 0.9993647999999999,
+              "evaluation_false_alarm_probability": 0.0106,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.009502192639570164,
+                0.011823125310094912
+              ],
+              "fault_detection_probability": 0.9903,
+              "fault_detection_probability_95_percent_interval": [
+                0.9891264572748127,
+                0.9913479943175026
+              ],
+              "threshold": -0.8239231899658429
+            },
             "mean_fault_total_power_reduction_fraction": 0.019747672901796243,
             "nominal_mean_true_t_score": 0.9684431148387397,
-            "power_monitor": {
-              "area_under_roc": 0.59546181,
-              "evaluation_false_alarm_probability": 0.0103,
+            "quadrant_detector": {
+              "area_under_roc": 0.9989652311111111,
+              "evaluation_false_alarm_probability": 0.011566666666666666,
               "evaluation_false_alarm_probability_95_percent_interval": [
-                0.009218547034953405,
-                0.011506847734051473
+                0.010417720277332764,
+                0.012840683476681833
               ],
-              "fault_detection_probability": 0.024066666666666667,
+              "fault_detection_probability": 0.9820666666666666,
               "fault_detection_probability_95_percent_interval": [
-                0.02239241696324791,
-                0.025862785984941572
+                0.9805020565975773,
+                0.983507836592175
               ],
-              "threshold": -0.8703668813959196
+              "threshold": 0.3512962169749211
             },
             "range_km": 4000.0,
+            "scalar_power_monitor": {
+              "area_under_roc": 0.59831294,
+              "evaluation_false_alarm_probability": 0.010933333333333333,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.009817630831389564,
+                0.012174268430120176
+              ],
+              "fault_detection_probability": 0.023866666666666668,
+              "fault_detection_probability_95_percent_interval": [
+                0.02219948085879803,
+                0.025655773302284652
+              ],
+              "threshold": -0.8689783467560773
+            },
             "t_guardian": {
               "area_under_roc": 0.9994353233333334,
               "evaluation_false_alarm_probability": 0.009866666666666666,
@@ -910,24 +1239,53 @@
           },
           {
             "boresight_photoelectrons_per_window": 59.45988932308618,
+            "fault_mean_true_qpd_radial_discriminant": 0.5521737146714671,
             "fault_mean_true_t_score": 0.4926233939782348,
+            "loss_matched_mode_sorter": {
+              "area_under_roc": 0.9520886,
+              "evaluation_false_alarm_probability": 0.0113,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.010164933881449945,
+                0.012560204823088922
+              ],
+              "fault_detection_probability": 0.6827666666666666,
+              "fault_detection_probability_95_percent_interval": [
+                0.6774771616923205,
+                0.6880093715921083
+              ],
+              "threshold": -0.6067658988190126
+            },
             "mean_fault_total_power_reduction_fraction": 0.019767755855567337,
             "nominal_mean_true_t_score": 0.9686085688420625,
-            "power_monitor": {
-              "area_under_roc": 0.5455799499999999,
-              "evaluation_false_alarm_probability": 0.011566666666666666,
+            "quadrant_detector": {
+              "area_under_roc": 0.9355111711111112,
+              "evaluation_false_alarm_probability": 0.0112,
               "evaluation_false_alarm_probability_95_percent_interval": [
-                0.010417720277332764,
-                0.012840683476681833
+                0.010070182401831447,
+                0.012454981909154023
               ],
-              "fault_detection_probability": 0.015266666666666666,
+              "fault_detection_probability": 0.4105666666666667,
               "fault_detection_probability_95_percent_interval": [
-                0.013939974602306579,
-                0.016717481713183782
+                0.4050117765261339,
+                0.4161444575059429
               ],
-              "threshold": -0.7190836706065216
+              "threshold": 0.6192093160931321
             },
             "range_km": 8000.0,
+            "scalar_power_monitor": {
+              "area_under_roc": 0.5435106,
+              "evaluation_false_alarm_probability": 0.010966666666666666,
+              "evaluation_false_alarm_probability_95_percent_interval": [
+                0.009849190167436798,
+                0.012209367225257405
+              ],
+              "fault_detection_probability": 0.014266666666666667,
+              "fault_detection_probability_95_percent_interval": [
+                0.012985576125550761,
+                0.015672136254405614
+              ],
+              "threshold": -0.717461607211789
+            },
             "t_guardian": {
               "area_under_roc": 0.9512994688888889,
               "evaluation_false_alarm_probability": 0.010666666666666666,
@@ -952,9 +1310,9 @@
   "next_model_gates": [
     "replace assumed source parameters with measured spectrum, RIN, and L-I data",
     "replace the modal surrogate with measured telescope/photonic-lantern fields",
-    "compare with an ideal digital matched filter and a conventional mode sorter",
+    "replace ideal quadrant and loss-matched sorter assumptions with measured transfer functions, gaps, losses, bandwidths, and drift",
     "run joint laser-impairment, modal-fault, and chip-temperature sweeps",
-    "add pointing-ramp warning lead time and modem loss-of-lock curves",
+    "add a waveform-level digital matched filter, pointing-ramp warning lead time, and modem RSSI/frame-sync/FEC loss-of-lock curves",
     "add optical feedback, WDM lane failure, redundancy, and network goodput",
     "run importance sampling before claiming rare false-alarm probabilities"
   ],
@@ -977,24 +1335,52 @@
       {
         "bias_over_collected_mode_scale": 0.0,
         "bias_over_nominal_jitter_sigma": 0.0,
+        "loss_matched_mode_sorter": {
+          "area_under_roc": 0.4996303122222222,
+          "evaluation_false_alarm_probability": 0.009566666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.008526250441628011,
+            0.010732665441318606
+          ],
+          "fault_detection_probability": 0.010633333333333333,
+          "fault_detection_probability_95_percent_interval": [
+            0.00953372356828354,
+            0.011858252512566003
+          ],
+          "threshold": -0.8554922332572954
+        },
         "mean_total_power_reduction_fraction": 7.098154397588985e-09,
         "mean_true_t_score": 0.9685873594345084,
         "pointing_bias_urad": 0.0,
-        "scalar_power_monitor": {
-          "area_under_roc": 0.5006255677777778,
-          "evaluation_false_alarm_probability": 0.011133333333333334,
+        "quadrant_detector": {
+          "area_under_roc": 0.49959459444444443,
+          "evaluation_false_alarm_probability": 0.009633333333333334,
           "evaluation_false_alarm_probability_95_percent_interval": [
-            0.010007028156491862,
-            0.012384819892124675
+            0.008589121349625087,
+            0.010803110795690466
           ],
-          "fault_detection_probability": 0.011933333333333334,
+          "fault_detection_probability": 0.009933333333333334,
           "fault_detection_probability_95_percent_interval": [
-            0.010765568072564206,
-            0.013226075124479526
+            0.00887220462030795,
+            0.0111199507056678
           ],
-          "threshold": -0.9368332260913328
+          "threshold": 0.30979610044013817
         },
-        "t_or_ideal_mode_sorter": {
+        "scalar_power_monitor": {
+          "area_under_roc": 0.50054338,
+          "evaluation_false_alarm_probability": 0.010166666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.009092560738514503,
+            0.011366201505752509
+          ],
+          "fault_detection_probability": 0.0111,
+          "fault_detection_probability_95_percent_interval": [
+            0.009975455091732718,
+            0.012349734825699355
+          ],
+          "threshold": -0.9366604565584258
+        },
+        "t_guardian": {
           "area_under_roc": 0.5003806855555555,
           "evaluation_false_alarm_probability": 0.009566666666666666,
           "evaluation_false_alarm_probability_95_percent_interval": [
@@ -1012,24 +1398,52 @@
       {
         "bias_over_collected_mode_scale": 0.0625,
         "bias_over_nominal_jitter_sigma": 1.0,
+        "loss_matched_mode_sorter": {
+          "area_under_roc": 0.6038526144444444,
+          "evaluation_false_alarm_probability": 0.009566666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.008526250441628011,
+            0.010732665441318606
+          ],
+          "fault_detection_probability": 0.03846666666666667,
+          "fault_detection_probability_95_percent_interval": [
+            0.03634882931106028,
+            0.04070268630881866
+          ],
+          "threshold": -0.8554922332572954
+        },
         "mean_total_power_reduction_fraction": 0.0005613223732594541,
         "mean_true_t_score": 0.9533423236564764,
         "pointing_bias_urad": 0.25,
-        "scalar_power_monitor": {
-          "area_under_roc": 0.5036064777777778,
-          "evaluation_false_alarm_probability": 0.011133333333333334,
+        "quadrant_detector": {
+          "area_under_roc": 0.6106689177777779,
+          "evaluation_false_alarm_probability": 0.009633333333333334,
           "evaluation_false_alarm_probability_95_percent_interval": [
-            0.010007028156491862,
-            0.012384819892124675
+            0.008589121349625087,
+            0.010803110795690466
           ],
-          "fault_detection_probability": 0.011433333333333334,
+          "fault_detection_probability": 0.03843333333333333,
           "fault_detection_probability_95_percent_interval": [
-            0.010291306240128468,
-            0.012700464989148267
+            0.03631640515949976,
+            0.04066845232919471
           ],
-          "threshold": -0.9368332260913328
+          "threshold": 0.30979610044013817
         },
-        "t_or_ideal_mode_sorter": {
+        "scalar_power_monitor": {
+          "area_under_roc": 0.5100106422222223,
+          "evaluation_false_alarm_probability": 0.010166666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.009092560738514503,
+            0.011366201505752509
+          ],
+          "fault_detection_probability": 0.011233333333333333,
+          "fault_detection_probability_95_percent_interval": [
+            0.010101763558598324,
+            0.012490058883571614
+          ],
+          "threshold": -0.9366604565584258
+        },
+        "t_guardian": {
           "area_under_roc": 0.6029024022222222,
           "evaluation_false_alarm_probability": 0.009566666666666666,
           "evaluation_false_alarm_probability_95_percent_interval": [
@@ -1047,24 +1461,52 @@
       {
         "bias_over_collected_mode_scale": 0.125,
         "bias_over_nominal_jitter_sigma": 2.0,
+        "loss_matched_mode_sorter": {
+          "area_under_roc": 0.7991732600000001,
+          "evaluation_false_alarm_probability": 0.009566666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.008526250441628011,
+            0.010732665441318606
+          ],
+          "fault_detection_probability": 0.18986666666666666,
+          "fault_detection_probability_95_percent_interval": [
+            0.18546845180217547,
+            0.19434429565754963
+          ],
+          "threshold": -0.8554922332572954
+        },
         "mean_total_power_reduction_fraction": 0.0021999706437308975,
         "mean_true_t_score": 0.9094046126501772,
         "pointing_bias_urad": 0.5,
-        "scalar_power_monitor": {
-          "area_under_roc": 0.5231993044444445,
-          "evaluation_false_alarm_probability": 0.011133333333333334,
+        "quadrant_detector": {
+          "area_under_roc": 0.8050833755555555,
+          "evaluation_false_alarm_probability": 0.009633333333333334,
           "evaluation_false_alarm_probability_95_percent_interval": [
-            0.010007028156491862,
-            0.012384819892124675
+            0.008589121349625087,
+            0.010803110795690466
           ],
-          "fault_detection_probability": 0.013833333333333333,
+          "fault_detection_probability": 0.18243333333333334,
           "fault_detection_probability_95_percent_interval": [
-            0.012572518774479177,
-            0.015218637900079133
+            0.1781038843812205,
+            0.18684409982436861
           ],
-          "threshold": -0.9368332260913328
+          "threshold": 0.30979610044013817
         },
-        "t_or_ideal_mode_sorter": {
+        "scalar_power_monitor": {
+          "area_under_roc": 0.5235119222222222,
+          "evaluation_false_alarm_probability": 0.010166666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.009092560738514503,
+            0.011366201505752509
+          ],
+          "fault_detection_probability": 0.0141,
+          "fault_detection_probability_95_percent_interval": [
+            0.012826669552855607,
+            0.015497752171178433
+          ],
+          "threshold": -0.9366604565584258
+        },
+        "t_guardian": {
           "area_under_roc": 0.7982711633333334,
           "evaluation_false_alarm_probability": 0.009566666666666666,
           "evaluation_false_alarm_probability_95_percent_interval": [
@@ -1082,24 +1524,52 @@
       {
         "bias_over_collected_mode_scale": 0.1875,
         "bias_over_nominal_jitter_sigma": 3.0,
+        "loss_matched_mode_sorter": {
+          "area_under_roc": 0.9374502355555555,
+          "evaluation_false_alarm_probability": 0.009566666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.008526250441628011,
+            0.010732665441318606
+          ],
+          "fault_detection_probability": 0.5214333333333333,
+          "fault_detection_probability_95_percent_interval": [
+            0.515778222473389,
+            0.5270829558782227
+          ],
+          "threshold": -0.8554922332572954
+        },
         "mean_total_power_reduction_fraction": 0.004968606226962047,
         "mean_true_t_score": 0.8372667111968908,
         "pointing_bias_urad": 0.75,
-        "scalar_power_monitor": {
-          "area_under_roc": 0.5491483666666667,
-          "evaluation_false_alarm_probability": 0.011133333333333334,
+        "quadrant_detector": {
+          "area_under_roc": 0.9393571088888889,
+          "evaluation_false_alarm_probability": 0.009633333333333334,
           "evaluation_false_alarm_probability_95_percent_interval": [
-            0.010007028156491862,
-            0.012384819892124675
+            0.008589121349625087,
+            0.010803110795690466
           ],
-          "fault_detection_probability": 0.017433333333333332,
+          "fault_detection_probability": 0.5080333333333333,
           "fault_detection_probability_95_percent_interval": [
-            0.01601291157508099,
-            0.01897732326739968
+            0.5023754685170061,
+            0.5136891410984503
           ],
-          "threshold": -0.9368332260913328
+          "threshold": 0.30979610044013817
         },
-        "t_or_ideal_mode_sorter": {
+        "scalar_power_monitor": {
+          "area_under_roc": 0.5534229444444444,
+          "evaluation_false_alarm_probability": 0.010166666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.009092560738514503,
+            0.011366201505752509
+          ],
+          "fault_detection_probability": 0.019633333333333332,
+          "fault_detection_probability_95_percent_interval": [
+            0.01812380750266645,
+            0.021265863997989007
+          ],
+          "threshold": -0.9366604565584258
+        },
+        "t_guardian": {
           "area_under_roc": 0.9379369644444444,
           "evaluation_false_alarm_probability": 0.009566666666666666,
           "evaluation_false_alarm_probability_95_percent_interval": [
@@ -1117,24 +1587,52 @@
       {
         "bias_over_collected_mode_scale": 0.25,
         "bias_over_nominal_jitter_sigma": 4.0,
+        "loss_matched_mode_sorter": {
+          "area_under_roc": 0.9884358588888889,
+          "evaluation_false_alarm_probability": 0.009566666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.008526250441628011,
+            0.010732665441318606
+          ],
+          "fault_detection_probability": 0.8503666666666667,
+          "fault_detection_probability_95_percent_interval": [
+            0.8462853194769013,
+            0.8543582974030246
+          ],
+          "threshold": -0.8554922332572954
+        },
         "mean_total_power_reduction_fraction": 0.00886854218117894,
         "mean_true_t_score": 0.7399208592148593,
         "pointing_bias_urad": 1.0,
-        "scalar_power_monitor": {
-          "area_under_roc": 0.5878871544444445,
-          "evaluation_false_alarm_probability": 0.011133333333333334,
+        "quadrant_detector": {
+          "area_under_roc": 0.9880424155555555,
+          "evaluation_false_alarm_probability": 0.009633333333333334,
           "evaluation_false_alarm_probability_95_percent_interval": [
-            0.010007028156491862,
-            0.012384819892124675
+            0.008589121349625087,
+            0.010803110795690466
           ],
-          "fault_detection_probability": 0.025566666666666668,
+          "fault_detection_probability": 0.8352333333333334,
           "fault_detection_probability_95_percent_interval": [
-            0.023840412428415107,
-            0.027414406423075362
+            0.8309926203353617,
+            0.8393882049868164
           ],
-          "threshold": -0.9368332260913328
+          "threshold": 0.30979610044013817
         },
-        "t_or_ideal_mode_sorter": {
+        "scalar_power_monitor": {
+          "area_under_roc": 0.5916952444444444,
+          "evaluation_false_alarm_probability": 0.010166666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.009092560738514503,
+            0.011366201505752509
+          ],
+          "fault_detection_probability": 0.024566666666666667,
+          "fault_detection_probability_95_percent_interval": [
+            0.022874893658305532,
+            0.02638018125765094
+          ],
+          "threshold": -0.9366604565584258
+        },
+        "t_guardian": {
           "area_under_roc": 0.9885623566666667,
           "evaluation_false_alarm_probability": 0.009566666666666666,
           "evaluation_false_alarm_probability_95_percent_interval": [
@@ -1152,24 +1650,52 @@
       {
         "bias_over_collected_mode_scale": 0.375,
         "bias_over_nominal_jitter_sigma": 6.0,
+        "loss_matched_mode_sorter": {
+          "area_under_roc": 0.999909798888889,
+          "evaluation_false_alarm_probability": 0.009566666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.008526250441628011,
+            0.010732665441318606
+          ],
+          "fault_detection_probability": 0.9989,
+          "fault_detection_probability_95_percent_interval": [
+            0.9984556505557942,
+            0.9992165988821136
+          ],
+          "threshold": -0.8554922332572954
+        },
         "mean_total_power_reduction_fraction": 0.01976904548758185,
         "mean_true_t_score": 0.4925712604592952,
         "pointing_bias_urad": 1.5,
-        "scalar_power_monitor": {
-          "area_under_roc": 0.6913211466666667,
-          "evaluation_false_alarm_probability": 0.011133333333333334,
+        "quadrant_detector": {
+          "area_under_roc": 0.9998718888888889,
+          "evaluation_false_alarm_probability": 0.009633333333333334,
           "evaluation_false_alarm_probability_95_percent_interval": [
-            0.010007028156491862,
-            0.012384819892124675
+            0.008589121349625087,
+            0.010803110795690466
           ],
-          "fault_detection_probability": 0.06583333333333333,
+          "fault_detection_probability": 0.9979666666666667,
           "fault_detection_probability_95_percent_interval": [
-            0.06308232425812663,
-            0.06869551706419916
+            0.9973892303737024,
+            0.9984165913910403
           ],
-          "threshold": -0.9368332260913328
+          "threshold": 0.30979610044013817
         },
-        "t_or_ideal_mode_sorter": {
+        "scalar_power_monitor": {
+          "area_under_roc": 0.6950581588888889,
+          "evaluation_false_alarm_probability": 0.010166666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.009092560738514503,
+            0.011366201505752509
+          ],
+          "fault_detection_probability": 0.06366666666666666,
+          "fault_detection_probability_95_percent_interval": [
+            0.06095928424515117,
+            0.06648577855018431
+          ],
+          "threshold": -0.9366604565584258
+        },
+        "t_guardian": {
           "area_under_roc": 0.9999001177777778,
           "evaluation_false_alarm_probability": 0.009566666666666666,
           "evaluation_false_alarm_probability_95_percent_interval": [
@@ -1187,24 +1713,52 @@
       {
         "bias_over_collected_mode_scale": 0.5,
         "bias_over_nominal_jitter_sigma": 8.0,
+        "loss_matched_mode_sorter": {
+          "area_under_roc": 0.9999997988888888,
+          "evaluation_false_alarm_probability": 0.009566666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.008526250441628011,
+            0.010732665441318606
+          ],
+          "fault_detection_probability": 1.0,
+          "fault_detection_probability_95_percent_interval": [
+            0.9998719677669952,
+            1.0
+          ],
+          "threshold": -0.8554922332572954
+        },
         "mean_total_power_reduction_fraction": 0.03490966899189929,
         "mean_true_t_score": 0.20298732520000454,
         "pointing_bias_urad": 2.0,
-        "scalar_power_monitor": {
-          "area_under_roc": 0.8098059088888888,
-          "evaluation_false_alarm_probability": 0.011133333333333334,
+        "quadrant_detector": {
+          "area_under_roc": 0.9999996666666667,
+          "evaluation_false_alarm_probability": 0.009633333333333334,
           "evaluation_false_alarm_probability_95_percent_interval": [
-            0.010007028156491862,
-            0.012384819892124675
+            0.008589121349625087,
+            0.010803110795690466
           ],
-          "fault_detection_probability": 0.16806666666666667,
+          "fault_detection_probability": 1.0,
           "fault_detection_probability_95_percent_interval": [
-            0.16387793493028818,
-            0.17234039473479595
+            0.9998719677669952,
+            1.0
           ],
-          "threshold": -0.9368332260913328
+          "threshold": 0.30979610044013817
         },
-        "t_or_ideal_mode_sorter": {
+        "scalar_power_monitor": {
+          "area_under_roc": 0.8118534944444444,
+          "evaluation_false_alarm_probability": 0.010166666666666666,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.009092560738514503,
+            0.011366201505752509
+          ],
+          "fault_detection_probability": 0.16523333333333334,
+          "fault_detection_probability_95_percent_interval": [
+            0.16107363709564643,
+            0.16947875141875807
+          ],
+          "threshold": -0.9366604565584258
+        },
+        "t_guardian": {
           "area_under_roc": 0.9999997788888888,
           "evaluation_false_alarm_probability": 0.009566666666666666,
           "evaluation_false_alarm_probability_95_percent_interval": [
@@ -1220,6 +1774,191 @@
         }
       }
     ]
+  },
+  "qpd_design_sensitivity": {
+    "interpretation": "smaller assumed spots have steeper difference/sum response but less physical field-of-view margin; the ideal gapless infinite detector in this model does not capture clipping, gaps, saturation, aberration, or the deliberate defocus trade used by real terminals",
+    "range_km": 8000.0,
+    "rows": [
+      {
+        "area_under_roc": 0.9849323633333333,
+        "evaluation_false_alarm_probability": 0.009233333333333333,
+        "evaluation_false_alarm_probability_95_percent_interval": [
+          0.008212102216747636,
+          0.01038023235435432
+        ],
+        "fault_detection_probability": 0.6887666666666666,
+        "fault_detection_probability_95_percent_interval": [
+          0.6835035588203141,
+          0.6939814380773187
+        ],
+        "monitored_carrier_power_w": 0.155,
+        "power_case": "seed_only",
+        "qpd_equivalent_spot_radius_urad": 2.0,
+        "threshold": 0.8036920110389665
+      },
+      {
+        "area_under_roc": 0.935750188888889,
+        "evaluation_false_alarm_probability": 0.0103,
+        "evaluation_false_alarm_probability_95_percent_interval": [
+          0.009218547034953405,
+          0.011506847734051473
+        ],
+        "fault_detection_probability": 0.39816666666666667,
+        "fault_detection_probability_95_percent_interval": [
+          0.392640703764798,
+          0.40371870546665733
+        ],
+        "monitored_carrier_power_w": 0.155,
+        "power_case": "seed_only",
+        "qpd_equivalent_spot_radius_urad": 4.0,
+        "threshold": 0.6270267362118489
+      },
+      {
+        "area_under_roc": 0.7571459577777778,
+        "evaluation_false_alarm_probability": 0.009133333333333334,
+        "evaluation_false_alarm_probability_95_percent_interval": [
+          0.008117926588083508,
+          0.010274433589465047
+        ],
+        "fault_detection_probability": 0.1007,
+        "fault_detection_probability_95_percent_interval": [
+          0.09734566443607344,
+          0.10415658210520416
+        ],
+        "monitored_carrier_power_w": 0.155,
+        "power_case": "seed_only",
+        "qpd_equivalent_spot_radius_urad": 8.0,
+        "threshold": 0.565617431310233
+      },
+      {
+        "area_under_roc": 0.99989803,
+        "evaluation_false_alarm_probability": 0.010033333333333333,
+        "evaluation_false_alarm_probability_95_percent_interval": [
+          0.008966624026796415,
+          0.011225505692732732
+        ],
+        "fault_detection_probability": 0.9988666666666667,
+        "fault_detection_probability_95_percent_interval": [
+          0.9984167668287183,
+          0.9991888244780052
+        ],
+        "monitored_carrier_power_w": 2.5,
+        "power_case": "boosted",
+        "qpd_equivalent_spot_radius_urad": 2.0,
+        "threshold": 0.5732945581997484
+      },
+      {
+        "area_under_roc": 0.9998726155555556,
+        "evaluation_false_alarm_probability": 0.0102,
+        "evaluation_false_alarm_probability_95_percent_interval": [
+          0.009124052701573074,
+          0.011401367673878407
+        ],
+        "fault_detection_probability": 0.9977666666666667,
+        "fault_detection_probability_95_percent_interval": [
+          0.9971650130807452,
+          0.9982408598968908
+        ],
+        "monitored_carrier_power_w": 2.5,
+        "power_case": "boosted",
+        "qpd_equivalent_spot_radius_urad": 4.0,
+        "threshold": 0.3104912319900873
+      },
+      {
+        "area_under_roc": 0.99940973,
+        "evaluation_false_alarm_probability": 0.010266666666666667,
+        "evaluation_false_alarm_probability_95_percent_interval": [
+          0.009187045864586444,
+          0.011471690773233968
+        ],
+        "fault_detection_probability": 0.9905,
+        "fault_detection_probability_95_percent_interval": [
+          0.9893377934766658,
+          0.9915366069027565
+        ],
+        "monitored_carrier_power_w": 2.5,
+        "power_case": "boosted",
+        "qpd_equivalent_spot_radius_urad": 8.0,
+        "threshold": 0.17259073107569725
+      }
+    ]
+  },
+  "range_assessment": {
+    "by_transmit_power": {
+      "boosted": {
+        "loss_matched_mode_sorter": {
+          "0.5": 8000.0,
+          "0.9": 8000.0,
+          "0.99": 8000.0
+        },
+        "quadrant_detector": {
+          "0.5": 8000.0,
+          "0.9": 8000.0,
+          "0.99": 8000.0
+        },
+        "scalar_power_monitor": {
+          "0.5": 2000.0,
+          "0.9": 1000.0,
+          "0.99": 500.0
+        },
+        "t_guardian": {
+          "0.5": 8000.0,
+          "0.9": 8000.0,
+          "0.99": 8000.0
+        }
+      },
+      "seed_only": {
+        "loss_matched_mode_sorter": {
+          "0.5": 8000.0,
+          "0.9": 4000.0,
+          "0.99": 4000.0
+        },
+        "quadrant_detector": {
+          "0.5": 4000.0,
+          "0.9": 4000.0,
+          "0.99": 2000.0
+        },
+        "scalar_power_monitor": {
+          "0.5": 500.0,
+          "0.9": null,
+          "0.99": null
+        },
+        "t_guardian": {
+          "0.5": 8000.0,
+          "0.9": 4000.0,
+          "0.99": 4000.0
+        }
+      }
+    },
+    "meaning": "farthest sampled range meeting each detection-probability target for the selected 1.5-urad stress case at the diagnostic 1% false-alarm point; these are not maximum terminal ranges",
+    "sampled_ranges_km": [
+      500.0,
+      1000.0,
+      2000.0,
+      4000.0,
+      8000.0
+    ]
+  },
+  "receiver_baseline_models": {
+    "loss_matched_mode_sorter": {
+      "detectors": 2,
+      "location": "post-loss, matched to the T core's assumed insertion loss",
+      "purpose": "same-observable control that removes T-arm linewidth, delay, phase-jitter, and detuning sensitivity",
+      "statistic": "nominal-mode power minus residual power over their sum"
+    },
+    "quadrant_detector": {
+      "detectors": 4,
+      "gaussian_axis_response": "erf(sqrt(2) * pointing / qpd_equivalent_spot_radius)",
+      "location": "same optical tap, before modeled T-core insertion loss",
+      "noise_fairness": "same quantum efficiency and per-segment dark/read/gain model as each T output; four segments therefore incur four read-noise and dark-current contributions",
+      "scope_warning": "ideal gapless infinite detector with an assumed angular spot radius; focal length, PSF, gap, saturation, background, and defocus must be measured",
+      "statistic": "radial norm of two Gaussian-spot difference/sum axes"
+    },
+    "scalar_power_monitor": {
+      "detectors": 1,
+      "location": "same optical tap, before modeled T-core insertion loss",
+      "purpose": "negative control, not the primary practical baseline"
+    }
   },
   "rin_common_mode_test": {
     "integrated_fractional_rin_rms": [
@@ -1257,7 +1996,7 @@
     "test_photoelectrons_per_window": 1000000.0,
     "true_normalized_score": 0.8
   },
-  "schema_version": 2,
+  "schema_version": 3,
   "scope": "reduced-order numerical engineering study of a parameterized epitaxial-laser source envelope, optical inter-satellite link, and out-of-path T/Householder guardian; not a measured laser, waveform modem model, hardware result, or space qualification",
   "source_model": {
     "class": "parameterized selected-carrier envelope anchored only to a published epitaxial-laser output-power scale",
@@ -1269,10 +2008,171 @@
   "status": "simulation only",
   "t_observable": {
     "branches": "X = I, Y = 2 P0 - I",
+    "control_limit": "the single score is even in pointing displacement and therefore does not provide signed azimuth/elevation steering errors",
     "hardware_note": "this Householder score is shallow, is exactly the same observable as an ideal nominal-mode sorter, and does not require the 132-letter general fixed-omega compiler",
     "minus_port": "||x||^2 - |<h,x>|^2",
     "normalized_score": "(I_plus - I_minus) / (I_plus + I_minus)",
     "plus_port": "|<h,x>|^2",
     "projector": "P0 = |h><h|"
+  },
+  "technology_trade_study": {
+    "baseline_selection": {
+      "mandatory_system_baseline": "modem_fec_link_telemetry_plus_existing_pat",
+      "matched_observable_control": "conventional_mode_sorter",
+      "negative_control_only": "scalar_power_tap",
+      "pixel_sensor_role": "secondary baseline when acquisition field of view, multi-spot disambiguation, or non-Gaussian imagery matters",
+      "primary_pointing_baseline": "quadrant_detector_pat"
+    },
+    "criteria": {
+      "calibration_and_control_ease": "Higher means less active optical stabilization and simpler calibration.",
+      "coherence_and_wavelength_robustness": "Higher means less dependence on optical phase, linewidth, and arm delay.",
+      "evidence_maturity": "Higher means flight or strong experimental evidence rather than simulation.",
+      "fault_coverage": "Breadth across pointing, modal/polarization, power, and decoded-link faults.",
+      "incremental_swa_p": "Higher means lower incremental size, weight, electrical power, and complexity.",
+      "photon_and_loss_efficiency": "Higher means fewer added optical losses/readout channels for the stated role.",
+      "production_readiness": "Relative evidence for producible terminal hardware; this is not a formal TRL.",
+      "signed_pointing_control_output": "Does the receiver directly provide signed azimuth/elevation error for a steering loop?"
+    },
+    "current_decision": {
+      "burau_specific_advantage_demonstrated": false,
+      "reason": "For the modeled pointing fault the T output is an unsigned scalar, whereas a quadrant detector supplies the two signed control axes. For general modal residual sensing, a conventional mode sorter measures the same observable without Burau-specific provenance. The apparent seed-only QPD deficit at the default spot scale closes when the assumed spot radius is reduced, showing that it is not an architecture-independent T advantage.",
+      "reconsider_if": "measured hardware shows a loss, bandwidth, stability, fault-coverage, or SWaP advantage over both the quadrant detector and a conventional implementation of the same projector"
+    },
+    "score_scale": {
+      "direction": "5 is more favorable",
+      "literature_review_as_of": "2026-09-28",
+      "maximum": 5,
+      "minimum": 1,
+      "warning": "ordinal engineering judgement, not measured performance, formal TRL, or a weighted procurement score; do not sum columns"
+    },
+    "scores": {
+      "burau_t_guardian": {
+        "calibration_and_control_ease": 2,
+        "coherence_and_wavelength_robustness": 2,
+        "evidence_maturity": 1,
+        "fault_coverage": 3,
+        "incremental_swa_p": 2,
+        "photon_and_loss_efficiency": 3,
+        "production_readiness": 1,
+        "signed_pointing_control_output": 1
+      },
+      "conventional_mode_sorter": {
+        "calibration_and_control_ease": 3,
+        "coherence_and_wavelength_robustness": 4,
+        "evidence_maturity": 3,
+        "fault_coverage": 4,
+        "incremental_swa_p": 2,
+        "photon_and_loss_efficiency": 3,
+        "production_readiness": 3,
+        "signed_pointing_control_output": 1
+      },
+      "modem_fec_link_telemetry": {
+        "calibration_and_control_ease": 4,
+        "coherence_and_wavelength_robustness": 4,
+        "evidence_maturity": 5,
+        "fault_coverage": 5,
+        "incremental_swa_p": 5,
+        "photon_and_loss_efficiency": 5,
+        "production_readiness": 5,
+        "signed_pointing_control_output": 1
+      },
+      "pixel_focal_plane_pat": {
+        "calibration_and_control_ease": 3,
+        "coherence_and_wavelength_robustness": 5,
+        "evidence_maturity": 4,
+        "fault_coverage": 3,
+        "incremental_swa_p": 3,
+        "photon_and_loss_efficiency": 3,
+        "production_readiness": 4,
+        "signed_pointing_control_output": 5
+      },
+      "quadrant_detector_pat": {
+        "calibration_and_control_ease": 4,
+        "coherence_and_wavelength_robustness": 5,
+        "evidence_maturity": 5,
+        "fault_coverage": 2,
+        "incremental_swa_p": 4,
+        "photon_and_loss_efficiency": 4,
+        "production_readiness": 5,
+        "signed_pointing_control_output": 5
+      },
+      "scalar_power_tap": {
+        "calibration_and_control_ease": 5,
+        "coherence_and_wavelength_robustness": 5,
+        "evidence_maturity": 5,
+        "fault_coverage": 1,
+        "incremental_swa_p": 5,
+        "photon_and_loss_efficiency": 5,
+        "production_readiness": 5,
+        "signed_pointing_control_output": 1
+      }
+    },
+    "seed_only_qpd_detection_by_spot_radius_urad": {
+      "2.0": 0.6887666666666666,
+      "4.0": 0.39816666666666667,
+      "8.0": 0.1007
+    },
+    "simulated_default_stress_at_farthest_assessed_range": {
+      "monitored_carrier_power_w": 2.5,
+      "range_km": 8000.0,
+      "receivers": {
+        "loss_matched_mode_sorter": {
+          "area_under_roc": 0.9999105522222222,
+          "evaluation_false_alarm_probability": 0.009466666666666667,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.008431969555423177,
+            0.010626971933970043
+          ],
+          "fault_detection_probability": 0.9985,
+          "fault_detection_probability_95_percent_interval": [
+            0.997993644815813,
+            0.9988787070478814
+          ],
+          "threshold": -0.8551555500458778
+        },
+        "quadrant_detector": {
+          "area_under_roc": 0.9998728033333333,
+          "evaluation_false_alarm_probability": 0.010533333333333334,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.009439139535629927,
+            0.011752862151666215
+          ],
+          "fault_detection_probability": 0.9982,
+          "fault_detection_probability_95_percent_interval": [
+            0.9976523633260156,
+            0.9986200653570184
+          ],
+          "threshold": 0.3083607824621182
+        },
+        "scalar_power_monitor": {
+          "area_under_roc": 0.6948784788888889,
+          "evaluation_false_alarm_probability": 0.010633333333333333,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.00953372356828354,
+            0.011858252512566003
+          ],
+          "fault_detection_probability": 0.058333333333333334,
+          "fault_detection_probability_95_percent_interval": [
+            0.05573732000528795,
+            0.06104244180053293
+          ],
+          "threshold": -0.9356532152014571
+        },
+        "t_guardian": {
+          "area_under_roc": 0.9998811222222223,
+          "evaluation_false_alarm_probability": 0.0095,
+          "evaluation_false_alarm_probability_95_percent_interval": [
+            0.008463393097243567,
+            0.01066220652333412
+          ],
+          "fault_detection_probability": 0.9982666666666666,
+          "fault_detection_probability_95_percent_interval": [
+            0.9977278908197287,
+            0.9986778541256742
+          ],
+          "threshold": -0.8540337379699001
+        }
+      }
+    }
   }
 }

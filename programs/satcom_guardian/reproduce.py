@@ -18,6 +18,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np
 import numpy.linalg as la
+from scipy.special import erf
 
 
 HERE = Path(__file__).resolve().parent
@@ -32,6 +33,7 @@ COHERENCE_DELAYS_PS = np.asarray([0.1, 1.0, 10.0, 100.0, 1_000.0])
 DETUNING_DELAYS_PS = np.asarray([1.0, 10.0, 100.0])
 RIN_LEVELS_DBC_HZ = np.asarray([-170.0, -155.0, -140.0, -125.0, -110.0, -100.0])
 FAULT_BIASES_URAD = np.asarray([0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0])
+QPD_SPOT_RADII_URAD = np.asarray([2.0, 4.0, 8.0])
 
 
 @dataclass(frozen=True)
@@ -61,6 +63,7 @@ class GuardianConfig:
     nominal_pointing_jitter_urad: float = 0.25
     fault_pointing_bias_urad: float = 1.50
     collected_mode_scale_urad: float = 4.0
+    qpd_equivalent_spot_radius_urad: float = 4.0
     polarization_jitter_deg: float = 1.0
     monte_carlo_trials_per_class: int = 30_000
     empirical_false_alarm_probability: float = 0.01
@@ -202,36 +205,96 @@ def _simulate_population(
         * 1e-9
     )
     total_signal_mean = mean_photoelectrons * rin_factor
+    mismatch = config.detector_gain_mismatch_fraction
+    plus_gain = 1.0 + 0.5 * mismatch
+    minus_gain = 1.0 - 0.5 * mismatch
+
     plus = rng.poisson(total_signal_mean * plus_fraction + dark_per_port).astype(float)
     minus = rng.poisson(
         total_signal_mean * minus_fraction + dark_per_port
     ).astype(float)
     plus += rng.normal(0.0, config.detector_read_noise_e_rms, trials)
     minus += rng.normal(0.0, config.detector_read_noise_e_rms, trials)
-    mismatch = config.detector_gain_mismatch_fraction
-    plus_gain = 1.0 + 0.5 * mismatch
-    minus_gain = 1.0 - 0.5 * mismatch
     plus = plus_gain * (plus - dark_per_port)
     minus = minus_gain * (minus - dark_per_port)
     measured_total = plus + minus
     normalized_score = (plus - minus) / np.maximum(measured_total, 1.0)
 
+    # A loss-matched direct mode sorter measures the same nominal-versus-residual
+    # observable without a phase-sensitive T interferometer.  Matching its loss,
+    # detector count, and readout noise isolates the T core's coherence burden.
+    sorter_nominal = rng.poisson(
+        total_signal_mean * expected_mode_power + dark_per_port
+    ).astype(float)
+    sorter_residual = rng.poisson(
+        total_signal_mean * (1.0 - expected_mode_power) + dark_per_port
+    ).astype(float)
+    sorter_nominal += rng.normal(0.0, config.detector_read_noise_e_rms, trials)
+    sorter_residual += rng.normal(0.0, config.detector_read_noise_e_rms, trials)
+    sorter_nominal = plus_gain * (sorter_nominal - dark_per_port)
+    sorter_residual = minus_gain * (sorter_residual - dark_per_port)
+    sorter_total = sorter_nominal + sorter_residual
+    normalized_sorter_score = (sorter_nominal - sorter_residual) / np.maximum(
+        sorter_total, 1.0
+    )
+
     boresight_guardian_photoelectrons = float(
         _guardian_photoelectrons(config, transmit_power_w, range_km, 0.0)
     )
     core_transmission = 10.0 ** (-config.guardian_insertion_loss_db / 10.0)
-    scalar_signal_mean = mean_photoelectrons * rin_factor / core_transmission
-    scalar = rng.poisson(scalar_signal_mean + dark_per_port).astype(float)
+    pre_core_signal_mean = mean_photoelectrons * rin_factor / core_transmission
+    scalar = rng.poisson(pre_core_signal_mean + dark_per_port).astype(float)
     scalar += rng.normal(0.0, config.detector_read_noise_e_rms, trials)
     scalar -= dark_per_port
     scalar_boresight_photoelectrons = (
         boresight_guardian_photoelectrons / core_transmission
     )
     normalized_scalar_power = scalar / max(scalar_boresight_photoelectrons, 1.0)
+
+    # Practical pointing baseline: an ideal gapless four-quadrant detector on
+    # the same pre-core tap.  For a Gaussian spot with 1/e^2 radius w, the
+    # difference-over-sum response on either axis is erf(sqrt(2) * offset / w).
+    # The angular spot radius is explicit because a real focal length, PSF,
+    # detector gap, and deliberate defocus must ultimately replace it.
+    qpd_scale = config.qpd_equivalent_spot_radius_urad
+    true_qpd_x = erf(np.sqrt(2.0) * point_x / qpd_scale)
+    true_qpd_y = erf(np.sqrt(2.0) * point_y / qpd_scale)
+    right_fraction = 0.5 * (1.0 + true_qpd_x)
+    upper_fraction = 0.5 * (1.0 + true_qpd_y)
+    quadrant_fractions = np.column_stack(
+        (
+            right_fraction * upper_fraction,
+            (1.0 - right_fraction) * upper_fraction,
+            (1.0 - right_fraction) * (1.0 - upper_fraction),
+            right_fraction * (1.0 - upper_fraction),
+        )
+    )
+    qpd = rng.poisson(
+        pre_core_signal_mean[:, None] * quadrant_fractions + dark_per_port
+    ).astype(float)
+    qpd += rng.normal(
+        0.0, config.detector_read_noise_e_rms, size=(trials, 4)
+    )
+    # Use the same per-segment mismatch magnitude as the two-port detector.
+    # The static right/left imbalance is retained so calibration must absorb it.
+    qpd_gains = np.asarray(
+        [plus_gain, minus_gain, minus_gain, plus_gain], dtype=float
+    )
+    qpd = (qpd - dark_per_port) * qpd_gains[None, :]
+    qpd_total = np.sum(qpd, axis=1)
+    qpd_denominator = np.maximum(qpd_total, 1.0)
+    qpd_x = (qpd[:, 0] + qpd[:, 3] - qpd[:, 1] - qpd[:, 2]) / qpd_denominator
+    qpd_y = (qpd[:, 0] + qpd[:, 1] - qpd[:, 2] - qpd[:, 3]) / qpd_denominator
+    qpd_radial = np.sqrt(qpd_x**2 + qpd_y**2)
     return {
         "normalized_t_score": normalized_score,
+        "normalized_loss_matched_mode_sorter_score": normalized_sorter_score,
         "normalized_scalar_power": normalized_scalar_power,
+        "qpd_radial_discriminant": qpd_radial,
+        "qpd_x_discriminant": qpd_x,
+        "qpd_y_discriminant": qpd_y,
         "ideal_t_score": ideal_score,
+        "ideal_qpd_radial_discriminant": np.sqrt(true_qpd_x**2 + true_qpd_y**2),
         "mean_photoelectrons": mean_photoelectrons,
     }
 
@@ -388,6 +451,18 @@ def _rin_sensitivity(
     }
 
 
+def _population_anomalies(population: dict[str, np.ndarray]) -> dict[str, np.ndarray]:
+    """Return larger-is-more-anomalous statistics for every modeled receiver."""
+    return {
+        "t_guardian": -population["normalized_t_score"],
+        "loss_matched_mode_sorter": -population[
+            "normalized_loss_matched_mode_sorter_score"
+        ],
+        "quadrant_detector": population["qpd_radial_discriminant"],
+        "scalar_power_monitor": -population["normalized_scalar_power"],
+    }
+
+
 def _fault_severity_sweep(config: GuardianConfig) -> dict[str, object]:
     """Resolve how strongly the result depends on the assumed pointing fault."""
     range_km = float(RANGES_KM[-1])
@@ -407,10 +482,8 @@ def _fault_severity_sweep(config: GuardianConfig) -> dict[str, object]:
         fault=False,
         rng=np.random.default_rng(seed + 1),
     )
-    t_calibration = -calibration["normalized_t_score"]
-    t_normal = -normal["normalized_t_score"]
-    power_calibration = -calibration["normalized_scalar_power"]
-    power_normal = -normal["normalized_scalar_power"]
+    calibration_anomalies = _population_anomalies(calibration)
+    normal_anomalies = _population_anomalies(normal)
     rows = []
     for index, bias_urad in enumerate(FAULT_BIASES_URAD):
         sweep_config = replace(config, fault_pointing_bias_urad=float(bias_urad))
@@ -421,18 +494,16 @@ def _fault_severity_sweep(config: GuardianConfig) -> dict[str, object]:
             fault=True,
             rng=np.random.default_rng(seed + 100 + index),
         )
-        t_metrics = _operating_point(
-            t_calibration,
-            t_normal,
-            -fault["normalized_t_score"],
-            config.empirical_false_alarm_probability,
-        )
-        power_metrics = _operating_point(
-            power_calibration,
-            power_normal,
-            -fault["normalized_scalar_power"],
-            config.empirical_false_alarm_probability,
-        )
+        fault_anomalies = _population_anomalies(fault)
+        metrics = {
+            name: _operating_point(
+                calibration_anomalies[name],
+                normal_anomalies[name],
+                fault_anomalies[name],
+                config.empirical_false_alarm_probability,
+            )
+            for name in calibration_anomalies
+        }
         rows.append(
             {
                 "pointing_bias_urad": float(bias_urad),
@@ -448,8 +519,7 @@ def _fault_severity_sweep(config: GuardianConfig) -> dict[str, object]:
                     - np.mean(fault["mean_photoelectrons"])
                     / np.mean(normal["mean_photoelectrons"])
                 ),
-                "t_or_ideal_mode_sorter": t_metrics,
-                "scalar_power_monitor": power_metrics,
+                **metrics,
             }
         )
     return {
@@ -463,18 +533,356 @@ def _fault_severity_sweep(config: GuardianConfig) -> dict[str, object]:
     }
 
 
+def _qpd_design_sensitivity(config: GuardianConfig) -> dict[str, object]:
+    """Expose the sensitivity/FOV trade hidden by one assumed QPD spot size."""
+    range_km = float(RANGES_KM[-1])
+    rows = []
+    for power_index, (power_name, transmit_power_w) in enumerate(
+        (
+            ("seed_only", config.epitaxial_seed_monitored_carrier_power_w),
+            ("boosted", config.boosted_monitored_carrier_power_w),
+        )
+    ):
+        common_seed = config.seed + 400_000 + power_index * 10_000
+        for spot_radius_urad in QPD_SPOT_RADII_URAD:
+            local_config = replace(
+                config,
+                qpd_equivalent_spot_radius_urad=float(spot_radius_urad),
+            )
+            calibration = _simulate_population(
+                local_config,
+                range_km=range_km,
+                transmit_power_w=transmit_power_w,
+                fault=False,
+                rng=np.random.default_rng(common_seed),
+            )
+            normal = _simulate_population(
+                local_config,
+                range_km=range_km,
+                transmit_power_w=transmit_power_w,
+                fault=False,
+                rng=np.random.default_rng(common_seed + 1),
+            )
+            fault = _simulate_population(
+                local_config,
+                range_km=range_km,
+                transmit_power_w=transmit_power_w,
+                fault=True,
+                rng=np.random.default_rng(common_seed + 2),
+            )
+            metrics = _operating_point(
+                calibration["qpd_radial_discriminant"],
+                normal["qpd_radial_discriminant"],
+                fault["qpd_radial_discriminant"],
+                config.empirical_false_alarm_probability,
+            )
+            rows.append(
+                {
+                    "power_case": power_name,
+                    "monitored_carrier_power_w": transmit_power_w,
+                    "qpd_equivalent_spot_radius_urad": float(spot_radius_urad),
+                    **metrics,
+                }
+            )
+    return {
+        "range_km": range_km,
+        "rows": rows,
+        "interpretation": (
+            "smaller assumed spots have steeper difference/sum response but less "
+            "physical field-of-view margin; the ideal gapless infinite detector in "
+            "this model does not capture clipping, gaps, saturation, aberration, or "
+            "the deliberate defocus trade used by real terminals"
+        ),
+    }
+
+
+def _assessed_range_summary(
+    detection: dict[str, dict[str, object]],
+) -> dict[str, object]:
+    """Summarize the sampled range envelope without extrapolating a max range."""
+    receiver_names = (
+        "t_guardian",
+        "loss_matched_mode_sorter",
+        "quadrant_detector",
+        "scalar_power_monitor",
+    )
+    targets = (0.5, 0.9, 0.99)
+    by_power: dict[str, object] = {}
+    for power_name, power_results in detection.items():
+        rows = power_results["by_range"]
+        receiver_summary: dict[str, object] = {}
+        for receiver_name in receiver_names:
+            receiver_summary[receiver_name] = {
+                str(target): max(
+                    (
+                        float(row["range_km"])
+                        for row in rows
+                        if row[receiver_name]["fault_detection_probability"]
+                        >= target
+                    ),
+                    default=None,
+                )
+                for target in targets
+            }
+        by_power[power_name] = receiver_summary
+    return {
+        "meaning": (
+            "farthest sampled range meeting each detection-probability target for "
+            "the selected 1.5-urad stress case at the diagnostic 1% false-alarm "
+            "point; these are not maximum terminal ranges"
+        ),
+        "sampled_ranges_km": RANGES_KM.tolist(),
+        "by_transmit_power": by_power,
+    }
+
+
+def _literature_range_context(config: GuardianConfig) -> dict[str, object]:
+    """Relate the exploratory grid to explicit SDA OCT v4 range anchors."""
+    core_transmission = 10.0 ** (-config.guardian_insertion_loss_db / 10.0)
+    anchors = []
+    for range_km, service in (
+        (5_500.0, "continuous interoperable modes"),
+        (20_000.0, "low-rate burst modes"),
+    ):
+        post_core = float(
+            _guardian_photoelectrons(
+                config,
+                config.boosted_monitored_carrier_power_w,
+                range_km,
+                0.0,
+            )
+        )
+        anchors.append(
+            {
+                "range_km": range_km,
+                "sda_service_context": service,
+                "one_way_light_time_ms": range_km * 1e3 / SPEED_OF_LIGHT_M_S * 1e3,
+                "model_post_t_core_photoelectrons_per_100_ns_window": post_core,
+                "model_pre_core_photoelectrons_per_100_ns_window": (
+                    post_core / core_transmission
+                ),
+            }
+        )
+    return {
+        "standard": "SDA Optical Communications Terminal Standard v4.0.0",
+        "standard_url": (
+            "https://www.sda.mil/wp-content/uploads/2024/07/"
+            "SDA_OCT_Standard_4.0.0_final-20240701.pdf"
+        ),
+        "current_sda_resources_url": (
+            "https://www.sda.mil/home/work-with-us/resources/"
+        ),
+        "deployment_context": (
+            "SDA's public resources page identifies v3.2 as the standard of "
+            "record for Tranche 3 and v4 for a smaller set of terminals; the "
+            "20,000-km v4 mode is not a generic requirement for every link"
+        ),
+        "standard_facts": {
+            "continuous_reference_range_km": 5_500.0,
+            "continuous_receive_aperture_irradiance_uw_per_m2": 25.0,
+            "burst_reference_range_km": 20_000.0,
+            "burst_long_term_receive_aperture_irradiance_uw_per_m2": 6.0,
+            "burst_duration_ns": 102.4,
+            "minimum_maximum_transmit_power_w": 2.5,
+        },
+        "model_at_standard_ranges": anchors,
+        "insertion_loss_range_scaling": {
+            "t_core_transmission": core_transmission,
+            "pre_core_to_post_core_photon_ratio": 1.0 / core_transmission,
+            "t_range_fraction_at_equal_detected_photons_under_inverse_square_scaling": (
+                np.sqrt(core_transmission)
+            ),
+            "interpretation": (
+                "the assumed 1.5-dB T-core loss alone shortens equal-photon range "
+                "to sqrt(transmission) of a lossless pre-core sensor; detector "
+                "statistics and fault response can change the actual crossover"
+            ),
+        },
+        "non_compliance_warning": (
+            "The two model photon counts merely evaluate this repository's continuous "
+            "Gaussian-envelope assumptions at the standard's distances. They do not "
+            "model OCT waveforms, burst duty cycle, receiver sensitivity, PAT margin, "
+            "or demonstrate SDA compliance."
+        ),
+    }
+
+
+def _technology_trade_study(
+    detection: dict[str, dict[str, object]],
+    qpd_design_sensitivity: dict[str, object],
+) -> dict[str, object]:
+    """Record an explicit, literature-routed baseline decision matrix."""
+    criteria = {
+        "signed_pointing_control_output": (
+            "Does the receiver directly provide signed azimuth/elevation error for "
+            "a steering loop?"
+        ),
+        "calibration_and_control_ease": (
+            "Higher means less active optical stabilization and simpler calibration."
+        ),
+        "production_readiness": (
+            "Relative evidence for producible terminal hardware; this is not a formal TRL."
+        ),
+        "coherence_and_wavelength_robustness": (
+            "Higher means less dependence on optical phase, linewidth, and arm delay."
+        ),
+        "photon_and_loss_efficiency": (
+            "Higher means fewer added optical losses/readout channels for the stated role."
+        ),
+        "fault_coverage": (
+            "Breadth across pointing, modal/polarization, power, and decoded-link faults."
+        ),
+        "incremental_swa_p": (
+            "Higher means lower incremental size, weight, electrical power, and complexity."
+        ),
+        "evidence_maturity": (
+            "Higher means flight or strong experimental evidence rather than simulation."
+        ),
+    }
+    scores = {
+        "burau_t_guardian": {
+            "signed_pointing_control_output": 1,
+            "calibration_and_control_ease": 2,
+            "production_readiness": 1,
+            "coherence_and_wavelength_robustness": 2,
+            "photon_and_loss_efficiency": 3,
+            "fault_coverage": 3,
+            "incremental_swa_p": 2,
+            "evidence_maturity": 1,
+        },
+        "quadrant_detector_pat": {
+            "signed_pointing_control_output": 5,
+            "calibration_and_control_ease": 4,
+            "production_readiness": 5,
+            "coherence_and_wavelength_robustness": 5,
+            "photon_and_loss_efficiency": 4,
+            "fault_coverage": 2,
+            "incremental_swa_p": 4,
+            "evidence_maturity": 5,
+        },
+        "pixel_focal_plane_pat": {
+            "signed_pointing_control_output": 5,
+            "calibration_and_control_ease": 3,
+            "production_readiness": 4,
+            "coherence_and_wavelength_robustness": 5,
+            "photon_and_loss_efficiency": 3,
+            "fault_coverage": 3,
+            "incremental_swa_p": 3,
+            "evidence_maturity": 4,
+        },
+        "conventional_mode_sorter": {
+            "signed_pointing_control_output": 1,
+            "calibration_and_control_ease": 3,
+            "production_readiness": 3,
+            "coherence_and_wavelength_robustness": 4,
+            "photon_and_loss_efficiency": 3,
+            "fault_coverage": 4,
+            "incremental_swa_p": 2,
+            "evidence_maturity": 3,
+        },
+        "modem_fec_link_telemetry": {
+            "signed_pointing_control_output": 1,
+            "calibration_and_control_ease": 4,
+            "production_readiness": 5,
+            "coherence_and_wavelength_robustness": 4,
+            "photon_and_loss_efficiency": 5,
+            "fault_coverage": 5,
+            "incremental_swa_p": 5,
+            "evidence_maturity": 5,
+        },
+        "scalar_power_tap": {
+            "signed_pointing_control_output": 1,
+            "calibration_and_control_ease": 5,
+            "production_readiness": 5,
+            "coherence_and_wavelength_robustness": 5,
+            "photon_and_loss_efficiency": 5,
+            "fault_coverage": 1,
+            "incremental_swa_p": 5,
+            "evidence_maturity": 5,
+        },
+    }
+    farthest_boosted = detection["boosted"]["by_range"][-1]
+    simulated_receivers = {
+        name: farthest_boosted[name]
+        for name in (
+            "t_guardian",
+            "loss_matched_mode_sorter",
+            "quadrant_detector",
+            "scalar_power_monitor",
+        )
+    }
+    seed_qpd_by_spot_radius = {
+        str(row["qpd_equivalent_spot_radius_urad"]): row[
+            "fault_detection_probability"
+        ]
+        for row in qpd_design_sensitivity["rows"]
+        if row["power_case"] == "seed_only"
+    }
+    return {
+        "score_scale": {
+            "literature_review_as_of": "2026-09-28",
+            "minimum": 1,
+            "maximum": 5,
+            "direction": "5 is more favorable",
+            "warning": (
+                "ordinal engineering judgement, not measured performance, formal TRL, "
+                "or a weighted procurement score; do not sum columns"
+            ),
+        },
+        "criteria": criteria,
+        "scores": scores,
+        "simulated_default_stress_at_farthest_assessed_range": {
+            "range_km": float(farthest_boosted["range_km"]),
+            "monitored_carrier_power_w": float(
+                detection["boosted"]["monitored_carrier_power_w"]
+            ),
+            "receivers": simulated_receivers,
+        },
+        "seed_only_qpd_detection_by_spot_radius_urad": seed_qpd_by_spot_radius,
+        "baseline_selection": {
+            "primary_pointing_baseline": "quadrant_detector_pat",
+            "mandatory_system_baseline": (
+                "modem_fec_link_telemetry_plus_existing_pat"
+            ),
+            "matched_observable_control": "conventional_mode_sorter",
+            "negative_control_only": "scalar_power_tap",
+            "pixel_sensor_role": (
+                "secondary baseline when acquisition field of view, multi-spot "
+                "disambiguation, or non-Gaussian imagery matters"
+            ),
+        },
+        "current_decision": {
+            "burau_specific_advantage_demonstrated": False,
+            "reason": (
+                "For the modeled pointing fault the T output is an unsigned scalar, "
+                "whereas a quadrant detector supplies the two signed control axes. "
+                "For general modal residual sensing, a conventional mode sorter "
+                "measures the same observable without Burau-specific provenance. "
+                "The apparent seed-only QPD deficit at the default spot scale closes "
+                "when the assumed spot radius is reduced, showing that it is not an "
+                "architecture-independent T advantage."
+            ),
+            "reconsider_if": (
+                "measured hardware shows a loss, bandwidth, stability, fault-coverage, "
+                "or SWaP advantage over both the quadrant detector and a conventional "
+                "implementation of the same projector"
+            ),
+        },
+    }
+
+
 def _plot_results(
     config: GuardianConfig,
-    link_budget: dict[str, list[float]],
-    detection: dict[str, dict[str, list[dict[str, float]]]],
-    rin: dict[str, list[float]],
+    link_budget: dict[str, object],
+    detection: dict[str, dict[str, object]],
+    rin: dict[str, object],
     severity_sweep: dict[str, object],
 ) -> None:
     figure, axes = plt.subplots(2, 3, figsize=(14.2, 8.0))
 
     axes[0, 0].loglog(
         RANGES_KM,
-        link_budget["seed_only_photoelectrons_per_window"],
+        link_budget["seed_only_post_t_core_photoelectrons_per_window"],
         marker="o",
         label=(
             f"{config.epitaxial_seed_monitored_carrier_power_w * 1e3:.0f} mW "
@@ -483,7 +891,7 @@ def _plot_results(
     )
     axes[0, 0].loglog(
         RANGES_KM,
-        link_budget["boosted_photoelectrons_per_window"],
+        link_budget["boosted_post_t_core_photoelectrons_per_window"],
         marker="o",
         label=(
             f"{config.boosted_monitored_carrier_power_w:.1f} W monitored "
@@ -520,32 +928,25 @@ def _plot_results(
     axes[0, 2].set_title("(c) Frequency-drift sensitivity")
     axes[0, 2].legend(fontsize=8)
 
-    colors = {"seed_only": "#d95f02", "boosted": "#1b9e77"}
+    receiver_styles = {
+        "t_guardian": ("T guardian", "#7570b3", "o"),
+        "quadrant_detector": ("quadrant detector", "#e7298a", "s"),
+        "scalar_power_monitor": ("scalar power", "#666666", "x"),
+    }
     for power_name, linestyle in [("seed_only", "--"), ("boosted", "-")]:
-        t_values = [
-            item["t_guardian"]["fault_detection_probability"]
-            for item in detection[power_name]["by_range"]
-        ]
-        power_values = [
-            item["power_monitor"]["fault_detection_probability"]
-            for item in detection[power_name]["by_range"]
-        ]
-        axes[1, 0].semilogx(
-            RANGES_KM,
-            t_values,
-            marker="o",
-            linestyle=linestyle,
-            color=colors[power_name],
-            label=f"T/mode score, {power_name.replace('_', ' ')}",
-        )
-        axes[1, 0].semilogx(
-            RANGES_KM,
-            power_values,
-            marker="x",
-            linestyle=linestyle,
-            color=colors[power_name],
-            label=f"power only, {power_name.replace('_', ' ')}",
-        )
+        for receiver_name, (label, color, marker) in receiver_styles.items():
+            values = [
+                item[receiver_name]["fault_detection_probability"]
+                for item in detection[power_name]["by_range"]
+            ]
+            axes[1, 0].semilogx(
+                RANGES_KM,
+                values,
+                marker=marker,
+                linestyle=linestyle,
+                color=color,
+                label=f"{label}, {power_name.replace('_', ' ')}",
+            )
     axes[1, 0].axhline(
         config.empirical_false_alarm_probability,
         color="black",
@@ -577,16 +978,30 @@ def _plot_results(
 
     severity_rows = severity_sweep["rows"]
     biases = [row["pointing_bias_urad"] for row in severity_rows]
-    t_detection = [
-        row["t_or_ideal_mode_sorter"]["fault_detection_probability"]
-        for row in severity_rows
-    ]
-    power_detection = [
-        row["scalar_power_monitor"]["fault_detection_probability"]
-        for row in severity_rows
-    ]
-    axes[1, 2].plot(biases, t_detection, marker="o", label="T / ideal mode sorter")
-    axes[1, 2].plot(biases, power_detection, marker="x", label="scalar power")
+    severity_styles = {
+        "t_guardian": ("T guardian", "#7570b3", "o", "-"),
+        "loss_matched_mode_sorter": (
+            "loss-matched mode sorter",
+            "#1b9e77",
+            "^",
+            "--",
+        ),
+        "quadrant_detector": ("quadrant detector", "#e7298a", "s", "-"),
+        "scalar_power_monitor": ("scalar power", "#666666", "x", ":"),
+    }
+    for receiver_name, (label, color, marker, linestyle) in severity_styles.items():
+        values = [
+            row[receiver_name]["fault_detection_probability"]
+            for row in severity_rows
+        ]
+        axes[1, 2].plot(
+            biases,
+            values,
+            marker=marker,
+            color=color,
+            linestyle=linestyle,
+            label=label,
+        )
     axes[1, 2].axvline(
         config.fault_pointing_bias_urad,
         color="black",
@@ -603,7 +1018,7 @@ def _plot_results(
     for axis in axes.ravel():
         axis.grid(alpha=0.2)
     figure.suptitle(
-        "Phase-0 model: parameterized laser, optical ISL, and T guardian",
+        "Phase-0 model: T guardian and practical SATCOM baselines",
         fontsize=12,
     )
     figure.tight_layout()
@@ -620,6 +1035,8 @@ def run_satcom_guardian_study(
         config = GuardianConfig()
     if not 0.0 < config.guardian_tap_fraction < 1.0:
         raise ValueError("guardian_tap_fraction must be between zero and one")
+    if config.qpd_equivalent_spot_radius_urad <= 0.0:
+        raise ValueError("qpd_equivalent_spot_radius_urad must be positive")
     if config.monte_carlo_trials_per_class < 1_000:
         raise ValueError("at least 1,000 trials per class are required")
 
@@ -646,10 +1063,17 @@ def run_satcom_guardian_study(
         )
         for range_km in RANGES_KM
     ]
+    core_transmission = 10.0 ** (-config.guardian_insertion_loss_db / 10.0)
     link_budget = {
         "ranges_km": RANGES_KM.tolist(),
-        "seed_only_photoelectrons_per_window": seed_counts,
-        "boosted_photoelectrons_per_window": boosted_counts,
+        "seed_only_post_t_core_photoelectrons_per_window": seed_counts,
+        "boosted_post_t_core_photoelectrons_per_window": boosted_counts,
+        "seed_only_pre_core_photoelectrons_per_window": [
+            count / core_transmission for count in seed_counts
+        ],
+        "boosted_pre_core_photoelectrons_per_window": [
+            count / core_transmission for count in boosted_counts
+        ],
         "main_path_tap_penalty_db": float(
             -10.0 * np.log10(1.0 - config.guardian_tap_fraction)
         ),
@@ -713,24 +1137,18 @@ def run_satcom_guardian_study(
                 fault=True,
                 rng=np.random.default_rng(local_seed + 2),
             )
-            t_calibration_anomaly = -calibration["normalized_t_score"]
-            t_normal_anomaly = -normal["normalized_t_score"]
-            t_fault_anomaly = -fault["normalized_t_score"]
-            power_calibration_anomaly = -calibration["normalized_scalar_power"]
-            power_normal_anomaly = -normal["normalized_scalar_power"]
-            power_fault_anomaly = -fault["normalized_scalar_power"]
-            t_metrics = _operating_point(
-                t_calibration_anomaly,
-                t_normal_anomaly,
-                t_fault_anomaly,
-                config.empirical_false_alarm_probability,
-            )
-            power_metrics = _operating_point(
-                power_calibration_anomaly,
-                power_normal_anomaly,
-                power_fault_anomaly,
-                config.empirical_false_alarm_probability,
-            )
+            calibration_anomalies = _population_anomalies(calibration)
+            normal_anomalies = _population_anomalies(normal)
+            fault_anomalies = _population_anomalies(fault)
+            metrics = {
+                name: _operating_point(
+                    calibration_anomalies[name],
+                    normal_anomalies[name],
+                    fault_anomalies[name],
+                    config.empirical_false_alarm_probability,
+                )
+                for name in calibration_anomalies
+            }
             by_range.append(
                 {
                     "range_km": float(range_km),
@@ -748,13 +1166,15 @@ def run_satcom_guardian_study(
                     "fault_mean_true_t_score": float(
                         np.mean(fault["ideal_t_score"])
                     ),
+                    "fault_mean_true_qpd_radial_discriminant": float(
+                        np.mean(fault["ideal_qpd_radial_discriminant"])
+                    ),
                     "mean_fault_total_power_reduction_fraction": float(
                         1.0
                         - np.mean(fault["mean_photoelectrons"])
                         / np.mean(normal["mean_photoelectrons"])
                     ),
-                    "t_guardian": t_metrics,
-                    "power_monitor": power_metrics,
+                    **metrics,
                 }
             )
         detection[power_name] = {
@@ -764,6 +1184,12 @@ def run_satcom_guardian_study(
 
     rin = _rin_sensitivity(config, np.random.default_rng(config.seed + 99_999))
     severity_sweep = _fault_severity_sweep(config)
+    qpd_design_sensitivity = _qpd_design_sensitivity(config)
+    assessed_range_summary = _assessed_range_summary(detection)
+    literature_range_context = _literature_range_context(config)
+    technology_trade_study = _technology_trade_study(
+        detection, qpd_design_sensitivity
+    )
     allowable_delay_99_visibility_ps = {
         str(float(linewidth)): float(
             -np.log(0.99) / (np.pi * linewidth) * 1e12
@@ -836,12 +1262,17 @@ def run_satcom_guardian_study(
     boosted_mid = detection["boosted"]["by_range"][2]
     if (
         boosted_mid["t_guardian"]["area_under_roc"]
-        <= boosted_mid["power_monitor"]["area_under_roc"]
+        <= boosted_mid["scalar_power_monitor"]["area_under_roc"]
     ):
         raise AssertionError("modal score did not distinguish the selected fault")
+    if (
+        boosted_mid["quadrant_detector"]["area_under_roc"]
+        <= boosted_mid["scalar_power_monitor"]["area_under_roc"]
+    ):
+        raise AssertionError("quadrant baseline did not distinguish the selected fault")
 
     diagnostics: dict[str, object] = {
-        "schema_version": 2,
+        "schema_version": 3,
         "scope": (
             "reduced-order numerical engineering study of a parameterized "
             "epitaxial-laser source envelope, optical inter-satellite link, "
@@ -891,9 +1322,50 @@ def run_satcom_guardian_study(
                 "observable as an ideal nominal-mode sorter, and does not "
                 "require the 132-letter general fixed-omega compiler"
             ),
+            "control_limit": (
+                "the single score is even in pointing displacement and therefore "
+                "does not provide signed azimuth/elevation steering errors"
+            ),
+        },
+        "receiver_baseline_models": {
+            "quadrant_detector": {
+                "location": "same optical tap, before modeled T-core insertion loss",
+                "detectors": 4,
+                "statistic": "radial norm of two Gaussian-spot difference/sum axes",
+                "gaussian_axis_response": (
+                    "erf(sqrt(2) * pointing / qpd_equivalent_spot_radius)"
+                ),
+                "noise_fairness": (
+                    "same quantum efficiency and per-segment dark/read/gain model "
+                    "as each T output; four segments therefore incur four read-noise "
+                    "and dark-current contributions"
+                ),
+                "scope_warning": (
+                    "ideal gapless infinite detector with an assumed angular spot "
+                    "radius; focal length, PSF, gap, saturation, background, and "
+                    "defocus must be measured"
+                ),
+            },
+            "loss_matched_mode_sorter": {
+                "location": "post-loss, matched to the T core's assumed insertion loss",
+                "detectors": 2,
+                "statistic": "nominal-mode power minus residual power over their sum",
+                "purpose": (
+                    "same-observable control that removes T-arm linewidth, delay, "
+                    "phase-jitter, and detuning sensitivity"
+                ),
+            },
+            "scalar_power_monitor": {
+                "location": "same optical tap, before modeled T-core insertion loss",
+                "detectors": 1,
+                "purpose": "negative control, not the primary practical baseline",
+            },
         },
         "exact_identity_checks": exact_checks,
         "link_budget": link_budget,
+        "range_assessment": assessed_range_summary,
+        "literature_range_context": literature_range_context,
+        "technology_trade_study": technology_trade_study,
         "laser_coherence": {
             "linewidths_hz": LINEWIDTHS_HZ.tolist(),
             "arm_delay_mismatch_ps": COHERENCE_DELAYS_PS.tolist(),
@@ -915,10 +1387,10 @@ def run_satcom_guardian_study(
                 "fault-occurrence distribution"
             ),
             "comparison": (
-                "normalized T modal-residual score versus scalar total-power "
-                "alarm on the same optical tap; the scalar baseline is detected "
-                "before T-core insertion loss with one detector, while the T "
-                "score uses two post-core detectors"
+                "normalized T modal-residual score versus (1) a four-segment "
+                "quadrant pointing detector on the pre-core tap, (2) a loss-matched "
+                "two-output conventional mode sorter measuring the same projector, "
+                "and (3) a one-detector pre-core scalar-power negative control"
             ),
             "target_false_alarm_probability": (
                 config.empirical_false_alarm_probability
@@ -935,28 +1407,61 @@ def run_satcom_guardian_study(
             "results_by_transmit_power": detection,
         },
         "pointing_fault_severity_sweep": severity_sweep,
+        "qpd_design_sensitivity": qpd_design_sensitivity,
         "rin_common_mode_test": rin,
         "derived_engineering_scales": derived_scales,
         "literature_anchors": [
             {
                 "fact": (
-                    "200-Gbit/s space-to-ground optical transmission was "
-                    "demonstrated by NASA TBIRD"
+                    "TBIRD used a quad sensor for signed two-axis payload feedback; "
+                    "on orbit its overall closed-loop pointing was 20--35 urad RMS "
+                    "per axis while supporting 100/200-Gbit/s demonstrations"
                 ),
-                "url": (
-                    "https://www.nasa.gov/centers-and-facilities/goddard/"
-                    "nasa-partners-achieve-fastest-space-to-ground-laser-comms-link/"
-                ),
+                "url": "https://ntrs.nasa.gov/citations/20230000001",
             },
             {
                 "fact": (
-                    "SDA OCT v4 uses a C-band 100-GHz grid and includes "
-                    "2.5-Gbaud interoperable modes"
+                    "SDA OCT v4 treats PAT as part of the physical layer, requires "
+                    "2.5-W maximum output capability and a 5,500-km continuous "
+                    "irradiance point, defines 20,000-km burst modes, and reports "
+                    "fast received power plus frame-sync status"
                 ),
                 "url": (
                     "https://www.sda.mil/wp-content/uploads/2024/07/"
                     "SDA_OCT_Standard_4.0.0_final-20240701.pdf"
                 ),
+            },
+            {
+                "fact": (
+                    "a 2024 spaceborne laser-communication study implemented a "
+                    "four-quadrant spot-position scheme designed for limited onboard "
+                    "compute and memory"
+                ),
+                "url": "https://doi.org/10.1364/AO.517934",
+            },
+            {
+                "fact": (
+                    "ESA's FastSwitching terminal development replaces heritage "
+                    "cascaded four-quadrant acquisition/tracking diodes with a pixel "
+                    "detector, establishing the pixel sensor as a practical secondary "
+                    "PAT baseline"
+                ),
+                "url": "https://resilience.esa.int/archives/projects/fastswitching",
+            },
+            {
+                "fact": (
+                    "experimental free-space mode-diversity reception has been "
+                    "demonstrated with non-mode-selective photonic lanterns"
+                ),
+                "url": "https://doi.org/10.1109/JPHOT.2022.3225337",
+            },
+            {
+                "fact": (
+                    "programmable photonic circuits can self-calibrate, but the "
+                    "published demonstration explicitly addresses fabrication "
+                    "variation, thermal gradients, and thermal crosstalk"
+                ),
+                "url": "https://doi.org/10.1038/s41566-022-01020-z",
             },
             {
                 "fact": (
@@ -987,11 +1492,14 @@ def run_satcom_guardian_study(
                 "photonic-lantern fields"
             ),
             (
-                "compare with an ideal digital matched filter and a "
-                "conventional mode sorter"
+                "replace ideal quadrant and loss-matched sorter assumptions with "
+                "measured transfer functions, gaps, losses, bandwidths, and drift"
             ),
             "run joint laser-impairment, modal-fault, and chip-temperature sweeps",
-            "add pointing-ramp warning lead time and modem loss-of-lock curves",
+            (
+                "add a waveform-level digital matched filter, pointing-ramp warning "
+                "lead time, and modem RSSI/frame-sync/FEC loss-of-lock curves"
+            ),
             "add optical feedback, WDM lane failure, redundancy, and network goodput",
             "run importance sampling before claiming rare false-alarm probabilities",
         ],
