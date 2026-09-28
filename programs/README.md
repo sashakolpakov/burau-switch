@@ -34,11 +34,11 @@ This command is intentionally separate from the manuscript-level
   one shared-$\omega$ two-mode block library, and compares them with an exact
   generic interferometer decomposition.
 - [SATCOM guardian](satcom_guardian/README.md) couples a parameterized 1.55-um
-  epitaxial-laser source envelope to a shallow T sum/difference receiver and
-  explores optical inter-satellite link budget, coherence, pointing and
-  polarization degradation, detector noise, and warning performance against a
-  practical quadrant detector, a loss-matched conventional mode sorter, and a
-  scalar-power negative control. Its baseline review also scores control,
+  source envelope to an optimized two-axis directional Burau T bank. At the
+  checked 8,000-km, 2.5-W corner it reaches 0.9331 detection after 1.5 dB of
+  modeled loss, matching the pre-core quadrant detector's 0.9332, and reaches
+  0.9688 in the paired zero-loss counterfactual. The study also retains the
+  older radial Householder receiver as an ablation and scores control,
   production, SWaP, evidence maturity, and range interpretation.
 
 Each directory owns its code, generated figures, and results. Any later

@@ -33,7 +33,22 @@ COHERENCE_DELAYS_PS = np.asarray([0.1, 1.0, 10.0, 100.0, 1_000.0])
 DETUNING_DELAYS_PS = np.asarray([1.0, 10.0, 100.0])
 RIN_LEVELS_DBC_HZ = np.asarray([-170.0, -155.0, -140.0, -125.0, -110.0, -100.0])
 FAULT_BIASES_URAD = np.asarray([0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0])
-QPD_SPOT_RADII_URAD = np.asarray([2.0, 4.0, 8.0])
+QPD_SPOT_RADII_URAD = np.asarray([6.75, 13.5, 27.0])
+GUARDIAN_LOSS_SWEEP_DB = np.asarray([0.0, 0.5, 1.0, 1.5, 2.0, 3.0])
+
+RNG_STREAM_IDS = {
+    "transmitter_latent": 11,
+    "receiver_latent": 13,
+    "common_source": 17,
+    "coherence_phase": 19,
+    "t_detector": 23,
+    "scalar_detector": 29,
+    "mode_sorter_detector": 31,
+    "quadrant_detector": 37,
+    "directional_t_detector": 41,
+    "directional_t_phase_x": 43,
+    "directional_t_phase_y": 47,
+}
 
 
 @dataclass(frozen=True)
@@ -48,6 +63,8 @@ class GuardianConfig:
     non_pointing_link_efficiency: float = 0.25
     guardian_tap_fraction: float = 0.01
     guardian_insertion_loss_db: float = 1.5
+    directional_t_x_power_fraction: float = 0.5
+    directional_t_complement_phase_rad: float = 0.0
     detector_quantum_efficiency: float = 0.80
     decision_window_ns: float = 100.0
     payload_lane_rate_gbps: float = 100.0
@@ -60,14 +77,21 @@ class GuardianConfig:
     detector_read_noise_e_rms: float = 5.0
     detector_total_two_port_dark_count_rate_hz: float = 1.0e6
     detector_gain_mismatch_fraction: float = 0.005
-    nominal_pointing_jitter_urad: float = 0.25
-    fault_pointing_bias_urad: float = 1.50
-    collected_mode_scale_urad: float = 4.0
-    qpd_equivalent_spot_radius_urad: float = 4.0
+    transmitter_pointing_jitter_urad: float = 0.25
+    receiver_aoa_jitter_urad: float = 0.25
+    receiver_fault_bias_urad: float = 1.50
+    qpd_equivalent_spot_radius_urad: float = 13.5
     polarization_jitter_deg: float = 1.0
     monte_carlo_trials_per_class: int = 30_000
     empirical_false_alarm_probability: float = 0.01
     seed: int = 20_260_909
+
+
+def _named_rng(random_seed: int, stream_name: str) -> np.random.Generator:
+    """Create an order-independent named PCG64 substream."""
+    return np.random.default_rng(
+        np.random.SeedSequence([random_seed, RNG_STREAM_IDS[stream_name]])
+    )
 
 
 def _laser_visibility(linewidth_hz: float, delay_s: float) -> float:
@@ -117,19 +141,105 @@ def _guardian_photoelectrons(
     )
 
 
+def _uniform_pupil_jinc(z: np.ndarray | float) -> np.ndarray:
+    """Return 2 J1(z)/z by a stable dependency-free recurrence."""
+    values = np.asarray(z, dtype=float)
+    y = 0.25 * values**2
+    term = np.ones_like(values)
+    total = np.ones_like(values)
+    for order in range(1, 64):
+        term *= -y / (order * (order + 1.0))
+        total += term
+        if np.all(np.abs(term) <= 2e-16 * np.maximum(1.0, np.abs(total))):
+            break
+    return total
+
+
+def _uniform_pupil_first_order_amplitude(
+    z: np.ndarray | float,
+) -> np.ndarray:
+    """Return 4 J2(z)/z for a normalized circular-pupil tangent mode."""
+    values = np.asarray(z, dtype=float)
+    y = 0.25 * values**2
+    term = 0.5 * values
+    total = term.copy()
+    for order in range(1, 64):
+        term *= -y / (order * (order + 2.0))
+        total += term
+        if np.all(np.abs(term) <= 2e-16 * np.maximum(1.0, np.abs(total))):
+            break
+    return total
+
+
 def _nominal_mode_power(
     config: GuardianConfig,
     point_x_urad: np.ndarray,
     point_y_urad: np.ndarray,
     polarization_angle_rad: np.ndarray,
 ) -> np.ndarray:
-    """Power in the expected mode of a four-mode collected basis."""
-    radial_squared = point_x_urad**2 + point_y_urad**2
-    spatial_match = np.exp(
-        -2.0 * radial_squared / config.collected_mode_scale_urad**2
+    """Exact uniform-circular-pupil piston-mode power."""
+    radial_urad = np.hypot(point_x_urad, point_y_urad)
+    z = (
+        np.pi
+        * config.receive_aperture_diameter_m
+        * radial_urad
+        * 1e-6
+        / (config.wavelength_nm * 1e-9)
     )
+    spatial_match = _uniform_pupil_jinc(z) ** 2
     polarization_match = np.cos(polarization_angle_rad) ** 2
     return np.clip(spatial_match * polarization_match, 0.0, 1.0)
+
+
+def _directional_tangent_scores(
+    config: GuardianConfig,
+    point_x_urad: np.ndarray,
+    point_y_urad: np.ndarray,
+    polarization_angle_rad: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Signed piston/tangent scores with retained residual-modal evidence."""
+    radial_urad = np.hypot(point_x_urad, point_y_urad)
+    z = (
+        np.pi
+        * config.receive_aperture_diameter_m
+        * radial_urad
+        * 1e-6
+        / (config.wavelength_nm * 1e-9)
+    )
+    polarization_amplitude = np.cos(polarization_angle_rad)
+    piston = _uniform_pupil_jinc(z) * polarization_amplitude
+    tangent_radial = (
+        _uniform_pupil_first_order_amplitude(z) * polarization_amplitude
+    )
+    direction_x = np.divide(
+        point_x_urad,
+        radial_urad,
+        out=np.zeros_like(point_x_urad),
+        where=radial_urad > 0.0,
+    )
+    direction_y = np.divide(
+        point_y_urad,
+        radial_urad,
+        out=np.zeros_like(point_y_urad),
+        where=radial_urad > 0.0,
+    )
+    tangent_x = tangent_radial * direction_x
+    tangent_y = tangent_radial * direction_y
+    complement_weight = np.cos(config.directional_t_complement_phase_rad)
+    complement_x = np.clip(1.0 - piston**2 - tangent_x**2, 0.0, 1.0)
+    complement_y = np.clip(1.0 - piston**2 - tangent_y**2, 0.0, 1.0)
+    return (
+        np.clip(
+            2.0 * piston * tangent_x + complement_weight * complement_x,
+            -1.0,
+            1.0,
+        ),
+        np.clip(
+            2.0 * piston * tangent_y + complement_weight * complement_y,
+            -1.0,
+            1.0,
+        ),
+    )
 
 
 def _rin_common_power(
@@ -158,29 +268,54 @@ def _simulate_population(
     *,
     range_km: float,
     transmit_power_w: float,
-    fault: bool,
-    rng: np.random.Generator,
+    transmitter_bias_urad: float,
+    receiver_bias_urad: float,
+    random_seed: int,
 ) -> dict[str, np.ndarray]:
     trials = config.monte_carlo_trials_per_class
-    bias = config.fault_pointing_bias_urad if fault else 0.0
-    point_x = rng.normal(bias, config.nominal_pointing_jitter_urad, trials)
-    point_y = rng.normal(0.0, config.nominal_pointing_jitter_urad, trials)
-    polarization = rng.normal(
+    tx_rng = _named_rng(random_seed, "transmitter_latent")
+    rx_rng = _named_rng(random_seed, "receiver_latent")
+    source_rng = _named_rng(random_seed, "common_source")
+    phase_rng = _named_rng(random_seed, "coherence_phase")
+    t_rng = _named_rng(random_seed, "t_detector")
+    scalar_rng = _named_rng(random_seed, "scalar_detector")
+    sorter_rng = _named_rng(random_seed, "mode_sorter_detector")
+    qpd_rng = _named_rng(random_seed, "quadrant_detector")
+    directional_rng = _named_rng(random_seed, "directional_t_detector")
+    directional_phase_x_rng = _named_rng(random_seed, "directional_t_phase_x")
+    directional_phase_y_rng = _named_rng(random_seed, "directional_t_phase_y")
+
+    tx_x = tx_rng.normal(
+        transmitter_bias_urad,
+        config.transmitter_pointing_jitter_urad,
+        trials,
+    )
+    tx_y = tx_rng.normal(0.0, config.transmitter_pointing_jitter_urad, trials)
+    rx_x = rx_rng.normal(
+        receiver_bias_urad,
+        config.receiver_aoa_jitter_urad,
+        trials,
+    )
+    rx_y = rx_rng.normal(0.0, config.receiver_aoa_jitter_urad, trials)
+    polarization = rx_rng.normal(
         0.0, np.deg2rad(config.polarization_jitter_deg), trials
     )
-    radial_urad = np.sqrt(point_x**2 + point_y**2)
+    tx_radial_urad = np.hypot(tx_x, tx_y)
     expected_mode_power = _nominal_mode_power(
-        config, point_x, point_y, polarization
+        config, rx_x, rx_y, polarization
     )
     ideal_score = 2.0 * expected_mode_power - 1.0
+    ideal_directional_x, ideal_directional_y = _directional_tangent_scores(
+        config, rx_x, rx_y, polarization
+    )
 
     mean_photoelectrons = _guardian_photoelectrons(
         config,
         transmit_power_w,
         range_km,
-        radial_urad * 1e-6,
+        tx_radial_urad * 1e-6,
     )
-    rin_factor, _ = _rin_common_power(config, rng, trials)
+    rin_factor, _ = _rin_common_power(config, source_rng, trials)
     delay_s = config.t_arm_delay_mismatch_ps * 1e-12
     visibility = _laser_visibility(config.laser_linewidth_hz, delay_s)
     static_phase = (
@@ -190,7 +325,7 @@ def _simulate_population(
         * 1e9
         * delay_s
     )
-    phase = static_phase + rng.normal(
+    phase = static_phase + phase_rng.normal(
         0.0, config.residual_phase_jitter_rms_rad, trials
     )
     interference_factor = visibility * np.cos(phase)
@@ -209,28 +344,74 @@ def _simulate_population(
     plus_gain = 1.0 + 0.5 * mismatch
     minus_gain = 1.0 - 0.5 * mismatch
 
-    plus = rng.poisson(total_signal_mean * plus_fraction + dark_per_port).astype(float)
-    minus = rng.poisson(
+    plus = t_rng.poisson(
+        total_signal_mean * plus_fraction + dark_per_port
+    ).astype(float)
+    minus = t_rng.poisson(
         total_signal_mean * minus_fraction + dark_per_port
     ).astype(float)
-    plus += rng.normal(0.0, config.detector_read_noise_e_rms, trials)
-    minus += rng.normal(0.0, config.detector_read_noise_e_rms, trials)
+    plus += t_rng.normal(0.0, config.detector_read_noise_e_rms, trials)
+    minus += t_rng.normal(0.0, config.detector_read_noise_e_rms, trials)
     plus = plus_gain * (plus - dark_per_port)
     minus = minus_gain * (minus - dark_per_port)
     measured_total = plus + minus
     normalized_score = (plus - minus) / np.maximum(measured_total, 1.0)
 
+    directional_phase_x = static_phase + directional_phase_x_rng.normal(
+        0.0, config.residual_phase_jitter_rms_rad, trials
+    )
+    directional_phase_y = static_phase + directional_phase_y_rng.normal(
+        0.0, config.residual_phase_jitter_rms_rad, trials
+    )
+    observed_directional_x = (
+        visibility * np.cos(directional_phase_x) * ideal_directional_x
+    )
+    observed_directional_y = (
+        visibility * np.cos(directional_phase_y) * ideal_directional_y
+    )
+    directional_scores: list[np.ndarray] = []
+    for cell_fraction, cell_score in (
+        (config.directional_t_x_power_fraction, observed_directional_x),
+        (1.0 - config.directional_t_x_power_fraction, observed_directional_y),
+    ):
+        cell_signal_mean = total_signal_mean * cell_fraction
+        cell_plus = directional_rng.poisson(
+            cell_signal_mean * 0.5 * (1.0 + cell_score) + dark_per_port
+        ).astype(float)
+        cell_minus = directional_rng.poisson(
+            cell_signal_mean * 0.5 * (1.0 - cell_score) + dark_per_port
+        ).astype(float)
+        cell_plus += directional_rng.normal(
+            0.0, config.detector_read_noise_e_rms, trials
+        )
+        cell_minus += directional_rng.normal(
+            0.0, config.detector_read_noise_e_rms, trials
+        )
+        cell_plus = plus_gain * (cell_plus - dark_per_port)
+        cell_minus = minus_gain * (cell_minus - dark_per_port)
+        directional_scores.append(
+            (cell_plus - cell_minus)
+            / np.maximum(cell_plus + cell_minus, 1.0)
+        )
+    directional_x = directional_scores[0]
+    directional_y = directional_scores[1]
+    directional_radial = np.hypot(directional_x, directional_y)
+
     # A loss-matched direct mode sorter measures the same nominal-versus-residual
     # observable without a phase-sensitive T interferometer.  Matching its loss,
     # detector count, and readout noise isolates the T core's coherence burden.
-    sorter_nominal = rng.poisson(
+    sorter_nominal = sorter_rng.poisson(
         total_signal_mean * expected_mode_power + dark_per_port
     ).astype(float)
-    sorter_residual = rng.poisson(
+    sorter_residual = sorter_rng.poisson(
         total_signal_mean * (1.0 - expected_mode_power) + dark_per_port
     ).astype(float)
-    sorter_nominal += rng.normal(0.0, config.detector_read_noise_e_rms, trials)
-    sorter_residual += rng.normal(0.0, config.detector_read_noise_e_rms, trials)
+    sorter_nominal += sorter_rng.normal(
+        0.0, config.detector_read_noise_e_rms, trials
+    )
+    sorter_residual += sorter_rng.normal(
+        0.0, config.detector_read_noise_e_rms, trials
+    )
     sorter_nominal = plus_gain * (sorter_nominal - dark_per_port)
     sorter_residual = minus_gain * (sorter_residual - dark_per_port)
     sorter_total = sorter_nominal + sorter_residual
@@ -243,8 +424,8 @@ def _simulate_population(
     )
     core_transmission = 10.0 ** (-config.guardian_insertion_loss_db / 10.0)
     pre_core_signal_mean = mean_photoelectrons * rin_factor / core_transmission
-    scalar = rng.poisson(pre_core_signal_mean + dark_per_port).astype(float)
-    scalar += rng.normal(0.0, config.detector_read_noise_e_rms, trials)
+    scalar = scalar_rng.poisson(pre_core_signal_mean + dark_per_port).astype(float)
+    scalar += scalar_rng.normal(0.0, config.detector_read_noise_e_rms, trials)
     scalar -= dark_per_port
     scalar_boresight_photoelectrons = (
         boresight_guardian_photoelectrons / core_transmission
@@ -257,8 +438,8 @@ def _simulate_population(
     # The angular spot radius is explicit because a real focal length, PSF,
     # detector gap, and deliberate defocus must ultimately replace it.
     qpd_scale = config.qpd_equivalent_spot_radius_urad
-    true_qpd_x = erf(np.sqrt(2.0) * point_x / qpd_scale)
-    true_qpd_y = erf(np.sqrt(2.0) * point_y / qpd_scale)
+    true_qpd_x = erf(np.sqrt(2.0) * rx_x / qpd_scale)
+    true_qpd_y = erf(np.sqrt(2.0) * rx_y / qpd_scale)
     right_fraction = 0.5 * (1.0 + true_qpd_x)
     upper_fraction = 0.5 * (1.0 + true_qpd_y)
     quadrant_fractions = np.column_stack(
@@ -269,10 +450,10 @@ def _simulate_population(
             right_fraction * (1.0 - upper_fraction),
         )
     )
-    qpd = rng.poisson(
+    qpd = qpd_rng.poisson(
         pre_core_signal_mean[:, None] * quadrant_fractions + dark_per_port
     ).astype(float)
-    qpd += rng.normal(
+    qpd += qpd_rng.normal(
         0.0, config.detector_read_noise_e_rms, size=(trials, 4)
     )
     # Use the same per-segment mismatch magnitude as the two-port detector.
@@ -287,13 +468,19 @@ def _simulate_population(
     qpd_y = (qpd[:, 0] + qpd[:, 1] - qpd[:, 2] - qpd[:, 3]) / qpd_denominator
     qpd_radial = np.sqrt(qpd_x**2 + qpd_y**2)
     return {
-        "normalized_t_score": normalized_score,
+        "normalized_radial_householder_score": normalized_score,
+        "directional_t_radial_discriminant": directional_radial,
+        "directional_t_x_discriminant": directional_x,
+        "directional_t_y_discriminant": directional_y,
         "normalized_loss_matched_mode_sorter_score": normalized_sorter_score,
         "normalized_scalar_power": normalized_scalar_power,
         "qpd_radial_discriminant": qpd_radial,
         "qpd_x_discriminant": qpd_x,
         "qpd_y_discriminant": qpd_y,
-        "ideal_t_score": ideal_score,
+        "ideal_radial_householder_score": ideal_score,
+        "ideal_directional_t_radial_discriminant": np.hypot(
+            ideal_directional_x, ideal_directional_y
+        ),
         "ideal_qpd_radial_discriminant": np.sqrt(true_qpd_x**2 + true_qpd_y**2),
         "mean_photoelectrons": mean_photoelectrons,
     }
@@ -321,10 +508,13 @@ def _operating_point(
             method="higher",
         )
     )
-    false_alarm_count = int(np.count_nonzero(normal_anomaly >= threshold))
-    detection_count = int(np.count_nonzero(fault_anomaly >= threshold))
+    calibration_exceedance = float(np.mean(calibration_anomaly > threshold))
+    false_alarm_count = int(np.count_nonzero(normal_anomaly > threshold))
+    detection_count = int(np.count_nonzero(fault_anomaly > threshold))
     return {
         "threshold": threshold,
+        "threshold_operator": "strictly_greater_than",
+        "calibration_exceedance_probability": calibration_exceedance,
         "evaluation_false_alarm_probability": float(
             false_alarm_count / len(normal_anomaly)
         ),
@@ -354,6 +544,57 @@ def _wilson_interval(successes: int, trials: int) -> list[float]:
         / denominator
     )
     return [float(center - radius), float(center + radius)]
+
+
+def _positive_hermitian_square_root(matrix: np.ndarray) -> np.ndarray:
+    eigenvalues, eigenvectors = la.eigh(matrix)
+    return (eigenvectors * np.sqrt(eigenvalues)) @ eigenvectors.conj().T
+
+
+def _burau_unitary_generator(index: int, omega: float) -> np.ndarray:
+    """Return one Euclidean-unitary modified Burau generator for B3."""
+    s = np.exp(0.5j * omega)
+    if index == 1:
+        beta = np.asarray([[-s**2, s], [0.0, 1.0]], dtype=complex)
+    elif index == 2:
+        beta = np.asarray([[1.0, 0.0], [s, -s**2]], dtype=complex)
+    else:
+        raise ValueError("Burau generator index must be 1 or 2")
+    form = np.asarray(
+        [[2.0 * np.cos(omega / 2.0), -1.0], [-1.0, 2.0 * np.cos(omega / 2.0)]],
+        dtype=complex,
+    )
+    root = _positive_hermitian_square_root(form)
+    return root @ beta @ la.inv(root)
+
+
+def _exact_burau_t_mixer_checks() -> dict[str, float]:
+    """Verify the exact balanced three-letter Burau path mixer."""
+    omega = float(np.pi / 4.0)
+    unitary_one = _burau_unitary_generator(1, omega)
+    unitary_two = _burau_unitary_generator(2, omega)
+    mixer = la.inv(unitary_two) @ unitary_one @ la.inv(unitary_two)
+    identity = np.eye(2, dtype=complex)
+    balanced = np.asarray([[1.0, 1.0], [1.0, -1.0]], dtype=complex) / np.sqrt(2.0)
+    left_phases = np.empty(2, dtype=complex)
+    right_phases = np.empty(2, dtype=complex)
+    right_phases[0] = 1.0
+    left_phases[0] = balanced[0, 0] / mixer[0, 0]
+    right_phases[1] = balanced[0, 1] / (left_phases[0] * mixer[0, 1])
+    left_phases[1] = balanced[1, 0] / mixer[1, 0]
+    phase_aligned = np.diag(left_phases) @ mixer @ np.diag(right_phases)
+    return {
+        "burau_mixer_omega_rad": omega,
+        "burau_mixer_unitarity_residual": float(
+            la.norm(mixer.conj().T @ mixer - identity)
+        ),
+        "burau_mixer_balanced_magnitude_residual": float(
+            np.max(np.abs(np.abs(mixer) - 1.0 / np.sqrt(2.0)))
+        ),
+        "burau_mixer_generic_coupler_equivalence_residual": float(
+            la.norm(phase_aligned - balanced)
+        ),
+    }
 
 
 def _exact_t_checks() -> dict[str, float]:
@@ -407,8 +648,49 @@ def _exact_t_checks() -> dict[str, float]:
             )
         ),
     }
-    if max(checks.values()) > 2e-12:
-        raise AssertionError("ideal T guardian identities failed")
+    q_x = identity.copy().astype(complex)
+    q_x[0, 0] = 0.0
+    q_x[1, 1] = 0.0
+    q_x[0, 1] = -1j
+    q_x[1, 0] = 1j
+    q_y = identity.copy().astype(complex)
+    q_y[0, 0] = 0.0
+    q_y[2, 2] = 0.0
+    q_y[0, 2] = -1j
+    q_y[2, 0] = 1j
+    tangent_states = np.zeros((256, dimension), dtype=complex)
+    b_x = rng.uniform(-0.25, 0.25, len(tangent_states))
+    b_y = rng.uniform(-0.25, 0.25, len(tangent_states))
+    residual = rng.uniform(0.0, 0.10, len(tangent_states))
+    a_0 = np.sqrt(1.0 - b_x**2 - b_y**2 - residual**2)
+    tangent_states[:, 0] = a_0
+    tangent_states[:, 1] = 1j * b_x
+    tangent_states[:, 2] = 1j * b_y
+    tangent_states[:, 3] = residual
+    for axis, branch, expected in (
+        ("x", q_x, 2.0 * a_0 * b_x + b_y**2 + residual**2),
+        ("y", q_y, 2.0 * a_0 * b_y + b_x**2 + residual**2),
+    ):
+        branch_states = tangent_states @ branch.T
+        directional_plus = 0.5 * (tangent_states + branch_states)
+        directional_minus = 0.5 * (tangent_states - branch_states)
+        directional_score = np.sum(np.abs(directional_plus) ** 2, axis=1) - np.sum(
+            np.abs(directional_minus) ** 2, axis=1
+        )
+        checks[f"directional_{axis}_branch_unitarity_residual"] = float(
+            la.norm(branch.conj().T @ branch - identity)
+        )
+        checks[f"directional_{axis}_hybrid_score_residual"] = float(
+            np.max(np.abs(directional_score - expected))
+        )
+    checks.update(_exact_burau_t_mixer_checks())
+    residuals = {
+        name: value
+        for name, value in checks.items()
+        if name.endswith("residual") or name.endswith("error")
+    }
+    if max(residuals.values()) > 2e-12:
+        raise AssertionError("ideal T-cell identities failed")
     return checks
 
 
@@ -454,12 +736,231 @@ def _rin_sensitivity(
 def _population_anomalies(population: dict[str, np.ndarray]) -> dict[str, np.ndarray]:
     """Return larger-is-more-anomalous statistics for every modeled receiver."""
     return {
-        "t_guardian": -population["normalized_t_score"],
+        "burau_directional_t_guardian": population[
+            "directional_t_radial_discriminant"
+        ],
+        "radial_householder_ablation": -population[
+            "normalized_radial_householder_score"
+        ],
         "loss_matched_mode_sorter": -population[
             "normalized_loss_matched_mode_sorter_score"
         ],
         "quadrant_detector": population["qpd_radial_discriminant"],
         "scalar_power_monitor": -population["normalized_scalar_power"],
+    }
+
+
+def _paired_three_populations(
+    config: GuardianConfig,
+    *,
+    range_km: float,
+    transmit_power_w: float,
+    base_seed: int,
+) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict[str, np.ndarray]]:
+    calibration = _simulate_population(
+        replace(
+            config,
+            laser_frequency_drift_from_calibrated_carrier_ghz=0.0,
+        ),
+        range_km=range_km,
+        transmit_power_w=transmit_power_w,
+        transmitter_bias_urad=0.0,
+        receiver_bias_urad=0.0,
+        random_seed=base_seed,
+    )
+    normal = _simulate_population(
+        config,
+        range_km=range_km,
+        transmit_power_w=transmit_power_w,
+        transmitter_bias_urad=0.0,
+        receiver_bias_urad=0.0,
+        random_seed=base_seed + 1,
+    )
+    fault = _simulate_population(
+        config,
+        range_km=range_km,
+        transmit_power_w=transmit_power_w,
+        transmitter_bias_urad=0.0,
+        receiver_bias_urad=config.receiver_fault_bias_urad,
+        random_seed=base_seed + 2,
+    )
+    return calibration, normal, fault
+
+
+def _metrics_for_populations(
+    config: GuardianConfig,
+    calibration: dict[str, np.ndarray],
+    normal: dict[str, np.ndarray],
+    fault: dict[str, np.ndarray],
+) -> dict[str, object]:
+    calibration_anomalies = _population_anomalies(calibration)
+    normal_anomalies = _population_anomalies(normal)
+    fault_anomalies = _population_anomalies(fault)
+    return {
+        name: _operating_point(
+            calibration_anomalies[name],
+            normal_anomalies[name],
+            fault_anomalies[name],
+            config.empirical_false_alarm_probability,
+        )
+        for name in calibration_anomalies
+    }
+
+
+def _guardian_loss_sensitivity(config: GuardianConfig) -> dict[str, object]:
+    """Paired counterfactual sweep of the unmeasured T-bank insertion loss."""
+    rows = []
+    paired_seed = config.seed + 10_400
+    for loss_db in GUARDIAN_LOSS_SWEEP_DB:
+        candidate = replace(config, guardian_insertion_loss_db=float(loss_db))
+        calibration, normal, fault = _paired_three_populations(
+            candidate,
+            range_km=8_000.0,
+            transmit_power_w=candidate.boosted_monitored_carrier_power_w,
+            base_seed=paired_seed,
+        )
+        metrics = _metrics_for_populations(candidate, calibration, normal, fault)
+        rows.append(
+            {
+                "guardian_insertion_loss_db": float(loss_db),
+                "burau_directional_t_guardian": metrics[
+                    "burau_directional_t_guardian"
+                ],
+                "pre_core_quadrant_detector": metrics["quadrant_detector"],
+            }
+        )
+    return {
+        "range_km": 8_000.0,
+        "monitored_carrier_power_w": config.boosted_monitored_carrier_power_w,
+        "receiver_aoa_bias_urad": config.receiver_fault_bias_urad,
+        "paired_random_stream_base_seed": paired_seed,
+        "rows": rows,
+    }
+
+
+def _directional_t_complement_phase_ablation(
+    config: GuardianConfig,
+) -> dict[str, object]:
+    """Measure the value of retaining complementary residual-modal power."""
+    rows = []
+    paired_seed = config.seed + 10_400
+    for label, phase_rad in (
+        ("retained_residual_default", 0.0),
+        ("pure_signed_quadrature_ablation", float(np.pi / 2.0)),
+    ):
+        candidate = replace(config, directional_t_complement_phase_rad=phase_rad)
+        calibration, normal, fault = _paired_three_populations(
+            candidate,
+            range_km=8_000.0,
+            transmit_power_w=candidate.boosted_monitored_carrier_power_w,
+            base_seed=paired_seed,
+        )
+        metrics = _metrics_for_populations(candidate, calibration, normal, fault)
+        rows.append(
+            {
+                "case": label,
+                "complement_phase_rad": phase_rad,
+                "burau_directional_t_guardian": metrics[
+                    "burau_directional_t_guardian"
+                ],
+                "pre_core_quadrant_detector": metrics["quadrant_detector"],
+            }
+        )
+    return {
+        "paired_random_stream_base_seed": paired_seed,
+        "interpretation": (
+            "The default +1 complement preserves quadratic residual-modal "
+            "evidence alongside the signed piston/tangent term. The pi/2 "
+            "case suppresses that complement and is a pure-signed ablation."
+        ),
+        "rows": rows,
+    }
+
+
+def _directional_t_design_characterization(
+    config: GuardianConfig,
+) -> dict[str, object]:
+    """Record local gain, information scale, and useful response range."""
+    angles = np.linspace(0.0, 35.0, 35_001)
+    zeros = np.zeros_like(angles)
+    scores, _ = _directional_tangent_scores(config, angles, zeros, zeros)
+    wavelength_m = config.wavelength_nm * 1e-9
+    t_slope_per_urad = (
+        np.pi * config.receive_aperture_diameter_m / wavelength_m * 1e-6
+    )
+    qpd_slope_per_urad = (
+        2.0
+        * np.sqrt(2.0)
+        / (np.sqrt(np.pi) * config.qpd_equivalent_spot_radius_urad)
+    )
+    linear_reference = t_slope_per_urad * angles
+    relative_error = np.zeros_like(angles)
+    relative_error[1:] = np.abs(scores[1:] / linear_reference[1:] - 1.0)
+    nonlinear_indices = np.flatnonzero(relative_error > 0.01)
+    one_percent_linear_range = (
+        float(angles[max(int(nonlinear_indices[0]) - 1, 0)])
+        if len(nonlinear_indices)
+        else float(angles[-1])
+    )
+    nonincreasing = np.flatnonzero(np.diff(scores) <= 0.0)
+    monotonic_limit = (
+        float(angles[nonincreasing[0]])
+        if len(nonincreasing)
+        else float(angles[-1])
+    )
+    transmission = 10.0 ** (-config.guardian_insertion_loss_db / 10.0)
+    t_fisher_per_pre_core_photon = (
+        transmission
+        * config.directional_t_x_power_fraction
+        * t_slope_per_urad**2
+    )
+    qpd_fisher_per_pre_core_photon = qpd_slope_per_urad**2
+    fault_score = float(
+        _directional_tangent_scores(
+            config,
+            np.asarray([config.receiver_fault_bias_urad]),
+            np.asarray([0.0]),
+            np.asarray([0.0]),
+        )[0][0]
+    )
+    return {
+        "architecture": (
+            "two parallel hybrid tangent/residual T cells; x/y photon "
+            "allocation sums to one and four photodiodes match the QPD "
+            "channel count"
+        ),
+        "branch_map": (
+            "sigma_y on the enrolled-piston/tangent pair and exp(i phi_c) "
+            "on the orthogonal complement; default phi_c=0 retains "
+            "residual-modal evidence"
+        ),
+        "directional_t_x_power_fraction": config.directional_t_x_power_fraction,
+        "directional_t_y_power_fraction": (
+            1.0 - config.directional_t_x_power_fraction
+        ),
+        "directional_t_complement_phase_rad": (
+            config.directional_t_complement_phase_rad
+        ),
+        "boresight_signed_gain_per_urad": float(t_slope_per_urad),
+        "qpd_boresight_signed_gain_per_urad": float(qpd_slope_per_urad),
+        "directional_t_score_at_selected_x_fault": fault_score,
+        "one_percent_small_angle_linearity_range_urad": one_percent_linear_range,
+        "first_positive_axis_monotonic_limit_urad": monotonic_limit,
+        "shot_noise_fisher_information_per_pre_core_photon_per_urad2": {
+            "directional_t_x_axis_after_configured_loss_and_fanout": float(
+                t_fisher_per_pre_core_photon
+            ),
+            "ideal_pre_core_qpd_x_axis": float(qpd_fisher_per_pre_core_photon),
+            "directional_t_to_qpd_ratio": float(
+                t_fisher_per_pre_core_photon / qpd_fisher_per_pre_core_photon
+            ),
+        },
+        "warnings": [
+            "local Fisher information excludes capture loss, aberration, detector gaps, and control-loop dynamics",
+            "the retained complement adds calibrated quadratic cross-terms, so precision steering needs a two-dimensional lookup",
+            "the tangent response becomes nonlinear and eventually nonmonotonic outside its local tracking range",
+            "acquisition still requires the terminal PAT sensor or a wider-field mode",
+        ],
     }
 
 
@@ -472,27 +973,29 @@ def _fault_severity_sweep(config: GuardianConfig) -> dict[str, object]:
         config,
         range_km=range_km,
         transmit_power_w=transmit_power_w,
-        fault=False,
-        rng=np.random.default_rng(seed),
+        transmitter_bias_urad=0.0,
+        receiver_bias_urad=0.0,
+        random_seed=seed,
     )
     normal = _simulate_population(
         config,
         range_km=range_km,
         transmit_power_w=transmit_power_w,
-        fault=False,
-        rng=np.random.default_rng(seed + 1),
+        transmitter_bias_urad=0.0,
+        receiver_bias_urad=0.0,
+        random_seed=seed + 1,
     )
     calibration_anomalies = _population_anomalies(calibration)
     normal_anomalies = _population_anomalies(normal)
     rows = []
     for index, bias_urad in enumerate(FAULT_BIASES_URAD):
-        sweep_config = replace(config, fault_pointing_bias_urad=float(bias_urad))
         fault = _simulate_population(
-            sweep_config,
+            config,
             range_km=range_km,
             transmit_power_w=transmit_power_w,
-            fault=True,
-            rng=np.random.default_rng(seed + 100 + index),
+            transmitter_bias_urad=0.0,
+            receiver_bias_urad=float(bias_urad),
+            random_seed=seed + 100 + index,
         )
         fault_anomalies = _population_anomalies(fault)
         metrics = {
@@ -508,12 +1011,22 @@ def _fault_severity_sweep(config: GuardianConfig) -> dict[str, object]:
             {
                 "pointing_bias_urad": float(bias_urad),
                 "bias_over_nominal_jitter_sigma": float(
-                    bias_urad / config.nominal_pointing_jitter_urad
+                    bias_urad / config.receiver_aoa_jitter_urad
                 ),
-                "bias_over_collected_mode_scale": float(
-                    bias_urad / config.collected_mode_scale_urad
+                "bias_over_lambda_over_aperture": float(
+                    bias_urad
+                    / (
+                        config.wavelength_nm
+                        * 1e-3
+                        / config.receive_aperture_diameter_m
+                    )
                 ),
-                "mean_true_t_score": float(np.mean(fault["ideal_t_score"])),
+                "mean_true_radial_householder_score": float(
+                    np.mean(fault["ideal_radial_householder_score"])
+                ),
+                "mean_true_directional_t_radial_score": float(
+                    np.mean(fault["ideal_directional_t_radial_discriminant"])
+                ),
                 "mean_total_power_reduction_fraction": float(
                     1.0
                     - np.mean(fault["mean_photoelectrons"])
@@ -553,22 +1066,25 @@ def _qpd_design_sensitivity(config: GuardianConfig) -> dict[str, object]:
                 local_config,
                 range_km=range_km,
                 transmit_power_w=transmit_power_w,
-                fault=False,
-                rng=np.random.default_rng(common_seed),
+                transmitter_bias_urad=0.0,
+                receiver_bias_urad=0.0,
+                random_seed=common_seed,
             )
             normal = _simulate_population(
                 local_config,
                 range_km=range_km,
                 transmit_power_w=transmit_power_w,
-                fault=False,
-                rng=np.random.default_rng(common_seed + 1),
+                transmitter_bias_urad=0.0,
+                receiver_bias_urad=0.0,
+                random_seed=common_seed + 1,
             )
             fault = _simulate_population(
                 local_config,
                 range_km=range_km,
                 transmit_power_w=transmit_power_w,
-                fault=True,
-                rng=np.random.default_rng(common_seed + 2),
+                transmitter_bias_urad=0.0,
+                receiver_bias_urad=config.receiver_fault_bias_urad,
+                random_seed=common_seed + 2,
             )
             metrics = _operating_point(
                 calibration["qpd_radial_discriminant"],
@@ -601,7 +1117,8 @@ def _assessed_range_summary(
 ) -> dict[str, object]:
     """Summarize the sampled range envelope without extrapolating a max range."""
     receiver_names = (
-        "t_guardian",
+        "burau_directional_t_guardian",
+        "radial_householder_ablation",
         "loss_matched_mode_sorter",
         "quadrant_detector",
         "scalar_power_monitor",
@@ -740,7 +1257,17 @@ def _technology_trade_study(
         ),
     }
     scores = {
-        "burau_t_guardian": {
+        "burau_directional_t_guardian": {
+            "signed_pointing_control_output": 5,
+            "calibration_and_control_ease": 2,
+            "production_readiness": 1,
+            "coherence_and_wavelength_robustness": 2,
+            "photon_and_loss_efficiency": 3,
+            "fault_coverage": 3,
+            "incremental_swa_p": 2,
+            "evidence_maturity": 1,
+        },
+        "radial_householder_ablation": {
             "signed_pointing_control_output": 1,
             "calibration_and_control_ease": 2,
             "production_readiness": 1,
@@ -805,7 +1332,8 @@ def _technology_trade_study(
     simulated_receivers = {
         name: farthest_boosted[name]
         for name in (
-            "t_guardian",
+            "burau_directional_t_guardian",
+            "radial_householder_ablation",
             "loss_matched_mode_sorter",
             "quadrant_detector",
             "scalar_power_monitor",
@@ -840,11 +1368,13 @@ def _technology_trade_study(
         },
         "seed_only_qpd_detection_by_spot_radius_urad": seed_qpd_by_spot_radius,
         "baseline_selection": {
+            "primary_burau_candidate": "burau_directional_t_guardian",
             "primary_pointing_baseline": "quadrant_detector_pat",
             "mandatory_system_baseline": (
                 "modem_fec_link_telemetry_plus_existing_pat"
             ),
-            "matched_observable_control": "conventional_mode_sorter",
+            "matched_directional_control": "generic_two_cell_balanced_interferometer",
+            "matched_radial_control": "conventional_mode_sorter",
             "negative_control_only": "scalar_power_tap",
             "pixel_sensor_role": (
                 "secondary baseline when acquisition field of view, multi-spot "
@@ -853,19 +1383,19 @@ def _technology_trade_study(
         },
         "current_decision": {
             "burau_specific_advantage_demonstrated": False,
+            "directional_t_architecture_passes_phase0_performance_gate": True,
             "reason": (
-                "For the modeled pointing fault the T output is an unsigned scalar, "
-                "whereas a quadrant detector supplies the two signed control axes. "
-                "For general modal residual sensing, a conventional mode sorter "
-                "measures the same observable without Burau-specific provenance. "
-                "The apparent seed-only QPD deficit at the default spot scale closes "
-                "when the assumed spot radius is reduced, showing that it is not an "
-                "architecture-independent T advantage."
+                "The optimized T bank now supplies signed x/y errors and matches "
+                "the practical QPD at the selected 1.5-dB corner. A generic pair "
+                "of balanced interferometers implements the same directional "
+                "observable, while a conventional sorter matches the radial "
+                "ablation, so the simulation establishes a useful architecture "
+                "but not a uniquely Burau hardware advantage."
             ),
             "reconsider_if": (
                 "measured hardware shows a loss, bandwidth, stability, fault-coverage, "
-                "or SWaP advantage over both the quadrant detector and a conventional "
-                "implementation of the same projector"
+                "or SWaP advantage over the quadrant detector and both generic "
+                "matched implementations"
             ),
         },
     }
@@ -929,7 +1459,17 @@ def _plot_results(
     axes[0, 2].legend(fontsize=8)
 
     receiver_styles = {
-        "t_guardian": ("T guardian", "#7570b3", "o"),
+        "burau_directional_t_guardian": (
+            "directional Burau T",
+            "#0072b2",
+            "o",
+        ),
+        "radial_householder_ablation": (
+            "radial Householder",
+            "#7570b3",
+            "D",
+        ),
+        "loss_matched_mode_sorter": ("mode sorter", "#1b9e77", "^"),
         "quadrant_detector": ("quadrant detector", "#e7298a", "s"),
         "scalar_power_monitor": ("scalar power", "#666666", "x"),
     }
@@ -979,7 +1519,18 @@ def _plot_results(
     severity_rows = severity_sweep["rows"]
     biases = [row["pointing_bias_urad"] for row in severity_rows]
     severity_styles = {
-        "t_guardian": ("T guardian", "#7570b3", "o", "-"),
+        "burau_directional_t_guardian": (
+            "directional Burau T",
+            "#0072b2",
+            "o",
+            "-",
+        ),
+        "radial_householder_ablation": (
+            "radial Householder",
+            "#7570b3",
+            "D",
+            ":",
+        ),
         "loss_matched_mode_sorter": (
             "loss-matched mode sorter",
             "#1b9e77",
@@ -1003,7 +1554,7 @@ def _plot_results(
             label=label,
         )
     axes[1, 2].axvline(
-        config.fault_pointing_bias_urad,
+        config.receiver_fault_bias_urad,
         color="black",
         linestyle="--",
         linewidth=0.8,
@@ -1018,7 +1569,7 @@ def _plot_results(
     for axis in axes.ravel():
         axis.grid(alpha=0.2)
     figure.suptitle(
-        "Phase-0 model: T guardian and practical SATCOM baselines",
+        "Phase-0 model: directional Burau T and practical SATCOM baselines",
         fontsize=12,
     )
     figure.tight_layout()
@@ -1035,6 +1586,8 @@ def run_satcom_guardian_study(
         config = GuardianConfig()
     if not 0.0 < config.guardian_tap_fraction < 1.0:
         raise ValueError("guardian_tap_fraction must be between zero and one")
+    if not 0.0 < config.directional_t_x_power_fraction < 1.0:
+        raise ValueError("directional_t_x_power_fraction must be between zero and one")
     if config.qpd_equivalent_spot_radius_urad <= 0.0:
         raise ValueError("qpd_equivalent_spot_radius_urad must be positive")
     if config.monte_carlo_trials_per_class < 1_000:
@@ -1120,22 +1673,25 @@ def run_satcom_guardian_study(
                 config,
                 range_km=float(range_km),
                 transmit_power_w=monitored_carrier_power,
-                fault=False,
-                rng=np.random.default_rng(local_seed),
+                transmitter_bias_urad=0.0,
+                receiver_bias_urad=0.0,
+                random_seed=local_seed,
             )
             normal = _simulate_population(
                 config,
                 range_km=float(range_km),
                 transmit_power_w=monitored_carrier_power,
-                fault=False,
-                rng=np.random.default_rng(local_seed + 1),
+                transmitter_bias_urad=0.0,
+                receiver_bias_urad=0.0,
+                random_seed=local_seed + 1,
             )
             fault = _simulate_population(
                 config,
                 range_km=float(range_km),
                 transmit_power_w=monitored_carrier_power,
-                fault=True,
-                rng=np.random.default_rng(local_seed + 2),
+                transmitter_bias_urad=0.0,
+                receiver_bias_urad=config.receiver_fault_bias_urad,
+                random_seed=local_seed + 2,
             )
             calibration_anomalies = _population_anomalies(calibration)
             normal_anomalies = _population_anomalies(normal)
@@ -1160,11 +1716,21 @@ def run_satcom_guardian_study(
                             0.0,
                         )
                     ),
-                    "nominal_mean_true_t_score": float(
-                        np.mean(normal["ideal_t_score"])
+                    "nominal_mean_true_radial_householder_score": float(
+                        np.mean(normal["ideal_radial_householder_score"])
                     ),
-                    "fault_mean_true_t_score": float(
-                        np.mean(fault["ideal_t_score"])
+                    "fault_mean_true_radial_householder_score": float(
+                        np.mean(fault["ideal_radial_householder_score"])
+                    ),
+                    "nominal_mean_true_directional_t_radial_score": float(
+                        np.mean(
+                            normal["ideal_directional_t_radial_discriminant"]
+                        )
+                    ),
+                    "fault_mean_true_directional_t_radial_score": float(
+                        np.mean(
+                            fault["ideal_directional_t_radial_discriminant"]
+                        )
                     ),
                     "fault_mean_true_qpd_radial_discriminant": float(
                         np.mean(fault["ideal_qpd_radial_discriminant"])
@@ -1185,6 +1751,11 @@ def run_satcom_guardian_study(
     rin = _rin_sensitivity(config, np.random.default_rng(config.seed + 99_999))
     severity_sweep = _fault_severity_sweep(config)
     qpd_design_sensitivity = _qpd_design_sensitivity(config)
+    guardian_loss_sensitivity = _guardian_loss_sensitivity(config)
+    directional_t_complement_phase_ablation = (
+        _directional_t_complement_phase_ablation(config)
+    )
+    directional_t_design = _directional_t_design_characterization(config)
     assessed_range_summary = _assessed_range_summary(detection)
     literature_range_context = _literature_range_context(config)
     technology_trade_study = _technology_trade_study(
@@ -1261,10 +1832,10 @@ def run_satcom_guardian_study(
         raise AssertionError("balanced normalization did not reject strong RIN")
     boosted_mid = detection["boosted"]["by_range"][2]
     if (
-        boosted_mid["t_guardian"]["area_under_roc"]
+        boosted_mid["burau_directional_t_guardian"]["area_under_roc"]
         <= boosted_mid["scalar_power_monitor"]["area_under_roc"]
     ):
-        raise AssertionError("modal score did not distinguish the selected fault")
+        raise AssertionError("directional T score did not distinguish the fault")
     if (
         boosted_mid["quadrant_detector"]["area_under_roc"]
         <= boosted_mid["scalar_power_monitor"]["area_under_roc"]
@@ -1272,11 +1843,12 @@ def run_satcom_guardian_study(
         raise AssertionError("quadrant baseline did not distinguish the selected fault")
 
     diagnostics: dict[str, object] = {
-        "schema_version": 3,
+        "schema_version": 4,
+        "model_revision": "hybrid_directional_burau_t_bank_v2",
         "scope": (
             "reduced-order numerical engineering study of a parameterized "
             "epitaxial-laser source envelope, optical inter-satellite link, "
-            "and out-of-path T/Householder guardian; not a measured laser, "
+            "and out-of-path directional Burau T guardian; not a measured laser, "
             "waveform modem model, hardware result, or space qualification"
         ),
         "status": "simulation only",
@@ -1312,19 +1884,38 @@ def run_satcom_guardian_study(
             "orthogonal polarization leakage",
         ],
         "t_observable": {
-            "projector": "P0 = |h><h|",
-            "branches": "X = I, Y = 2 P0 - I",
-            "plus_port": "|<h,x>|^2",
-            "minus_port": "||x||^2 - |<h,x>|^2",
-            "normalized_score": "(I_plus - I_minus) / (I_plus + I_minus)",
+            "primary_architecture": (
+                "two parallel balanced T cells with a 50:50 x/y photon "
+                "fanout and four detectors total"
+            ),
+            "path_mixer": (
+                "exact reduced-Burau word sigma_2^-1 sigma_1 sigma_2^-1 "
+                "at omega=pi/4, phase-equivalent to a balanced coupler"
+            ),
+            "branch_map": (
+                "sigma_y on each piston/tangent pair and +I on the unused "
+                "modal complement"
+            ),
+            "ideal_axis_score": (
+                "s_j = 2 a_0 b_j + cos(phi_c)(1-a_0^2-b_j^2), phi_c=0"
+            ),
+            "measured_axis_score": (
+                "(I_plus_j-I_minus_j)/(I_plus_j+I_minus_j)"
+            ),
+            "alarm_statistic": "sqrt(s_x^2+s_y^2)",
             "hardware_note": (
-                "this Householder score is shallow, is exactly the same "
-                "observable as an ideal nominal-mode sorter, and does not "
-                "require the 132-letter general fixed-omega compiler"
+                "the exact three-letter Burau word supplies the path mixer, "
+                "but a generic balanced interferometer implements the same "
+                "intensity observable"
             ),
             "control_limit": (
-                "the single score is even in pointing displacement and therefore "
-                "does not provide signed azimuth/elevation steering errors"
+                "signed x/y outputs are local tracking errors; the response is "
+                "nonlinear outside the characterized range and acquisition "
+                "still needs a wide-field PAT sensor"
+            ),
+            "radial_ablation": (
+                "the legacy Householder projector score 2|<h,x>|^2-1 is "
+                "retained only as an even, quadratic comparison"
             ),
         },
         "receiver_baseline_models": {
@@ -1355,6 +1946,15 @@ def run_satcom_guardian_study(
                     "phase-jitter, and detuning sensitivity"
                 ),
             },
+            "generic_directional_balanced_interferometer": {
+                "location": "post-loss, with the same two cells and four outputs",
+                "detectors": 4,
+                "statistic": "the same signed piston/tangent axis scores",
+                "purpose": (
+                    "matched architectural control for testing whether the "
+                    "Burau implementation adds a hardware advantage"
+                ),
+            },
             "scalar_power_monitor": {
                 "location": "same optical tap, before modeled T-core insertion loss",
                 "detectors": 1,
@@ -1366,6 +1966,11 @@ def run_satcom_guardian_study(
         "range_assessment": assessed_range_summary,
         "literature_range_context": literature_range_context,
         "technology_trade_study": technology_trade_study,
+        "directional_t_design_characterization": directional_t_design,
+        "guardian_insertion_loss_sensitivity": guardian_loss_sensitivity,
+        "directional_t_complement_phase_ablation": (
+            directional_t_complement_phase_ablation
+        ),
         "laser_coherence": {
             "linewidths_hz": LINEWIDTHS_HZ.tolist(),
             "arm_delay_mismatch_ps": COHERENCE_DELAYS_PS.tolist(),
@@ -1381,16 +1986,18 @@ def run_satcom_guardian_study(
         },
         "monte_carlo_fault_detection": {
             "fault": (
-                f"{config.fault_pointing_bias_urad:g}-urad mean azimuth "
-                "displacement with unchanged pointing-jitter and polarization "
+                f"{config.receiver_fault_bias_urad:g}-urad mean receiver-AoA "
+                "azimuth displacement with unchanged transmitter pointing, "
+                "receiver jitter, and polarization "
                 "distributions; this is a selected stress case, not a fitted "
                 "fault-occurrence distribution"
             ),
             "comparison": (
-                "normalized T modal-residual score versus (1) a four-segment "
-                "quadrant pointing detector on the pre-core tap, (2) a loss-matched "
-                "two-output conventional mode sorter measuring the same projector, "
-                "and (3) a one-detector pre-core scalar-power negative control"
+                "four-output directional Burau T versus (1) a four-segment "
+                "quadrant pointing detector on the pre-core tap, (2) the old "
+                "two-output radial Householder score, (3) a loss-matched "
+                "conventional mode sorter, and (4) a one-detector pre-core "
+                "scalar-power negative control"
             ),
             "target_false_alarm_probability": (
                 config.empirical_false_alarm_probability
@@ -1438,6 +2045,13 @@ def run_satcom_guardian_study(
                     "compute and memory"
                 ),
                 "url": "https://doi.org/10.1364/AO.517934",
+            },
+            {
+                "fact": (
+                    "calibrated first-order spatial-mode projections can attain "
+                    "two-dimensional displacement information beyond direct imaging"
+                ),
+                "url": "https://doi.org/10.1364/OPTICA.404746",
             },
             {
                 "fact": (

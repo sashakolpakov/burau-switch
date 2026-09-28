@@ -1,306 +1,225 @@
-# Epitaxial-laser / T-chip SATCOM Phase-0 model
+# Directional Burau T SATCOM guardian: Phase-0 model
 
-This study models a concrete engineering use of the T architecture: an
-out-of-path optical link-assurance guardian for a high-rate inter-satellite
-laser terminal.  The laser is presently a parameterized source envelope, not
-a rate-equation model fitted to one measured device.  This is a numerical
-design study, not a hardware result or a claim of space qualification.
+This directory contains a deterministic reduced-order engineering study of an
+out-of-path optical-link guardian for inter-satellite laser communication. It
+is a simulation, not a hardware result, modem model, reliability prediction,
+or space-qualification claim.
 
-The modeled system chain begins with a selected carrier from an epitaxial
-source.  An optional booster represents a terminal amplifier, not extra laser
-output.  At the receiver, the main payload light continues to the ordinary
-modem, FEC, ARQ, and router.  A dedicated pilot wavelength or small
-receive-power tap feeds the guardian:
+The corrected design is a **two-axis directional Burau T bank**, not the older
+single radial Householder score. At the checked 8,000-km, 2.5-W corner, the
+optimized bank reaches `0.9331` fault detection with the same modeled 1.5-dB
+loss, essentially identical to the pre-core quadrant detector's `0.9332`. In a
+paired zero-loss counterfactual it reaches `0.9688`.
+
+The practical decision is deliberately narrower: the architecture passes the
+Phase-0 performance gate and merits a matched bench prototype, but the model
+does not yet establish a uniquely Burau-specific advantage. A generic pair of
+balanced interferometers can measure the same directional observable, while a
+quadrant detector retains much stronger flight heritage and production
+maturity.
+
+## System role
+
+The main payload light still goes to the terminal modem. A pilot wavelength or
+small receive-power tap feeds the guardian:
 
 ```text
 epitaxial source -> modulator / optional booster -> transmit telescope
-        -> free-space optical link -> receive telescope / fine steering
+        -> free-space link -> receive telescope / fine steering
         |-- main power --> modem --> FEC / CRC / ARQ --> router
-        `-- pilot/tap --> modal receiver --> T sum/difference detector
-                                            `--> warning / reacquire / failover
+        `-- pilot/tap --> 50:50 x/y fanout
+                         |-- directional T_x --> two detectors --|
+                         `-- directional T_y --> two detectors --+--> alarm / local steering
 ```
 
-The model propagates three assumed source properties that matter to a coherent
-T interferometer:
+The model separates two causal angular variables:
 
-- Lorentzian laser linewidth, through the arm visibility
-  `exp(-pi * linewidth * |delay mismatch|)`;
-- carrier-frequency detuning, through the differential phase accumulated by
-  unequal arms; and
-- relative-intensity noise (RIN), applied as common multiplicative power
-  noise over the decision bandwidth.  The default treats the quoted dBc/Hz
-  value as a one-sided white power-noise density and uses the `1/(2T)` noise
-  bandwidth of a rectangular integrate-and-dump window.
+- transmitter pointing controls gross Gaussian capture;
+- receiver angle of arrival controls overlap with the enrolled pupil mode.
 
-The cited high-power InP-on-Si device is a multimode Fabry--Perot research
-laser and does not supply the linewidth or RIN defaults used here.  Those
-defaults define a hypothetical selected carrier.  A device-faithful model
-must ingest its measured optical spectrum, RIN, L--I curves, and temperature
-and feedback response; for a multimode spectrum the coherence function must
-come from the Fourier transform of that spectrum rather than one Lorentzian.
+Both have 0.25-microradian per-axis Gaussian jitter by default. The primary
+stress is a receiver-AoA-only 1.5-microradian mean x bias, so the scalar-power
+tap is a negative causal control rather than a competing pointing sensor.
 
-It then adds a Gaussian-beam link budget, pointing-dependent capture,
-pointing and polarization leakage into four received modes, guardian tap and
-insertion losses, detector quantum efficiency, Poisson shot noise, read noise,
-and detector-gain mismatch.  The link budget uses the small-receive-aperture
-approximation
+The parameterized source propagates Lorentzian linewidth, carrier-frequency
+detuning, and one-sided white RIN. It is not fitted to one laser. The cited
+155-mW InP-on-Si device is a multimode Fabry--Perot research laser and does not
+establish the selected-carrier power, linewidth, RIN, coupling, or amplifier
+assumptions used here.
+
+## Optimized observable
+
+Let `h` be the enrolled piston mode and `g_x,g_y` the normalized pupil-tangent
+modes. After a lossless 50:50 fanout, each axis uses a balanced T cell. The
+first branch is the identity. The second applies `sigma_y` to
+`span(h,g_j)` and `exp(i phi_c) I` to the orthogonal complement.
+
+The path mixer is the exact three-letter reduced-Burau word
 
 ```text
-P_rx / P_tx = eta_link * D_rx^2 / (2 * (theta * range)^2)
-              * exp(-2 * (pointing / theta)^2).
+sigma_2^-1 sigma_1 sigma_2^-1,   omega = pi/4,
 ```
 
-Here `theta` is the Gaussian beam's 1/e^2-intensity half-angle and `D_rx` is
-the receiver diameter.  The code uses the exact centered circular-aperture
-factor and the displayed small-aperture pointing approximation; the default
-beam radius is at least 7.5 m versus a 0.1-m aperture.  This is not an optical
-terminal design code.  It omits the general off-axis aperture integral,
-aberrations, stray light, amplifier noise, Doppler tracking loops, coding, and
-network routing.
+phase-gauged to balanced sum/difference ports. The code verifies its unitarity,
+balanced magnitudes, and equivalence to an ordinary balanced coupler to
+floating-point precision.
 
-## Exact T observable
-
-Let `P0` project onto the nominal received spatial/polarization mode and set
+For real piston amplitude `a0` and tangent coefficient `b_j` (physical field
+coefficient `i b_j`), the ideal normalized output is
 
 ```text
-Q = 2 P0 - I,       X = I,       Y = Q.
+s_j = 2 a0 b_j + cos(phi_c) (1 - a0^2 - b_j^2).
 ```
 
-Both branch maps are unitary.  For
+The first term is signed and linear at boresight. The default `phi_c=0` keeps
+the complementary residual-modal evidence; `phi_c=pi/2` removes it and is
+reported as a pure-signed ablation. The alarm statistic is
+`sqrt(s_x^2+s_y^2)`, while the signed axes can serve as local steering errors.
+The bank uses four photodiodes total, matching the QPD channel count, and all
+post-core photons are allocated between the two cells.
 
-```text
-u = (X + Y)x / 2,       v = (X - Y)x / 2,
-```
+The former construction `Y=2|h><h|-I` is retained only as the
+`radial_householder_ablation`. It is even in displacement, has zero first
+derivative at boresight, and is equivalent to an ideal enrolled-mode sorter.
+It must not be interpreted as the optimized Burau T result.
 
-the ideal complementary powers obey
+For the stated 1550-nm wavelength and 10-cm circular aperture, the directional
+T's local signed slope is `0.2027 / microradian`, versus `0.1182 /
+microradian` for the default QPD model. After the 50:50 fanout and 1.5-dB loss,
+its local shot-noise Fisher-information ratio to that QPD is `1.0407`. Its 1%
+small-angle linear range is 1.092 microradians and its first positive-axis
+monotonic limit is 8.548 microradians. These are local ideal-model quantities;
+precision control needs a calibrated 2D lookup, and acquisition still needs a
+wider-field PAT sensor.
 
-```text
-I_plus - I_minus = x^dagger Q x,
-I_plus + I_minus = ||x||^2.
-```
+## Reproduce
 
-Thus the normalized difference is a nominal-mode-versus-residual score while
-the sum is an energy checksum.  This chosen score needs only a phase flip
-between the nominal and residual subspaces; it does not require the current
-132-letter general Burau compiler.  For this observable it is mathematically
-equivalent to an ideal conventional nominal-mode sorter.  The model tests the
-value of modal monitoring over scalar power monitoring; it does not establish
-an advantage over another implementation of the same mode projection.
-
-## Numerical experiments
-
-Run from the repository root:
+From the repository root:
 
 ```bash
 python -m programs.satcom_guardian.reproduce
 ```
 
-The deterministic run writes:
+The run writes:
 
-- `figures/satcom_guardian.png`, with the photon link budget, coherence and
-  detuning sensitivities, practical detector comparison, fault-severity sweep,
-  and RIN test;
-- `results/satcom_guardian.json`, containing every input parameter and
-  computed result.
+- `results/satcom_guardian.json`, containing every assumption, identity check,
+  Monte Carlo result, loss sweep, design characterization, and limitation;
+- `figures/satcom_guardian.png`, containing link, source, detector, and
+  fault-severity panels.
 
-The literature-routed baseline choice, engineering scores, control and
-production assessment, and range interpretation are recorded in the
-[baseline review](BASELINE_REVIEW.md).
+The literature-routed baseline hierarchy, engineering scores, control burden,
+production assessment, and distance interpretation are in
+[BASELINE_REVIEW.md](BASELINE_REVIEW.md).
 
-The default comparison is intentionally difficult for a scalar received-power
-alarm: a selected 1.5-urad pointing-bias stress case redistributes the coherent
-field among collected modes while causing only a small total-power change.
-This bias is six times the assumed 0.25-urad nominal jitter and 0.375 times the
-assumed 4-urad modal scale; it is not a fitted distribution of incipient flight
-faults.  A separate sweep includes smaller biases.  At each range, independent
-threshold-calibration, nominal-evaluation, and fault-evaluation Monte Carlo
-populations compare:
+Calibration, nominal evaluation, and fault evaluation use independent
+30,000-window populations and named independent random streams. Thresholds use
+strict `score > threshold` at a diagnostic 1% per-window false-alarm target.
+At 100-ns decisions that target would produce about 100,000 raw flags/s before
+filtering, so it is not an operational alarm specification.
 
-- the normalized two-output T residual after the assumed 1.5-dB core loss;
-- a loss-matched conventional mode sorter measuring the same projector without
-  T-arm coherence sensitivity;
-- a four-segment Gaussian-spot quadrant detector before core loss; and
-- a one-detector scalar power tap before core loss, retained only as a negative
-  control.
+## Checked result
 
-The quadrant detector is the primary practical baseline because the simulated
-fault is pointing bias and a quadrant sensor returns signed azimuth/elevation
-errors. Existing modem/FEC/PAT telemetry is a mandatory system baseline, but it
-cannot yet be simulated fairly because this Phase-0 model has no symbol
-waveform, frame synchronizer, or decoder.
+At 8,000 km with a parameterized 2.5-W monitored carrier, 100-ns windows, a 1%
+tap, and a receiver-AoA-only 1.5-microradian bias:
 
-The threshold is calibrated at a target 1% false-alarm probability and then
-evaluated on an independent nominal population.  At 100-ns decisions, 1%
-corresponds to roughly 100,000 flagged windows per second before voting or
-hysteresis.  It is therefore only a visible ROC operating point, not an
-operational SATCOM requirement.  A deployable guardian needs a mission-derived
-false-alarm, miss, latency, correlation, and undetected-fault budget.
+| Receiver | Modeled loss/location | Detection | AUC |
+|---|---:|---:|---:|
+| Optimized directional Burau T | 1.5 dB, post-core | 0.9331 | 0.99601 |
+| Four-quadrant detector | pre-core | 0.9332 | 0.99612 |
+| Radial Householder ablation | 1.5 dB, post-core | 0.8270 | 0.98056 |
+| Loss-matched radial mode sorter | 1.5 dB, post-core | 0.8322 | 0.98021 |
+| Scalar-power negative control | pre-core | 0.0099 | 0.50206 |
 
-## Baseline result
+The directional T and QPD 95% conditional Wilson intervals are respectively
+`[0.9302, 0.9359]` and `[0.9303, 0.9360]`. Their observed evaluation false
+alarm fractions are 0.01013 and 0.00967.
 
-Under the checked-in assumptions, the 1% guardian tap costs an idealized
-0.0436 dB from the main path before splitter excess loss.  At 8,000 km it
-collects about 59 photoelectrons per 100-ns decision window from a monitored
-155-mW seed carrier, or 959 photoelectrons after an illustrative boost of that
-carrier to 2.5 W.  These are per-monitored-carrier powers, not aggregate WDM
-terminal powers.  The boost is a system scenario, not a claim that the cited
-epitaxial laser itself emits 2.5 W; amplifier noise is not yet in the model.
+The paired loss sweep reuses the exact same latent and detector streams:
 
-For the selected 1.5-urad pointing fault, total collected power falls only
-1.98%, but the assumed four-mode receiver sees a much larger redistribution.
-Using thresholds fitted on independent nominal samples, the 8,000-km boosted
-case gives:
+| Burau-bank insertion loss | T detection | Pre-core QPD detection |
+|---:|---:|---:|
+| 0.0 dB | 0.9688 | 0.9332 |
+| 0.5 dB | 0.9577 | 0.9332 |
+| 1.0 dB | 0.9516 | 0.9332 |
+| 1.5 dB | 0.9331 | 0.9332 |
+| 2.0 dB | 0.9117 | 0.9332 |
+| 3.0 dB | 0.8629 | 0.9332 |
 
-- T detection 0.99827 (95% binomial interval 0.99773--0.99868) with an observed
-  false-alarm fraction of 0.00950;
-- loss-matched conventional-mode-sorter detection 0.99850
-  (0.99799--0.99888), statistically indistinguishable from T;
-- pre-core quadrant-detector detection 0.99820 (0.99765--0.99862), also
-  statistically indistinguishable for this large fault; and
-- pre-core scalar-power detection 0.0583 (0.0557--0.0610).
+At the same 1.5-dB loss, discarding the complement with `phi_c=pi/2` lowers T
+detection to `0.9254`. This confirms that the retained residual term is useful
+rather than an accidental implementation detail.
 
-The seed-only 8,000-km case falls to 0.689 T detection, 0.683 for the
-conventional sorter, and 0.411 for the four-segment detector in the same 100-ns
-window at the default 4-urad QPD spot scale. A separate QPD sensitivity run
-reaches 0.689 with a 2-urad spot assumption, whose reduced physical field of
-view is not charged by this ideal model. The apparent low-photon ranking is
-therefore design-assumption dependent. The near-equal conventional-sorter
-result also means it is not a Burau-specific advantage. It is useful evidence
-for adding photons, lengthening the integration window, or voting across
-windows; it is not evidence for mission-level reliability.
+The 8,000-km post-core photon budget is about 959 photoelectrons per 100 ns for
+the 2.5-W scenario and 59 for the optimistic 155-mW selected-carrier scenario.
+The latter is photon-starved: directional-T detection is only 0.0156 in one
+100-ns window. This is evidence for amplification, longer integration, or
+temporal fusion—not a claim that the cited epitaxial laser directly supplies a
+flight-ready carrier.
 
-Most importantly, the result depends on assumed 4-urad modal and quadrant-spot
-scales. Those must be replaced by measured telescope, focal-plane, and
-photonic-lantern fields before the detection result can support a device
-decision. The JSON includes a 2/4/8-urad quadrant-spot sensitivity check. At the
-boosted 8,000-km corner, T detection falls to 0.845 at 1.0 urad, 0.517 at 0.75
-urad, 0.184 at 0.5 urad, and 0.037 at 0.25 urad; the quadrant and conventional
-sorter curves are similar under the default assumptions.
+## Baselines and engineering decision
 
-The source/interferometer coupling itself looks forgiving for the hypothetical
-narrowband baseline: a 1-MHz Lorentzian linewidth with 1-ps arm mismatch retains
-0.999997 ideal visibility.  Broad or multimode emission is different: the
-model predicts that a 5-GHz linewidth needs less than 0.64 ps mismatch for
-99% visibility.  For the default 1-ps mismatch, a 99% score-gain limit occurs
-at 22.53 GHz of drift from the calibrated carrier (about 0.296 K if one applies
-the prototype's 76-GHz/K low-end stage-temperature slope).  On-chip
-thermo-optic phase drift is not modeled.  The cited Fabry--Perot prototype's
-large thermal wavelength
-shift also means that wavelength selection or locking remains a system
-requirement for dense WDM.
+The baseline hierarchy is:
+
+1. quadrant detector for the primary pointing comparison;
+2. existing PAT plus modem/FEC telemetry as the mandatory system baseline;
+3. a generic two-cell balanced interferometer as the matched directional
+   control;
+4. the radial mode sorter as the matched control for the old ablation;
+5. a pixel focal-plane sensor when acquisition FOV or multi-spot estimation
+   matters;
+6. scalar power only as a negative control.
+
+The QPD remains the wiser practical baseline because it already supplies two
+signed axes without optical phase control and has strong terminal heritage.
+The Burau bank is competitive in the selected model and has slightly higher
+local information per incident photon at 1.5 dB, but it is charged with active
+phase/delay, wavelength, mode-enrollment, polarization, gain, and thermal
+calibration. A build decision should therefore compare both devices at equal
+incident photons, latency, detector technology, false-alarm budget, and
+calibration effort.
 
 ## Distance context
 
-Distance is a link-budget outcome, not a fixed property of any guardian. The
-present detector grid covers 500--8,000 km and available photoelectrons scale
-approximately as inverse range squared. Under the selected 1.5-urad stress and
-2.5-W scenario, T, the loss-matched sorter, and the quadrant detector all remain
-above 99% detection at the farthest sampled point. With the 155-mW seed, T and
-the sorter remain above 99% through 4,000 km, while the quadrant model does so
-through 2,000 km in the assumed 100-ns window. These are sampled points, not
-maximum supported distances.
+No detector has one universal supported satellite separation. Photons scale
+approximately as inverse range squared, and useful distance depends on power,
+divergence, aperture, loss, tap fraction, detector efficiency, integration
+time, background, and fault size.
 
-For external context, SDA OCT v4 specifies a 5,500-km continuous-mode
-irradiance point and 20,000-km low-rate burst modes. Applying this repository's
-separate continuous Gaussian envelope at those distances gives about 2,029 and
-153 post-core photoelectrons per 100 ns, respectively, in the 2.5-W scenario.
-That calculation does not model the standard waveform, burst duty cycle,
-receiver sensitivity, PAT margin, or demonstrate compliance. The assumed
-1.5-dB T-core loss transmits 70.8% of incident photons and, by inverse-square
-scaling alone, reduces equal-photon range to 84.1% of a lossless pre-core
-sensor's range.
+On the sampled 500--8,000-km grid, the 2.5-W directional T and QPD both exceed
+90% detection through 8,000 km and 99% through 4,000 km for this selected
+fault. With the optimistic 155-mW carrier they exceed 90% through 2,000 km and
+99% through 1,000 km. These are sampled stress-test points, not maximum ranges.
 
-To explore another deterministic configuration from Python, construct a
-`GuardianConfig` and pass it to `run_satcom_guardian_study`; the generated
-baseline files are overwritten deliberately:
+For external context, SDA OCT v4 contains 5,500-km continuous-mode and
+20,000-km burst-mode reference points. Applying this repository's separate
+continuous Gaussian envelope gives about 2,029 and 153 post-core
+photoelectrons per 100 ns at those distances in the 2.5-W scenario. It does
+not model the standard waveform, burst duty cycle, receiver sensitivity, PAT
+margin, or demonstrate compliance. The assumed 1.5-dB core loss transmits
+70.8% of photons and, by inverse-square scaling alone, reduces equal-photon
+range to 84.1% of a lossless receiver's range.
 
-```python
-from programs.satcom_guardian.reproduce import (
-    GuardianConfig,
-    run_satcom_guardian_study,
-)
+## Main limitations
 
-run_satcom_guardian_study(
-    GuardianConfig(
-        laser_linewidth_hz=10e6,
-        t_arm_delay_mismatch_ps=10.0,
-        guardian_tap_fraction=0.02,
-    )
-)
-```
+The model omits measured pupil/photonic-lantern transfer matrices, finite modal
+closure, aberrations, stray light and optical background, detector bandwidth
+and saturation, amplifier signal--ASE and ASE--ASE beat noise, source side
+modes and optical feedback, measured T-arm dispersion and thermo-optic control,
+Doppler/carrier loops, modulation/FEC, actuator dynamics, modem loss of lock,
+routing/goodput, correlated alarm fusion, radiation, packaging, aging, and
+launch environment.
 
-## Interpretation boundaries
+The next decisive experiment is a matched bench test of the Burau bank, a
+generic directional interferometer, and a QPD behind the same representative
+telescope relay. It should measure insertion loss, bandwidth, drift,
+calibration interval, warning lead time, steering recovery, electrical power,
+and modal/polarization fault coverage.
 
-- The T core observes a pilot or tapped field; it does not carry or decode the
-  payload and therefore cannot increase Shannon capacity.
-- The quadrant detector is the primary pointing baseline, existing
-  fine-pointing and modem/FEC telemetry are mandatory system baselines, and the
-  conventional mode sorter is the matched-observable control. The scalar tap is
-  only a negative control.
-- One T score is unsigned and cannot close a two-axis pointing loop without
-  additional projections, dithering, or another pointing sensor. Its potential
-  role is link-assurance alarm generation, not replacement of PAT.
-- A faster warning can improve delivered goodput only if the terminal and
-  network can use it to steer, change lane, or reroute before loss of lock.
-- Each optical carrier must remain coherent with itself across the two T arms.
-  Mutually incoherent WDM carriers can contribute additive port powers for
-  this wavelength-preserving score; they need not be mutually phase locked.
-  Lane-specific scores require demultiplexing, and wavelength-dependent T-arm
-  errors still require per-lane calibration.
-- The default Lorentzian coherence calculation is safest for a selected
-  narrowband CW pilot.  A tapped modulated payload requires the planned
-  frequency-dependent waveform and differential-delay model.
-- The sum/difference identity is exact only for the ideal branch model.
-  Measured loss, dispersion, imbalance, detector mismatch, and aging must be
-  calibrated and monitored.
-- Only the feed-forward optical weighting core can be passive.  The laser,
-  amplifier, detector, TIA, controller, fine-steering hardware, and redundant
-  modem remain active.
+## Literature anchors
 
-## Engineering anchors
-
-The default values are explicit simulation assumptions, selected to expose
-tradeoffs rather than to describe a particular qualified part.  The following
-primary and official results anchor the explored regime:
-
-- NASA's TBIRD mission demonstrated a 200-Gbit/s space-to-ground optical link:
-  [NASA TBIRD](https://www.nasa.gov/centers-and-facilities/goddard/nasa-partners-achieve-fastest-space-to-ground-laser-comms-link/).
-- SDA OCT v4 defines C-band terminal wavelengths on a 100-GHz grid and a
-  2.5-Gbaud interoperable waveform family, treats PAT as part of the physical
-  layer, and supplies the 5,500/20,000-km range anchors used above:
-  [SDA OCT v4](https://www.sda.mil/wp-content/uploads/2024/07/SDA_OCT_Standard_4.0.0_final-20240701.pdf).
-- TBIRD used a quad sensor for two-axis pointing feedback and subsequently
-  demonstrated closed-loop pointing on orbit:
-  [Riesing et al. (2023)](https://ntrs.nasa.gov/citations/20230000001).
-- A spaceborne quadrant-detector positioning scheme was designed around limited
-  onboard compute and memory:
-  [Wei et al. (2024)](https://doi.org/10.1364/AO.517934).
-- Experimental non-mode-selective photonic-lantern reception anchors the
-  conventional mode-diversity alternative:
-  [Wang et al. (2023)](https://doi.org/10.1109/JPHOT.2022.3225337).
-- A wafer-scale InP-on-silicon platform demonstrated 1.55-um electrically
-  pumped CW lasers above 155 mW per facet and operation to 120 C:
-  [Sun et al. (2024)](https://doi.org/10.1038/s41377-024-01389-2).
-- Directly grown quantum-dot lasers on patterned 300-mm silicon demonstrated
-  approximately 1.3-um emission, 126.6-mW double-side output, and CW lasing to
-  60 C:
-  [Shang et al. (2022)](https://doi.org/10.1038/s41377-022-00982-7).
-- Foundry silicon photonic circuits were characterized before and after an
-  approximately eleven-month exposure outside the ISS; the component-dependent
-  changes motivate explicit radiation and end-of-life margins rather than a
-  blanket radiation-hard claim:
-  [Mao et al. (2024)](https://doi.org/10.1126/sciadv.adi9171).
-
-## What would make the route credible
-
-The next model should ingest a measured laser spectrum/RIN trace and a measured
-complex transfer matrix.  The first bench experiment should then compare the
-T score with a quadrant detector, a conventional implementation of the same
-mode projector, and modem/PAT telemetry under controlled pointing,
-polarization, detuning, temperature, and component faults. Incident photons,
-integration latency, detector technology, and false-alarm cost must be matched.
-The relevant outputs are signed control usefulness, warning lead time, missed
-degradation, false handovers, added optical loss, calibration interval,
-manufacturing tolerance, and end-to-end power--not optical propagation latency
-alone. A Burau-specific go decision requires a measured advantage that a generic
-projector does not share.
+- [TBIRD quad-sensor design and on-orbit pointing](https://ntrs.nasa.gov/citations/20230000001)
+- [SDA Optical Communications Terminal Standard v4.0.0](https://www.sda.mil/wp-content/uploads/2024/07/SDA_OCT_Standard_4.0.0_final-20240701.pdf)
+- [Spaceborne quadrant-detector spot positioning](https://doi.org/10.1364/AO.517934)
+- [Two-dimensional calibrated spatial-mode displacement estimation](https://doi.org/10.1364/OPTICA.404746)
+- [Free-space photonic-lantern mode-diversity reception](https://doi.org/10.1109/JPHOT.2022.3225337)
+- [Self-calibrating programmable photonic circuits](https://doi.org/10.1038/s41566-022-01020-z)

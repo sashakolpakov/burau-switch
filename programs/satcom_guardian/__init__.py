@@ -1,1 +1,1 @@
-"""Numerical engineering model for an optical SATCOM T guardian."""
+"""Numerical engineering model for a directional Burau T SATCOM guardian."""
