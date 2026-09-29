@@ -2,24 +2,23 @@
 
 Reproducible calculations for [arXiv:2510.18186](https://arxiv.org/abs/2510.18186).
 
-The code reproduces the manuscript's algebraic Gedankenexperiment. A single
-braid word produces the control mixer, while the target switch retains the
-two orders `BA` and `AB`.
+The code reproduces the manuscript's controlled braid-order experiment.  The
+two elementary unitarized Burau generators occupy the operation slots, and the
+two branches apply `U1 @ U2` and `U2 @ U1`.
 
 The scripts verify:
 
 - the exact Squier form and its two definite intervals;
 - Euclidean unitarity of the sign-normalized Burau generators;
 - the Yang--Baxter relation and noncommutativity of the $B_3$ generators;
-- the mixer from the one braid word
-  $[\sigma_1,\sigma_2]=\sigma_1\sigma_2\sigma_1^{-1}\sigma_2^{-1}$;
-- the braid-dressed-versus-bare $T$--$S$ response with no imposed
-  $\omega$-dependent switch phase; and
-- the exact null obtained by replacing the generator images with commuting
-  diagonal matrices.
+- the controlled-order unitary with branches $U_1U_2$ and $U_2U_1$;
+- the closed-form Helstrom witness for distinguishing those two branches; and
+- the closed-form minimum control-fringe visibility of their relative group
+  commutator.
 
-The reported Helstrom contrast compares two specified closed unitaries. It is
-not used as a causal-nonseparability witness.
+The witness certifies the implemented non-Abelian $B_3$ action together with
+the braid relation.  It is not a causal-nonseparability witness and does not by
+itself establish anyonic quasiparticles.
 
 Using Python 3.11 or newer, run everything from a clean environment with:
 

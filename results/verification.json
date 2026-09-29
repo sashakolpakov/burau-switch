@@ -1,33 +1,26 @@
 {
   "numerical_checks": {
-    "contrast_at_5pi_over_3": 0.0,
-    "contrast_at_pi_over_3": 2.220446049250313e-16,
-    "det_J_at_0": 2.9999999999999996,
-    "det_J_at_2pi": 2.9999999999999996,
-    "det_J_at_2pi_over_3": 4.4408920985006143e-16,
-    "det_J_at_4pi_over_3": -6.66133814775094e-16,
-    "fixed_switch_difference": 0.0,
-    "max_abelian_null_contrast": 3.3306690738754696e-16,
-    "max_abelian_word_error": 6.473657049138938e-16,
-    "max_braid_error": 2.2168001367057137e-15,
-    "max_form_error": 1.1243577791325062e-15,
-    "max_unitary_error": 1.9994762599136654e-14,
-    "maximum_response_contrast": 0.13378487312928566,
-    "minimum_response_contrast": 2.220446049250313e-16,
-    "minimum_sampled_H_eigenvalue": 0.0009067625628423311,
-    "p_fixed": 0.8662151268707143,
-    "p_switch": 0.8662151268707143,
-    "p_test_at_5pi_over_3": 0.8662151268707143,
-    "p_test_at_pi_over_3": 0.8662151268707146
+    "max_braid_error": 1.1819158755650386e-15,
+    "max_closed_form_error": 1.870031907102998e-15,
+    "max_commutator_determinant_error": 1.9761970384716162e-14,
+    "max_commutator_trace_error": 1.95415219022769e-14,
+    "max_controlled_order_unitary_error": 2.2681757217299016e-14,
+    "max_form_error": 1.1308481255558256e-15,
+    "max_unitary_error": 8.841185615904584e-15,
+    "max_visibility_closed_form_error": 8.326672684688674e-16,
+    "maximum_order_witness": 0.4999999991666346,
+    "minimum_order_visibility": 5.773613798694441e-05,
+    "minimum_sampled_H_eigenvalue": 0.0008778747819116366,
+    "order_witness_at_5pi_over_3": 0.5,
+    "order_witness_at_pi_over_3": 0.5,
+    "visibility_at_5pi_over_3": 1.1102230246251565e-16,
+    "visibility_at_pi_over_3": 1.1102230246251565e-16
   },
   "symbolic_checks": {
-    "abelianized_commutator": "I_2",
     "beta_i_star_J_beta_i": "J for i=1,2",
     "braid_relation": "beta_1 beta_2 beta_1 = beta_2 beta_1 beta_2",
-    "det_J_s": "(s**2 - s + 1)*(s**2 + s + 1)/s**2",
-    "det_commutator_word": "1",
-    "mixer_word": "sigma_1 sigma_2 sigma_1^-1 sigma_2^-1",
+    "det_relative_order": "1",
     "order_difference": "Matrix([[s**2, -s**3 - s], [s**3 + s, -s**2]])",
-    "trace_commutator_word": "-(s**4 - s**2 + 1)/s**2"
+    "trace_relative_order": "-(s**4 - s**2 + 1)/s**2"
   }
 }

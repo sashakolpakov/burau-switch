@@ -1,7 +1,7 @@
-"""Numerical checks for the Burau--Squier controlled-order experiment.
+"""Numerical checks for the Burau--Squier braid-order experiment.
 
-A single braid word supplies the control mixer. The target switch retains
-the two orders BA and AB, and no omega-dependent path phase is inserted.
+The two elementary unitarized Burau generators occupy the operation slots of
+a controlled-order circuit.  The two branches apply U1 U2 and U2 U1.
 """
 
 from __future__ import annotations
@@ -16,17 +16,16 @@ import numpy.linalg as la
 TWO_PI = 2.0 * np.pi
 INNER_LEFT = 2.0 * np.pi / 3.0
 INNER_RIGHT = 4.0 * np.pi / 3.0
-MIXER_WORD = [(1, 1), (2, 1), (1, -1), (2, -1)]
 
 
 def squier_form(omega: float) -> np.ndarray:
-    """The specialized 2-by-2 Squier form J(omega)."""
+    """Return the specialized 2-by-2 Squier form J(omega)."""
     diagonal = 2.0 * np.cos(omega / 2.0)
     return np.array([[diagonal, -1.0], [-1.0, diagonal]], dtype=complex)
 
 
 def beta_generator(index: int, s: complex) -> np.ndarray:
-    """Squier's modified reduced Burau generators for B_3."""
+    """Return Squier's modified reduced Burau generator beta_i."""
     if index == 1:
         return np.array([[-s**2, s], [0.0, 1.0]], dtype=complex)
     if index == 2:
@@ -35,7 +34,7 @@ def beta_generator(index: int, s: complex) -> np.ndarray:
 
 
 def beta_word(word: list[tuple[int, int]], s: complex) -> np.ndarray:
-    """Evaluate a word [(generator, integer power), ...] from left to right."""
+    """Evaluate a braid word [(generator, integer power), ...]."""
     result = np.eye(2, dtype=complex)
     for index, power in word:
         generator = beta_generator(index, s)
@@ -48,7 +47,7 @@ def beta_word(word: list[tuple[int, int]], s: complex) -> np.ndarray:
 
 def definiteness_sign(omega: float) -> int | None:
     """Return epsilon for which H=epsilon*J is positive definite."""
-    if 0.0 <= omega < INNER_LEFT:
+    if 0.0 < omega < INNER_LEFT:
         return 1
     if INNER_RIGHT < omega < TWO_PI:
         return -1
@@ -56,7 +55,7 @@ def definiteness_sign(omega: float) -> int | None:
 
 
 def positive_form(omega: float) -> np.ndarray:
-    """The sign-normalized positive form H on Omega_def."""
+    """Return the sign-normalized positive form H on Omega_+."""
     sign = definiteness_sign(omega)
     if sign is None:
         raise ValueError("omega is outside the Squier definiteness region")
@@ -77,60 +76,64 @@ def unitarize(matrix: np.ndarray, form: np.ndarray) -> np.ndarray:
     return root @ matrix @ la.inv(root)
 
 
-def helstrom_unitary_success(
-    first: np.ndarray, second: np.ndarray, tolerance: float = 1e-12
-) -> float:
+def burau_unitary(word: list[tuple[int, int]], omega: float) -> np.ndarray:
+    """Return U_omega(word)=H^(1/2) beta_omega(word) H^(-1/2)."""
+    s = np.exp(0.5j * omega)
+    return unitarize(beta_word(word, s), positive_form(omega))
+
+
+def elementary_unitaries(omega: float) -> tuple[np.ndarray, np.ndarray]:
+    """Return U1(omega) and U2(omega)."""
+    return burau_unitary([(1, 1)], omega), burau_unitary([(2, 1)], omega)
+
+
+def ordered_products(omega: float) -> tuple[np.ndarray, np.ndarray]:
+    """Return V12=U1 U2 and V21=U2 U1."""
+    unitary_one, unitary_two = elementary_unitaries(omega)
+    return unitary_one @ unitary_two, unitary_two @ unitary_one
+
+
+def controlled_order_unitary(omega: float, phase: float = 0.0) -> np.ndarray:
+    """Return |0><0| tensor V12 + exp(i phase)|1><1| tensor V21."""
+    order_twelve, order_twenty_one = ordered_products(omega)
+    projector_zero = np.diag([1.0, 0.0])
+    projector_one = np.diag([0.0, 1.0])
+    return np.kron(projector_zero, order_twelve) + np.exp(
+        1j * phase
+    ) * np.kron(projector_one, order_twenty_one)
+
+
+def _covering_arc(unitary: np.ndarray) -> float:
+    """Length of the shortest closed arc containing a unitary's spectrum."""
+    angles = np.sort(np.mod(np.angle(la.eigvals(unitary)), TWO_PI))
+    gaps = np.concatenate((np.diff(angles), [TWO_PI - angles[-1] + angles[0]]))
+    return float(np.clip(TWO_PI - np.max(gaps), 0.0, TWO_PI))
+
+
+def numerical_range_distance(unitary: np.ndarray) -> float:
+    """Distance from zero to the numerical range of a normal unitary."""
+    covering_arc = _covering_arc(unitary)
+    if covering_arc >= np.pi:
+        return 0.0
+    return float(np.cos(covering_arc / 2.0))
+
+
+def helstrom_unitary_success(first: np.ndarray, second: np.ndarray) -> float:
     """Optimal equal-prior, single-use discrimination of two unitary channels."""
     relative = first.conj().T @ second
-    angles = np.sort(np.mod(np.angle(la.eigvals(relative)), TWO_PI))
-    gaps = np.concatenate((np.diff(angles), [TWO_PI - angles[-1] + angles[0]]))
-    covering_arc = float(np.clip(TWO_PI - np.max(gaps), 0.0, TWO_PI))
-    capped_arc = min(covering_arc, np.pi)
-    if capped_arc > np.pi - tolerance:
-        return 1.0
+    capped_arc = min(_covering_arc(relative), np.pi)
     return 0.5 * (1.0 + np.sin(capped_arc / 2.0))
 
 
-def rx(angle: float) -> np.ndarray:
-    cosine = np.cos(angle / 2.0)
-    sine = -1j * np.sin(angle / 2.0)
-    return np.array([[cosine, sine], [sine, cosine]], dtype=complex)
+def exact_order_witness(omega: float) -> float:
+    """Closed form for p*(U1 U2,U2 U1)-1/2."""
+    radicand = 1.0 - (0.5 - np.cos(omega)) ** 2
+    return 0.5 * np.sqrt(max(0.0, radicand))
 
 
-def rz(angle: float) -> np.ndarray:
-    return np.diag([np.exp(-0.5j * angle), np.exp(0.5j * angle)])
-
-
-def switch_unitary(first: np.ndarray, second: np.ndarray) -> np.ndarray:
-    """The fixed switch S=|0><0| tensor BA + |1><1| tensor AB."""
-    projector_zero = np.diag([1.0, 0.0])
-    projector_one = np.diag([0.0, 1.0])
-    return np.kron(projector_zero, second @ first) + np.kron(
-        projector_one, first @ second
-    )
-
-
-def mixer_unitary(omega: float) -> np.ndarray:
-    """Unitarize the one-word mixer [sigma_1,sigma_2]."""
-    s = np.exp(0.5j * omega)
-    return unitarize(beta_word(MIXER_WORD, s), positive_form(omega))
-
-
-def _dressed_response(
-    omega: float, first_target: np.ndarray, second_target: np.ndarray
-) -> tuple[float, float, float]:
-    identity_two = np.eye(2, dtype=complex)
-    identity_four = np.eye(4, dtype=complex)
-    bare_switch = switch_unitary(first_target, second_target)
-    mixer = mixer_unitary(omega)
-    dressed_switch = (
-        np.kron(mixer, identity_two)
-        @ bare_switch
-        @ np.kron(mixer, identity_two)
-    )
-    p_switch = helstrom_unitary_success(identity_four, bare_switch)
-    p_test = helstrom_unitary_success(identity_four, dressed_switch)
-    return p_switch, p_test, p_test - p_switch
+def exact_minimum_visibility(omega: float) -> float:
+    """Closed form for min_psi |<psi|V12^dagger V21|psi>|."""
+    return abs(0.5 - np.cos(omega))
 
 
 def _format_phase_axis(axis: plt.Axes) -> None:
@@ -146,21 +149,16 @@ def _format_phase_axis(axis: plt.Axes) -> None:
 
 def run_verification(
     *,
-    grid_points: int = 6000,
+    grid_points: int = 6001,
     boundary_margin: float = 1e-4,
     save_figure: bool = True,
     show_figure: bool = True,
     figure_path: str | Path = "figures/witness_gap_summary.png",
 ) -> dict[str, float]:
-    """Run the manuscript checks, plot them, and return diagnostics."""
-    omegas = np.linspace(0.0, TWO_PI, grid_points, endpoint=False)
+    """Run all manuscript checks, produce the figure, and return diagnostics."""
+    omegas = np.linspace(boundary_margin, TWO_PI - boundary_margin, grid_points)
     valid = np.array(
-        [
-            definiteness_sign(float(value)) is not None
-            and abs(value - INNER_LEFT) > boundary_margin
-            and abs(value - INNER_RIGHT) > boundary_margin
-            for value in omegas
-        ]
+        [definiteness_sign(float(value)) is not None for value in omegas]
     )
 
     lambda_minus = 2.0 * np.cos(omegas / 2.0) - 1.0
@@ -168,21 +166,17 @@ def run_verification(
     form_error = np.full(grid_points, np.nan)
     braid_error = np.full(grid_points, np.nan)
     unitary_error = np.full(grid_points, np.nan)
-    response_contrast = np.full(grid_points, np.nan)
-    abelian_null_contrast = np.full(grid_points, np.nan)
-    abelian_word_error = np.full(grid_points, np.nan)
+    controlled_order_error = np.full(grid_points, np.nan)
+    numerical_witness = np.full(grid_points, np.nan)
+    closed_witness = np.full(grid_points, np.nan)
+    numerical_visibility = np.full(grid_points, np.nan)
+    closed_visibility = np.full(grid_points, np.nan)
+    commutator_trace_error = np.full(grid_points, np.nan)
+    commutator_determinant_error = np.full(grid_points, np.nan)
     minimum_h_eigenvalue = np.inf
 
-    first_target = rx(1.5)
-    second_target = rz(0.75)
     identity_two = np.eye(2, dtype=complex)
     identity_four = np.eye(4, dtype=complex)
-    bare_switch = switch_unitary(first_target, second_target)
-    p_switch = helstrom_unitary_success(identity_four, bare_switch)
-    p_fixed = max(
-        helstrom_unitary_success(identity_two, first_target @ second_target),
-        helstrom_unitary_success(identity_two, second_target @ first_target),
-    )
 
     for position, omega in enumerate(omegas):
         if not valid[position]:
@@ -202,94 +196,73 @@ def run_verification(
 
         unitary_one = unitarize(beta_one, form)
         unitary_two = unitarize(beta_two, form)
-        mixer = unitarize(beta_word(MIXER_WORD, s), form)
-        unitary_error[position] = la.norm(
-            mixer.conj().T @ mixer - identity_two
+        unitary_error[position] = max(
+            la.norm(unitary_one.conj().T @ unitary_one - identity_two),
+            la.norm(unitary_two.conj().T @ unitary_two - identity_two),
         )
         braid_error[position] = la.norm(
             unitary_one @ unitary_two @ unitary_one
             - unitary_two @ unitary_one @ unitary_two
         )
 
-        dressed_switch = (
-            np.kron(mixer, identity_two)
-            @ bare_switch
-            @ np.kron(mixer, identity_two)
-        )
-        response_contrast[position] = (
-            helstrom_unitary_success(identity_four, dressed_switch) - p_switch
-        )
-
-        # A general pair of diagonal generator images commutes, so its
-        # commutator word is the identity even when the two images differ.
-        diagonal_one = np.diag(
-            [np.exp(1j * omega), np.exp(-1j * omega)]
-        )
-        diagonal_two = np.diag(
-            [np.exp(0.37j * omega), np.exp(-0.37j * omega)]
-        )
-        abelian_word = (
-            diagonal_one
-            @ diagonal_two
-            @ diagonal_one.conj().T
-            @ diagonal_two.conj().T
-        )
-        abelian_word_error[position] = la.norm(abelian_word - identity_two)
-        abelian_dressed = (
-            np.kron(abelian_word, identity_two)
-            @ bare_switch
-            @ np.kron(abelian_word, identity_two)
-        )
-        abelian_null_contrast[position] = (
-            helstrom_unitary_success(identity_four, abelian_dressed) - p_switch
+        order_twelve = unitary_one @ unitary_two
+        order_twenty_one = unitary_two @ unitary_one
+        relative = order_twelve.conj().T @ order_twenty_one
+        controlled = controlled_order_unitary(float(omega))
+        controlled_order_error[position] = la.norm(
+            controlled.conj().T @ controlled - identity_four
         )
 
-    _, p_test_at_pi_over_3, contrast_at_pi_over_3 = _dressed_response(
-        np.pi / 3.0, first_target, second_target
-    )
-    _, p_test_at_5pi_over_3, contrast_at_5pi_over_3 = _dressed_response(
-        5.0 * np.pi / 3.0, first_target, second_target
-    )
+        commutator_trace_error[position] = abs(
+            np.trace(relative) - (1.0 - 2.0 * np.cos(omega))
+        )
+        commutator_determinant_error[position] = abs(la.det(relative) - 1.0)
+        numerical_witness[position] = (
+            helstrom_unitary_success(order_twelve, order_twenty_one) - 0.5
+        )
+        closed_witness[position] = exact_order_witness(float(omega))
+        numerical_visibility[position] = numerical_range_distance(relative)
+        closed_visibility[position] = exact_minimum_visibility(float(omega))
 
     diagnostics = {
-        "det_J_at_0": float(la.det(squier_form(0.0)).real),
-        "det_J_at_2pi_over_3": float(la.det(squier_form(INNER_LEFT)).real),
-        "det_J_at_4pi_over_3": float(la.det(squier_form(INNER_RIGHT)).real),
-        "det_J_at_2pi": float(la.det(squier_form(TWO_PI)).real),
         "max_form_error": float(np.nanmax(form_error)),
         "max_braid_error": float(np.nanmax(braid_error)),
         "max_unitary_error": float(np.nanmax(unitary_error)),
-        "minimum_sampled_H_eigenvalue": float(minimum_h_eigenvalue),
-        "p_fixed": float(p_fixed),
-        "p_switch": float(p_switch),
-        "fixed_switch_difference": float(abs(p_fixed - p_switch)),
-        "minimum_response_contrast": float(np.nanmin(response_contrast)),
-        "maximum_response_contrast": float(np.nanmax(response_contrast)),
-        "contrast_at_pi_over_3": float(contrast_at_pi_over_3),
-        "contrast_at_5pi_over_3": float(contrast_at_5pi_over_3),
-        "p_test_at_pi_over_3": float(p_test_at_pi_over_3),
-        "p_test_at_5pi_over_3": float(p_test_at_5pi_over_3),
-        "max_abelian_word_error": float(np.nanmax(abelian_word_error)),
-        "max_abelian_null_contrast": float(
-            np.nanmax(np.abs(abelian_null_contrast))
+        "max_controlled_order_unitary_error": float(
+            np.nanmax(controlled_order_error)
         ),
+        "max_closed_form_error": float(
+            np.nanmax(np.abs(numerical_witness - closed_witness))
+        ),
+        "max_visibility_closed_form_error": float(
+            np.nanmax(np.abs(numerical_visibility - closed_visibility))
+        ),
+        "max_commutator_trace_error": float(np.nanmax(commutator_trace_error)),
+        "max_commutator_determinant_error": float(
+            np.nanmax(commutator_determinant_error)
+        ),
+        "minimum_sampled_H_eigenvalue": float(minimum_h_eigenvalue),
+        "maximum_order_witness": float(np.nanmax(numerical_witness)),
+        "minimum_order_visibility": float(np.nanmin(numerical_visibility)),
+        "order_witness_at_pi_over_3": exact_order_witness(np.pi / 3.0),
+        "order_witness_at_5pi_over_3": exact_order_witness(5.0 * np.pi / 3.0),
+        "visibility_at_pi_over_3": exact_minimum_visibility(np.pi / 3.0),
+        "visibility_at_5pi_over_3": exact_minimum_visibility(5.0 * np.pi / 3.0),
     }
 
-    assert diagnostics["det_J_at_0"] > 0.0
-    assert diagnostics["det_J_at_2pi"] > 0.0
-    assert abs(diagnostics["det_J_at_2pi_over_3"]) < 1e-12
-    assert abs(diagnostics["det_J_at_4pi_over_3"]) < 1e-12
     assert diagnostics["minimum_sampled_H_eigenvalue"] > 0.0
     assert diagnostics["max_form_error"] < 1e-10
     assert diagnostics["max_braid_error"] < 1e-10
     assert diagnostics["max_unitary_error"] < 1e-9
-    assert diagnostics["fixed_switch_difference"] < 1e-12
-    assert diagnostics["minimum_response_contrast"] > -1e-10
-    assert diagnostics["maximum_response_contrast"] > 0.1
-    assert abs(diagnostics["contrast_at_pi_over_3"]) < 1e-10
-    assert abs(diagnostics["contrast_at_5pi_over_3"]) < 1e-10
-    assert diagnostics["max_abelian_word_error"] < 1e-12
-    assert diagnostics["max_abelian_null_contrast"] < 1e-12
+    assert diagnostics["max_controlled_order_unitary_error"] < 1e-9
+    assert diagnostics["max_closed_form_error"] < 1e-10
+    assert diagnostics["max_visibility_closed_form_error"] < 1e-10
+    assert diagnostics["max_commutator_trace_error"] < 1e-10
+    assert diagnostics["max_commutator_determinant_error"] < 1e-10
+    assert abs(diagnostics["order_witness_at_pi_over_3"] - 0.5) < 1e-12
+    assert abs(diagnostics["order_witness_at_5pi_over_3"] - 0.5) < 1e-12
+    assert diagnostics["visibility_at_pi_over_3"] < 1e-12
+    assert diagnostics["visibility_at_5pi_over_3"] < 1e-12
 
     figure, axes = plt.subplots(1, 3, figsize=(13.0, 3.9))
 
@@ -305,7 +278,10 @@ def run_verification(
         omegas, np.maximum(form_error, error_floor), label=r"$H$ preservation"
     )
     axes[1].plot(
-        omegas, np.maximum(unitary_error, error_floor), label=r"$M$ unitarity"
+        omegas, np.maximum(braid_error, error_floor), label="braid relation"
+    )
+    axes[1].plot(
+        omegas, np.maximum(unitary_error, error_floor), label="unitarity"
     )
     axes[1].set_yscale("log")
     axes[1].set_ylim(1e-16, 1e-8)
@@ -315,23 +291,38 @@ def run_verification(
 
     axes[2].plot(
         omegas,
-        response_contrast,
-        color="#7f3c8d",
-        linewidth=2.0,
-        label=r"$w=[\sigma_1,\sigma_2]$",
+        closed_witness,
+        color="#3b6fb6",
+        linewidth=2.2,
+        label=r"$\mathcal{W}_{\rm NA}$",
     )
     axes[2].plot(
         omegas,
-        abelian_null_contrast,
-        color="#d95f02",
-        linestyle="--",
-        linewidth=1.3,
-        label="commuting-generator null",
+        closed_visibility,
+        color="#c54e55",
+        linewidth=2.0,
+        label=r"$\mathcal{V}_{\min}$",
     )
-    axes[2].axhline(0.0, color="black", linewidth=0.7)
-    axes[2].set_ylim(-0.008, 0.145)
-    axes[2].set_ylabel(r"$\Delta_{\rm int}=p_{\rm test}-p_{\rm switch}$")
-    axes[2].set_title("(c) One-word mixer response")
+    marker_stride = max(1, grid_points // 24)
+    axes[2].plot(
+        omegas[::marker_stride],
+        numerical_witness[::marker_stride],
+        linestyle="none",
+        marker="o",
+        markersize=3.0,
+        color="#214a80",
+    )
+    axes[2].plot(
+        omegas[::marker_stride],
+        numerical_visibility[::marker_stride],
+        linestyle="none",
+        marker="s",
+        markersize=2.8,
+        color="#8e3037",
+    )
+    axes[2].set_ylim(0.0, 1.04)
+    axes[2].set_ylabel("dimensionless response")
+    axes[2].set_title("(c) Direct braid-order response")
     axes[2].legend(fontsize=8, frameon=False)
 
     for axis in axes:

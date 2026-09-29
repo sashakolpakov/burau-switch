@@ -6,7 +6,7 @@ import sympy as sp
 
 
 def run_symbolic_checks() -> dict[str, str]:
-    """Verify the Squier identities and the one-word mixer exactly."""
+    """Verify the Squier identities and direct order witness exactly."""
     s = sp.symbols("s", nonzero=True)
     beta_one = sp.Matrix([[-s**2, s], [0, 1]])
     beta_two = sp.Matrix([[1, 0], [s, -s**2]])
@@ -28,33 +28,18 @@ def run_symbolic_checks() -> dict[str, str]:
     )
     assert sp.simplify(order_difference - expected_difference) == zero
 
-    commutator_word = sp.simplify(
-        beta_one * beta_two * beta_one.inv() * beta_two.inv()
-    )
-    assert sp.simplify(sp.det(commutator_word) - 1) == 0
-    assert sp.simplify(commutator_word - sp.eye(2)) != zero
-
-    a, b, c, d = sp.symbols("a b c d", nonzero=True)
-    diagonal_one = sp.diag(a, b)
-    diagonal_two = sp.diag(c, d)
-    abelian_commutator = sp.simplify(
-        diagonal_one
-        * diagonal_two
-        * diagonal_one.inv()
-        * diagonal_two.inv()
-    )
-    assert abelian_commutator == sp.eye(2)
-
-    determinant_form = sp.factor(form.det())
-    assert sp.simplify(determinant_form - (s**4 + s**2 + 1) / s**2) == 0
+    order_twelve = beta_one * beta_two
+    order_twenty_one = beta_two * beta_one
+    relative_order = sp.simplify(order_twelve.inv() * order_twenty_one)
+    assert sp.simplify(sp.det(relative_order) - 1) == 0
+    assert sp.simplify(
+        sp.trace(relative_order) - (1 - s**2 - s**-2)
+    ) == 0
 
     return {
         "beta_i_star_J_beta_i": "J for i=1,2",
         "braid_relation": "beta_1 beta_2 beta_1 = beta_2 beta_1 beta_2",
-        "det_J_s": str(determinant_form),
-        "mixer_word": "sigma_1 sigma_2 sigma_1^-1 sigma_2^-1",
-        "det_commutator_word": "1",
-        "trace_commutator_word": str(sp.factor(sp.trace(commutator_word))),
-        "abelianized_commutator": "I_2",
         "order_difference": str(order_difference),
+        "det_relative_order": "1",
+        "trace_relative_order": str(sp.factor(sp.trace(relative_order))),
     }
